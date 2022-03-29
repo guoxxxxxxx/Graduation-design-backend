@@ -1,0 +1,17 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /
+# 配置数据库连接池
+spring:
+  datasource:
+    name: druid
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://localhost:3306/assistance?characterEncoding=utf-8&serverTimezone=UTC
+    username: root
+    password: 123456
+  # 加载Mybatis配置文件
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true  # ??????????
+  mapper-locations: classpath:mapper/*.xml  # ??mapper??

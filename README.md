@@ -65,6 +65,7 @@ USE assistance;
 | email     | varchar(50) | 用户邮箱                                         |
 | wechat    | varchar(30) | 用户微信号                                       |
 | qq        | varchar(20) | 用户qq号                                         |
+| password  | varchar(20) | 用户登录密码                                     |
 | is_delete | int         | 是否删除；1为删除，0为未删除，默认为0            |
 
 - 创建用户信息表
@@ -510,4 +511,53 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 
 
 ## 五、接口设计
+
+### 一、登录
+
+**1. 登录**
+
+- 名称： login
+- 描述：用户登录
+- URL：http://localhost:8080/user/login
+- 请求方式：POST
+- 请求参数
+
+| 字段     | 说明   | 类型   | 是否必须 | 备注 |
+| -------- | ------ | ------ | -------- | ---- |
+| username | 用户名 | String | 是       |      |
+| password | 密码   | String | 是       |      |
+
+- 请求参数示例
+
+JSON格式数据
+
+``` json
+{
+    "username":"username",
+    "password":"password"
+}
+```
+
+- 响应结果
+
+| 字段   | 说明               | 类型   | 是否必须 | 备注                 |
+| ------ | ------------------ | ------ | -------- | -------------------- |
+| status | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败 |
+| msg    | 响应消息           | String | 是       |                      |
+
+- 响应结果实例
+
+```
+成功
+{
+	"msg":"success",
+	"status":"0"
+}
+
+失败
+{
+	"msg":"fail",
+	"status":"1"
+}
+```
 
