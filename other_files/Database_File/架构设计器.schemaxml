@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemadesigner version="6.5">
+<source>
+<database charset="utf8" collation="utf8_general_ci">assistance</database>
+</source>
+<canvas zoom="100">
+<tables>
+<table name="errand" view="standard">
+<left>620</left>
+<top>1131</top>
+<width>243</width>
+<height>299</height>
+<sql_create_table>CREATE TABLE `errand` (
+  `eid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布订单用户信息 外: user(uid)',
+  `euid` int(11) DEFAULT NULL COMMENT '接单用户信息 外: user(uid)',
+  `title` varchar(30) DEFAULT NULL COMMENT '订单信息',
+  `money` double DEFAULT '0' COMMENT '订单费用, 默认为0',
+  `is_achieve` int(11) DEFAULT '0' COMMENT '是否已完成, 0: 未完成; 1: 已完成;',
+  `category` varchar(5) DEFAULT NULL COMMENT '类别, 可选值为(快递, 外卖, 打水, 其他)',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `deadline` date DEFAULT NULL COMMENT '截止日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`eid`),
+  KEY `uid` (`uid`),
+  KEY `euid` (`euid`),
+  CONSTRAINT `errand_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `errand_ibfk_2` FOREIGN KEY (`euid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="help" view="standard">
+<left>1910</left>
+<top>549</top>
+<width>221</width>
+<height>189</height>
+<sql_create_table>CREATE TABLE `help` (
+  `hid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `title` varchar(30) DEFAULT NULL COMMENT '题目',
+  `details` varchar(500) DEFAULT NULL COMMENT '详细内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`hid`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `help_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="lost_found" view="standard">
+<left>1558</left>
+<top>1072</top>
+<width>202</width>
+<height>214</height>
+<sql_create_table>CREATE TABLE `lost_found` (
+  `lid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `type` int(11) DEFAULT NULL COMMENT '类型，可选：0：找失主，1：找物品',
+  `title` varchar(30) DEFAULT NULL COMMENT '题目',
+  `details` varchar(500) DEFAULT NULL COMMENT '详细内容',
+  `is_find` int(11) DEFAULT '0' COMMENT '是否已经找到, 0未找到, 1找到',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`lid`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `lost_found_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="s_discuss" view="standard">
+<left>309</left>
+<top>679</top>
+<width>246</width>
+<height>215</height>
+<sql_create_table>CREATE TABLE `s_discuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `sid` int(11) DEFAULT NULL COMMENT '发布评论的指定帖子 外: study(sid)',
+  `comment` varchar(500) DEFAULT NULL COMMENT '讨论的内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `sid` (`sid`),
+  CONSTRAINT `s_discuss_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `s_discuss_ibfk_2` FOREIGN KEY (`sid`) REFERENCES `study` (`sid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="s_reply" view="standard">
+<left>9</left>
+<top>439</top>
+<width>254</width>
+<height>236</height>
+<sql_create_table>CREATE TABLE `s_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `reply_uid` int(11) DEFAULT NULL COMMENT '回复用户id 外: user(uid)',
+  `discuss_id` int(11) DEFAULT NULL COMMENT '回复的帖子的id 外s_discuss(id)',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `reply` varchar(500) DEFAULT NULL COMMENT '回复内容',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `reply_uid` (`reply_uid`),
+  KEY `discuss_id` (`discuss_id`),
+  CONSTRAINT `s_reply_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `s_reply_ibfk_2` FOREIGN KEY (`reply_uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `s_reply_ibfk_3` FOREIGN KEY (`discuss_id`) REFERENCES `s_discuss` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="study" view="standard">
+<left>611</left>
+<top>849</top>
+<width>252</width>
+<height>257</height>
+<sql_create_table>CREATE TABLE `study` (
+  `sid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发帖用户, 外：user(uid)',
+  `category` varchar(15) DEFAULT NULL COMMENT '类别,可选项为: 数学, 物理, 英语, 其他',
+  `title` varchar(30) DEFAULT NULL COMMENT '题目',
+  `details` varchar(500) DEFAULT NULL COMMENT '详细内容',
+  `pubdate` date DEFAULT NULL COMMENT '提交时间',
+  `is_achieve` int(11) DEFAULT '0' COMMENT '是否已解决, 1:已解决 0:未解决 默认为0',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`sid`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `study_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_discuss" view="standard">
+<left>390</left>
+<top>149</top>
+<width>209</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `t_discuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `tid` int(11) DEFAULT NULL COMMENT '发布评论所属帖子 外键trade(tid)',
+  `COMMENT` varchar(500) DEFAULT NULL COMMENT '讨论的内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `tid` (`tid`),
+  CONSTRAINT `t_discuss_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `t_discuss_ibfk_2` FOREIGN KEY (`tid`) REFERENCES `trade` (`tid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="t_reply" view="standard">
+<left>688</left>
+<top>101</top>
+<width>209</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `t_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `reply_uid` int(11) DEFAULT NULL COMMENT '回复用户id 外: user(uid)',
+  `discuss_id` int(11) DEFAULT NULL COMMENT '回复的帖子的id 外t_discuss(id)',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `reply` varchar(500) DEFAULT NULL COMMENT '回复内容',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `reply_uid` (`reply_uid`),
+  KEY `discuss_id` (`discuss_id`),
+  CONSTRAINT `t_reply_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `t_reply_ibfk_2` FOREIGN KEY (`reply_uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `t_reply_ibfk_3` FOREIGN KEY (`discuss_id`) REFERENCES `t_discuss` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="trade" view="standard">
+<left>30</left>
+<top>183</top>
+<width>243</width>
+<height>236</height>
+<sql_create_table>CREATE TABLE `trade` (
+  `tid` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `category` varchar(5) DEFAULT NULL COMMENT '类别, 选项为: 出行工具, 书本资料, 生活用品和其他',
+  `title` varchar(30) DEFAULT NULL COMMENT '题目',
+  `details` varchar(500) DEFAULT NULL COMMENT '详细内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`tid`),
+  KEY `uid` (`uid`),
+  CONSTRAINT `trade_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="user" view="standard">
+<left>1069</left>
+<top>713</top>
+<width>195</width>
+<height>282</height>
+<sql_create_table>CREATE TABLE `user` (
+  `uid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `name` varchar(10) DEFAULT NULL COMMENT '姓名',
+  `sex` varchar(2) DEFAULT '保密' COMMENT '性别, 仅有(男,女,保密)三个值, 默认为保密',
+  `birthday` date DEFAULT '2000-01-01' COMMENT '生日 格式为yyyy-MM-dd',
+  `phone` char(11) DEFAULT NULL COMMENT '电话号码, 固定长度为11位',
+  `faculty` varchar(20) DEFAULT NULL COMMENT '所属院系',
+  `grade` char(4) DEFAULT NULL COMMENT '所属年级, 例如: 2018',
+  `major` varchar(20) DEFAULT NULL COMMENT '所属专业',
+  `email` varchar(50) DEFAULT NULL COMMENT '邮箱',
+  `wechat` varchar(30) DEFAULT NULL COMMENT '微信号',
+  `qq` varchar(20) DEFAULT NULL COMMENT 'qq号',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`uid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="f_discuss" view="standard">
+<left>2060</left>
+<top>1103</top>
+<width>226</width>
+<height>189</height>
+<sql_create_table>CREATE TABLE `f_discuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `lid` int(11) DEFAULT NULL COMMENT '发布评论所属帖子 外键lost_found(lid)',
+  `COMMENT` varchar(500) DEFAULT NULL COMMENT '讨论的内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `lid` (`lid`),
+  CONSTRAINT `f_discuss_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `f_discuss_ibfk_2` FOREIGN KEY (`lid`) REFERENCES `lost_found` (`lid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="f_reply" view="standard">
+<left>1741</left>
+<top>740</top>
+<width>228</width>
+<height>207</height>
+<sql_create_table>CREATE TABLE `f_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `reply_uid` int(11) DEFAULT NULL COMMENT '回复用户id 外: user(uid)',
+  `discuss_id` int(11) DEFAULT NULL COMMENT '回复的帖子的id 外f_discuss(id)',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `reply` varchar(500) DEFAULT NULL COMMENT '回复内容',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `reply_uid` (`reply_uid`),
+  KEY `discuss_id` (`discuss_id`),
+  CONSTRAINT `f_reply_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `f_reply_ibfk_2` FOREIGN KEY (`reply_uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `f_reply_ibfk_3` FOREIGN KEY (`discuss_id`) REFERENCES `f_discuss` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="h_discuss" view="standard">
+<left>1666</left>
+<top>392</top>
+<width>209</width>
+<height>180</height>
+<sql_create_table>CREATE TABLE `h_discuss` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `hid` int(11) DEFAULT NULL COMMENT '发布评论所属帖子 外键help(hid)',
+  `COMMENT` varchar(500) DEFAULT NULL COMMENT '讨论的内容',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `hid` (`hid`),
+  CONSTRAINT `h_discuss_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `h_discuss_ibfk_2` FOREIGN KEY (`hid`) REFERENCES `help` (`hid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+<table name="h_reply" view="standard">
+<left>1386</left>
+<top>289</top>
+<width>209</width>
+<height>197</height>
+<sql_create_table>CREATE TABLE `h_reply` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `uid` int(11) DEFAULT NULL COMMENT '发布信息的用户 外: user(uid)',
+  `reply_uid` int(11) DEFAULT NULL COMMENT '回复用户id 外: user(uid)',
+  `discuss_id` int(11) DEFAULT NULL COMMENT '回复的帖子的id 外h_discuss(id)',
+  `pubdate` date DEFAULT NULL COMMENT '发布日期',
+  `reply` varchar(500) DEFAULT NULL COMMENT '回复内容',
+  `is_delete` int(11) DEFAULT '0' COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+  PRIMARY KEY (`id`),
+  KEY `uid` (`uid`),
+  KEY `reply_uid` (`reply_uid`),
+  KEY `discuss_id` (`discuss_id`),
+  CONSTRAINT `h_reply_ibfk_1` FOREIGN KEY (`uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `h_reply_ibfk_2` FOREIGN KEY (`reply_uid`) REFERENCES `user` (`uid`),
+  CONSTRAINT `h_reply_ibfk_3` FOREIGN KEY (`discuss_id`) REFERENCES `h_discuss` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8</sql_create_table>
+</table>
+</tables>
+</canvas>
+</schemadesigner>
