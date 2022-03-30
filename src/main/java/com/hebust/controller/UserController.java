@@ -26,11 +26,11 @@ public class UserController {
         } else {
             String receivePassword = userService.selectPasswordByEmail(user.getEmail());
             if (receivePassword != null && receivePassword.equals(user.getPassword())){
-                return new UserVO(200, "success", StatusCodeUtils.SUCCESS.toString());
+                return new UserVO(200, "success", StatusCodeUtils.SUCCESS);
             }
             else {
                 // 请求服务器成功 但账户密码输入不正确
-                return new UserVO(200, "success", StatusCodeUtils.FAIL.toString());
+                return new UserVO(200, "success", StatusCodeUtils.FAIL);
             }
         }
     }

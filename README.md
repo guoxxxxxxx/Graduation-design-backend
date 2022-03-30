@@ -510,6 +510,26 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 
 
 
+**mail_verif邮箱验证码暂存表**
+
+| 字段名     | 类型        | 说明             |
+| ---------- | ----------- | ---------------- |
+| id         | int         | 主键自增         |
+| email      | varchar(50) | 用户邮箱，unique |
+| verif_code | varchar(6)  | 随机生成的验证码 |
+
+``` sql
+-- 用于存放邮箱验证码
+CREATE TABLE mail_verif(
+id INT AUTO_INCREMENT COMMENT '主键',
+email VARCHAR(50) UNIQUE COMMENT '用户邮箱',
+verif_code VARCHAR(6) COMMENT '随机生成的验证码',
+PRIMARY KEY (id)
+);
+```
+
+
+
 ## 五、接口设计
 
 ### 一、登录
@@ -550,14 +570,25 @@ JSON格式数据
 ```
 成功
 {
-	"msg":"success",
-	"status":"0"
+	"message":"success",
+	"status":"200",
+	"object":{"msg":"success", "status":"0"}
 }
 
 失败
 {
-	"msg":"fail",
-	"status":"1"
+	"message":"fail",
+	"status":"400",
+	"object":{"msg":"fail", "status":"1"}
 }
 ```
 
+
+
+### 二、邮箱验证码
+
+**1. 获取验证码**
+
+- 名称
+
+**2. 校验验证码**
