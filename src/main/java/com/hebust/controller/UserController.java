@@ -42,16 +42,51 @@ public class UserController {
     @RequestMapping("/register")
     public UserVO register(@RequestBody User user){
         if (user != null && user.getEmail()!=null && !user.getEmail().equals("")){
-            int i = userService.insert(user);
-            if (i > 0){
-                return new UserVO(200, "success", null);
-            }
-            else {
-                return new UserVO(400, "fail", null);
+            // 判断是否已经注册过了
+            int key = userService.selectByEmail(user.getEmail());
+            if (key == 1){
+                return new UserVO(401, "fail", null);
+            } else {
+                int i = userService.insert(user);
+                if (i > 0){
+                    return new UserVO(200, "success", null);
+                }
+                else {
+                    return new UserVO(400, "fail", null);
+                }
             }
         }else {
             return new UserVO(400, "fail", null);
         }
     }
 
+    /**
+     * 用户密码找回
+     */
+    @RequestMapping("/forget_password")
+    public UserVO forget_password(@RequestBody User user){
+        if (user != null && !user.getEmail().equals("") && user.getEmail() != null){
+            // 先检查邮箱是否存在在数据库中
+            int isExist = userService.selectByEmail(user.getEmail());
+            if (isExist == 1){
+                String new_password = user.getPassword();
+                user = userService.selectAllByEmail(user.getEmail());
+                user.setPassword(new_password);
+                int i = userService.updateByPrimaryKeySelective(user);
+                if (i >= 1){
+                    return new UserVO(200, "success", null);
+                }
+                else {
+                    return new UserVO(400, "fail", null);
+                }
+            }
+            else{
+                // 邮箱不存在数据库中
+                return new UserVO(401, "fail", null);
+            }
+        }
+        else {
+            return new UserVO(400, "fail", null);
+        }
+    }
 }

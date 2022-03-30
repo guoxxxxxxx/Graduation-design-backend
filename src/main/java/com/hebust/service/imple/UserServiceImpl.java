@@ -47,4 +47,9 @@ public class UserServiceImpl implements UserService {
     public int selectByEmail(String email) {
         return userMapper.selectByEmail(email);
     }
+
+    @Override
+    public User selectAllByEmail(String email) {
+        return userMapper.selectAllByEmail(email);
+    }
 }

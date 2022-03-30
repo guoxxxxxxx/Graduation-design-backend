@@ -22,4 +22,9 @@ public interface UserMapper {
      * 查询邮箱是否已被注册
      */
     int selectByEmail(String email);
+
+    /**
+     * 根据邮箱查询用户所有信息
+     */
+    User selectAllByEmail(String email);
 }
