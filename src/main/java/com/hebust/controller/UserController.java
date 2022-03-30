@@ -29,6 +29,7 @@ public class UserController {
                 return new UserVO(200, "success", StatusCodeUtils.SUCCESS.toString());
             }
             else {
+                // 请求服务器成功 但账户密码输入不正确
                 return new UserVO(200, "success", StatusCodeUtils.FAIL.toString());
             }
         }

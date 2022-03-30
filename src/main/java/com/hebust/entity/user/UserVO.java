@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class UserVO {
 
     private int status;  //返回状态码
-    private String massage; //返回消息
+    private String message; //返回消息
     private Object object; //返回的对象
 }
