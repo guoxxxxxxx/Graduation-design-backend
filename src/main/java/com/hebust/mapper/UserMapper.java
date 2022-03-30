@@ -7,16 +7,19 @@ public interface UserMapper {
 
     int insert(User record);
 
-    int insertSelective(User record);
-
     User selectByPrimaryKey(Integer uid);
 
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
 
-    /*
-        通过email查询用户密码
+    /**
+     * 通过邮箱获取密码
      */
     String selectPasswordByEmail(String email);
+
+    /**
+     * 查询邮箱是否已被注册
+     */
+//    int selectByEmail(String email);
 }

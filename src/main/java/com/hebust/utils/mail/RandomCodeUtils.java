@@ -1,4 +1,4 @@
-package com.hebust.utils;
+package com.hebust.utils.mail;
 
 import java.util.Random;
 

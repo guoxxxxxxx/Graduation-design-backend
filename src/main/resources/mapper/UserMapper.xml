@@ -25,8 +25,11 @@
     from user
     where `uid` = #{uid,jdbcType=INTEGER}
   </select>
+<!--  <select id="selectByEmail" resultType="java.lang.Integer">-->
+<!--    select count(email) from user where email = #{email,jdbcType=VARCHAR}-->
+<!--  </select>-->
   <select id="selectPasswordByEmail" resultType="java.lang.String">
-    select password from user where `email` = #{email}
+    select password from user where `email` = #{email,jdbcType.VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
@@ -36,84 +39,11 @@
     insert into user (`name`, sex, birthday, 
       phone, faculty, grade, major, 
       email, wechat, qq, 
-      is_delete)
+      is_delete, password)
     values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
       #{phone,jdbcType=CHAR}, #{faculty,jdbcType=VARCHAR}, #{grade,jdbcType=CHAR}, #{major,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
-      #{isDelete,jdbcType=INTEGER})
-  </insert>
-  <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="com.hebust.entity.user.User" useGeneratedKeys="true">
-    insert into user
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        `name`,
-      </if>
-      <if test="sex != null">
-        sex,
-      </if>
-      <if test="birthday != null">
-        birthday,
-      </if>
-      <if test="phone != null">
-        phone,
-      </if>
-      <if test="faculty != null">
-        faculty,
-      </if>
-      <if test="grade != null">
-        grade,
-      </if>
-      <if test="major != null">
-        major,
-      </if>
-      <if test="email != null">
-        email,
-      </if>
-      <if test="wechat != null">
-        wechat,
-      </if>
-      <if test="qq != null">
-        qq,
-      </if>
-      <if test="isDelete != null">
-        is_delete,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="sex != null">
-        #{sex,jdbcType=VARCHAR},
-      </if>
-      <if test="birthday != null">
-        #{birthday,jdbcType=DATE},
-      </if>
-      <if test="phone != null">
-        #{phone,jdbcType=CHAR},
-      </if>
-      <if test="faculty != null">
-        #{faculty,jdbcType=VARCHAR},
-      </if>
-      <if test="grade != null">
-        #{grade,jdbcType=CHAR},
-      </if>
-      <if test="major != null">
-        #{major,jdbcType=VARCHAR},
-      </if>
-      <if test="email != null">
-        #{email,jdbcType=VARCHAR},
-      </if>
-      <if test="wechat != null">
-        #{wechat,jdbcType=VARCHAR},
-      </if>
-      <if test="qq != null">
-        #{qq,jdbcType=VARCHAR},
-      </if>
-      <if test="isDelete != null">
-        #{isDelete,jdbcType=INTEGER},
-      </if>
-    </trim>
+      #{isDelete,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.user.User">
     update user

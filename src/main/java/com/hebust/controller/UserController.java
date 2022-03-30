@@ -35,4 +35,22 @@ public class UserController {
         }
     }
 
+    /**
+     * 用户注册
+     */
+    @RequestMapping("/register")
+    public UserVO register(@RequestBody User user){
+        if (user != null && user.getEmail()!=null && !user.getEmail().equals("")){
+            int i = userService.insert(user);
+            if (i > 0){
+                return new UserVO(200, "success", null);
+            }
+            else {
+                return new UserVO(400, "fail", null);
+            }
+        }else {
+            return new UserVO(400, "fail", null);
+        }
+    }
+
 }

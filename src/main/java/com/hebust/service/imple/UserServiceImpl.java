@@ -24,11 +24,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public int insertSelective(User record) {
-        return userMapper.insertSelective(record);
-    }
-
-    @Override
     public User selectByPrimaryKey(Integer uid) {
         return userMapper.selectByPrimaryKey(uid);
     }
@@ -45,7 +40,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String selectPasswordByEmail(String email) {
-
         return userMapper.selectPasswordByEmail(email);
+    }
+
+    @Override
+    public int selectByEmail(String email) {
+//        return userMapper.selectByEmail(email);
+        return 0;
     }
 }
