@@ -15,5 +15,8 @@ public interface UserMapper {
 
     int updateByPrimaryKey(User record);
 
+    /*
+        通过email查询用户密码
+     */
     String selectPasswordByEmail(String email);
 }

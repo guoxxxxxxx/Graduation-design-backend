@@ -15,12 +15,21 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    /**
+     * 用户登录校验
+     */
     @RequestMapping("/login")
     public UserVO login(@RequestBody User user) {
-        if (user.getEmail().equals("") || user.getEmail() == null) {
+        if (user.getEmail() == null || user.getEmail().equals("")) {
             return new UserVO(400, "fail", null);
         } else {
-            return new UserVO(200, "success", userService.selectPasswordByEmail(user.getEmail()));
+            String receivePassword = userService.selectPasswordByEmail(user.getEmail());
+            if (receivePassword != null && receivePassword.equals(user.getPassword())){
+                return new UserVO(200, "success", "success");
+            }
+            else {
+                return new UserVO(200, "success", "fail");
+            }
         }
     }
 

@@ -522,10 +522,10 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 - 请求方式：POST
 - 请求参数
 
-| 字段     | 说明   | 类型   | 是否必须 | 备注 |
-| -------- | ------ | ------ | -------- | ---- |
-| username | 用户名 | String | 是       |      |
-| password | 密码   | String | 是       |      |
+| 字段     | 说明     | 类型   | 是否必须 | 备注 |
+| -------- | -------- | ------ | -------- | ---- |
+| email    | 用户邮箱 | String | 是       |      |
+| password | 密码     | String | 是       |      |
 
 - 请求参数示例
 
@@ -533,7 +533,7 @@ JSON格式数据
 
 ``` json
 {
-    "username":"username",
+    "email":"lyb@163.com",
     "password":"password"
 }
 ```
