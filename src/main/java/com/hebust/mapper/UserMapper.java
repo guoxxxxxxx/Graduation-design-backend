@@ -21,5 +21,5 @@ public interface UserMapper {
     /**
      * 查询邮箱是否已被注册
      */
-//    int selectByEmail(String email);
+    int selectByEmail(String email);
 }

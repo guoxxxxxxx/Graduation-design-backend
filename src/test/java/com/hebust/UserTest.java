@@ -24,9 +24,9 @@ public class UserTest {
         System.out.println(insert);
     }
 
-    @Test
-    public void t2(){
-        int i = userService.selectByEmail("666@123.com");
-        System.out.println(i);
-    }
+//    @Test
+//    public void t2(){
+//        int i = userService.selectByEmail("666@123.com");
+//        System.out.println(i);
+//    }
 }

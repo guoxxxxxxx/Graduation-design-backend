@@ -45,7 +45,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int selectByEmail(String email) {
-//        return userMapper.selectByEmail(email);
-        return 0;
+        return userMapper.selectByEmail(email);
     }
 }

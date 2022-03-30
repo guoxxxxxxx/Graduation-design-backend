@@ -25,6 +25,7 @@ public class UserController {
             return new UserVO(400, "fail", null);
         } else {
             String receivePassword = userService.selectPasswordByEmail(user.getEmail());
+//            String receivePassword = "123";
             if (receivePassword != null && receivePassword.equals(user.getPassword())){
                 return new UserVO(200, "success", StatusCodeUtils.SUCCESS);
             }

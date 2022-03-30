@@ -29,7 +29,7 @@
 <!--    select count(email) from user where email = #{email,jdbcType=VARCHAR}-->
 <!--  </select>-->
   <select id="selectPasswordByEmail" resultType="java.lang.String">
-    select password from user where `email` = #{email,jdbcType.VARCHAR}
+    select password from USER where `email` = #{email,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
