@@ -3,6 +3,7 @@ package com.hebust.controller;
 import com.hebust.entity.user.User;
 import com.hebust.entity.user.UserVO;
 import com.hebust.service.UserService;
+import com.hebust.utils.StatusCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +26,10 @@ public class UserController {
         } else {
             String receivePassword = userService.selectPasswordByEmail(user.getEmail());
             if (receivePassword != null && receivePassword.equals(user.getPassword())){
-                return new UserVO(200, "success", "success");
+                return new UserVO(200, "success", StatusCodeUtils.SUCCESS.toString());
             }
             else {
-                return new UserVO(200, "success", "fail");
+                return new UserVO(200, "success", StatusCodeUtils.FAIL.toString());
             }
         }
     }

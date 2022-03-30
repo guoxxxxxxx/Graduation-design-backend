@@ -550,14 +550,14 @@ JSON格式数据
 ```
 成功
 {
-	"msg":"success",
 	"status":"0"
+	"msg":"success",
 }
 
 失败
 {
-	"msg":"fail",
 	"status":"1"
+	"msg":"fail",
 }
 ```
 
