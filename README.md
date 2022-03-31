@@ -557,8 +557,6 @@ PRIMARY KEY (id)
 
 - 请求参数示例
 
-JSON格式数据
-
 ``` json
 {
     "email":"lyb@163.com",
@@ -568,26 +566,34 @@ JSON格式数据
 
 - 响应结果
 
-| 字段   | 说明               | 类型   | 是否必须 | 备注                 |
-| ------ | ------------------ | ------ | -------- | -------------------- |
-| status | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败 |
-| msg    | 响应消息           | String | 是       |                      |
+| 字段    | 说明               | 类型   | 是否必须 | 备注     |
+| ------- | ------------------ | ------ | -------- | -------- |
+| status  | 表示执行成功或失败 | String | 是       |          |
+| message | 响应消息           | String | 是       |          |
+| object  | 对象               | object | 否       | 存放消息 |
 
 - 响应结果实例
 
-```
-// 成功
+```json
+// 登录成功
 {
-	"message":"success",
-	"status":"200",
-	"object":{"msg":"success", "status":"0"}
+    "status": 200,
+    "message": "success",
+    "object": null
 }
 
-// 失败
+// 登录失败
 {
-	"message":"fail",
-	"status":"400",
-	"object":{"msg":"fail", "status":"1"}
+    "status": 400,
+    "message": "fail",
+    "object": null
+}
+
+// 邮箱尚未被注册
+{
+    "status": 401,
+    "message": "fail",
+    "object": null
 }
 ```
 
@@ -595,7 +601,7 @@ JSON格式数据
 
 ### 二、邮箱验证码
 
-**1. 获取验证码**
+**1. 已经注册的用户获取验证码**
 
 - 名称:	getCode
 - 描述：获取随机验证码
@@ -619,27 +625,93 @@ JSON格式数据
 
 | 字段    | 说明               | 类型   | 是否必须 | 备注                       |
 | ------- | ------------------ | ------ | -------- | -------------------------- |
-| status  | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败       |
+| status  | 表示执行成功或失败 | String | 是       |                            |
 | message | 响应消息           | String | 是       |                            |
 | code    | 验证码             | String | 是       | 随机生成的验证码，用于校验 |
+| object  | 其他对象           | Object | 否       |                            |
 
 - 响应结果示例
 
 ``` json
 // 成功
 {
-	"message":"success",
-	"status":"200",
-    "code":"ASDFGH",
+    "status": 200,
+    "message": "success",
+    "code": "HU77xu",
+    "object": null
 }
 
 // 失败
 {
 	"message":"fail",
 	"status":"400",
-	"code":"null"
+	"code":"null",
+    "object": null
+}
+
+// 该邮箱不存在于数据库中
+{
+    "status": 401,
+    "message": "fail",
+    "code": null,
+    "object": null
 }
 ```
+
+
+
+**2. 新用户获取验证码**
+
+**1. 获取验证码**
+
+- 名称:	getRegisterCode
+- 描述：获取随机验证码
+- URL: http://localhost:8080/mail/getRegisterCode
+- 请求方式: GET
+- 请求参数
+
+| 字段        | 说明                   | 类型   | 是否必须 | 备注 |
+| ----------- | ---------------------- | ------ | -------- | ---- |
+| targetEmail | 所要接收邮件的邮箱地址 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "email":"guo_x0315@163.com"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明               | 类型   | 是否必须 | 备注                       |
+| ------- | ------------------ | ------ | -------- | -------------------------- |
+| status  | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败       |
+| message | 响应消息           | String | 是       |                            |
+| code    | 验证码             | String | 是       | 随机生成的验证码，用于校验 |
+| object  | 其他对象           | Object | 否       |                            |
+
+- 响应结果示例
+
+``` json
+// 成功
+{
+    "status": 200,
+    "message": "success",
+    "code": "r2J22z",
+    "object": null
+}
+
+// 失败
+{
+	"message":"fail",
+	"status":"400",
+	"code":"null",
+    "object": null
+}
+```
+
+
 
 
 
@@ -673,28 +745,35 @@ JSON格式数据
 | ------- | ------------------ | ------ | -------- | ------------------------ |
 | status  | 表示执行成功或失败 | String | 是       | 200表示成功，40X表示失败 |
 | message | 响应消息           | String | 是       |                          |
+| object  |                    |        |          |                          |
 
 - 响应示例
 
 ``` json
 // 成功
 {
-	"message":"success",
-	"status":"200",
+    "status": 200,
+    "message": "success",
+    "object": null
 }
 
-// 失败
+
 // 普通失败
 {
 	"message":"fail",
 	"status":"400",
+    "object": null
 }
+
 // 邮箱已被注册失败
 {
-	"message":"fail",
-	"status":"401",
+    "status": 401,
+    "message": "fail",
+    "object": null
 }
 ```
+
+
 
 
 
@@ -710,6 +789,7 @@ JSON格式数据
 | -------- | -------------------- | ------ | -------- | ---- |
 | email    | 所需要找回密码的邮箱 | String | 是       |      |
 | password | 新密码               | String | 是       |      |
+| object   |                      |        |          |      |
 
 - 请求参数示例
 
@@ -732,14 +812,23 @@ JSON格式数据
 ``` json
 // 成功
 {
-    "status":"200",
-    "message":"success"
+    "status": 200,
+    "message": "success",
+    "object": null
 }
 
 // 失败
 {
     "status":"400",
-    "message":"fail"
+    "message":"fail",
+    "object": null
+}
+
+// 用户不存在
+{
+    "status": 401,
+    "message": "fail",
+    "object": null
 }
 ```
 
@@ -798,4 +887,15 @@ JSON格式数据
     "message":"fail"
 }
 ```
+
+## 附件
+
+### 一、自定义状态码
+
+| 状态码 | 说明         |
+| ------ | ------------ |
+| 200    | 响应成功     |
+| 400    | 相应失败     |
+| 401    | 用户不存在   |
+| 402    | 用户已被注册 |
 

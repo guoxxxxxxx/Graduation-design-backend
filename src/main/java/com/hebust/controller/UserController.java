@@ -21,17 +21,26 @@ public class UserController {
      */
     @RequestMapping("/login")
     public UserVO login(@RequestBody User user) {
+        // 判断传递过来的邮箱参数是否不为空
         if (user.getEmail() == null || user.getEmail().equals("")) {
+            // 为空的话返回400错误状态码
             return new UserVO(400, "fail", null);
         } else {
-            String receivePassword = userService.selectPasswordByEmail(user.getEmail());
-//            String receivePassword = "123";
-            if (receivePassword != null && receivePassword.equals(user.getPassword())){
-                return new UserVO(200, "success", StatusCodeUtils.SUCCESS);
+            // 判断该邮箱是否存在于数据库中(判断是否已经被注册了)
+            if (userService.selectByEmail(user.getEmail()) == 1) {
+                // 从数据库中读取用户密码
+                String receivePassword = userService.selectPasswordByEmail(user.getEmail());
+                if (receivePassword != null && receivePassword.equals(user.getPassword())) {
+                    // 登录成功
+                    return new UserVO(200, "success", null);
+                } else {
+                    // 登录失败
+                    return new UserVO(400, "fail", null);
+                }
             }
             else {
-                // 请求服务器成功 但账户密码输入不正确
-                return new UserVO(200, "success", StatusCodeUtils.FAIL);
+                // 未被注册返回401未被注册状态码
+                return new UserVO(401, "fail", null);
             }
         }
     }
@@ -45,8 +54,10 @@ public class UserController {
             // 判断是否已经注册过了
             int key = userService.selectByEmail(user.getEmail());
             if (key == 1){
-                return new UserVO(401, "fail", null);
+                // 用户已被注册
+                return new UserVO(402, "fail", null);
             } else {
+                // 将用户插入到数据库中
                 int i = userService.insert(user);
                 if (i > 0){
                     return new UserVO(200, "success", null);

@@ -20,7 +20,9 @@ public interface UserService {
     String selectPasswordByEmail(String email);
 
     /**
-     * 查询邮箱是否已被注册
+     * 查询邮箱是否已经存在在数据库中
+     * 1: 存在
+     * 0: 未存在
      */
     int selectByEmail(String email);
 
