@@ -6,6 +6,7 @@ import com.hebust.service.MailService;
 import com.hebust.service.UserService;
 import com.hebust.utils.mail.CheckEmail;
 import com.hebust.utils.mail.RandomCodeUtils;
+import com.hebust.utils.mail.SendRandomCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
