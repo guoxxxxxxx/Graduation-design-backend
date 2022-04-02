@@ -27,8 +27,8 @@ public class MailVerifyController {
      */
     @RequestMapping("/getCode")
     public MailVerifyVO getCode(String email){
-        if (CheckEmail.isEmail(email)){
-            // 若邮箱为空发送410错误
+        if (!CheckEmail.isEmail(email)){
+            // 若邮箱为空发送400错误
             return new MailVerifyVO(400, "fail",null);
         } else {
             if (userService.selectByEmail(email) == 1){
@@ -59,7 +59,7 @@ public class MailVerifyController {
      */
     @RequestMapping("/getRegisterCode")
     public MailVerifyVO getRegisterCode(String email){
-        if (CheckEmail.isEmail(email)){
+        if (!CheckEmail.isEmail(email)){
             return new MailVerifyVO(400, "fail",null);
         } else {
             // 随机生成6位验证码
