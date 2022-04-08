@@ -31,8 +31,13 @@ public class UserController {
                 // 从数据库中读取用户密码
                 String receivePassword = userService.selectPasswordByEmail(user.getEmail());
                 if (receivePassword != null && receivePassword.equals(user.getPassword())) {
+                    User userInfo = userService.selectAllByEmail(user.getEmail());
                     // 登录成功
-                    return new UserVO(200, "success", null);
+                    if (userInfo.getIsDelete() == 1){
+                        return new UserVO(401, "fail", null);
+                    } else{
+                        return new UserVO(200, "success", userInfo);
+                    }
                 } else {
                     // 登录失败
                     return new UserVO(400, "fail", null);
@@ -95,6 +100,20 @@ public class UserController {
                 // 邮箱不存在数据库中
                 return new UserVO(401, "fail", null);
             }
+        }
+        else {
+            return new UserVO(400, "fail", null);
+        }
+    }
+
+    /**
+     * 通过id修改用户信息
+     */
+    @RequestMapping("/updateUserInfoById")
+    public UserVO updateUserInfo(@RequestBody User user){
+        int i = userService.updateByPrimaryKey(user);
+        if (i == 1){
+            return new UserVO(200, "success", user);
         }
         else {
             return new UserVO(400, "fail", null);

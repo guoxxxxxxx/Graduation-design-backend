@@ -58,23 +58,24 @@ USE assistance;
 
 
 
-**user（用户信息表）**（实体）
+#### 1) **user（用户信息表）**（实体）
 
-| 字段      | 类型        | 说明                                             |
-| --------- | ----------- | ------------------------------------------------ |
-| uid       | int         | 用户id；主键，自增                               |
-| name      | varchar(10) | 用户姓名；                                       |
-| sex       | varchar(2)  | 用户性别；仅有（男，女，保密）三个值，默认为保密 |
-| birthday  | date        | 用户生日；格式为yyyy-MM-dd                       |
-| phone     | char(11)    | 用户电话号码；固定为11位                         |
-| faculty   | varchar(20) | 用户所属院系                                     |
-| grade     | char(4)     | 所属年级；例如2018                               |
-| major     | varchar(20) | 所属专业                                         |
-| email     | varchar(50) | 用户邮箱                                         |
-| wechat    | varchar(30) | 用户微信号                                       |
-| qq        | varchar(20) | 用户qq号                                         |
-| password  | varchar(20) | 用户登录密码                                     |
-| is_delete | int         | 是否删除；1为删除，0为未删除，默认为0            |
+| 字段        | 类型         | 说明                                             |
+| ----------- | ------------ | ------------------------------------------------ |
+| uid         | int          | 用户id；主键，自增                               |
+| name        | varchar(10)  | 用户姓名；                                       |
+| sex         | varchar(2)   | 用户性别；仅有（男，女，保密）三个值，默认为保密 |
+| birthday    | date         | 用户生日；格式为yyyy-MM-dd                       |
+| phone       | char(11)     | 用户电话号码；固定为11位                         |
+| faculty     | varchar(20)  | 用户所属院系                                     |
+| grade       | char(4)      | 所属年级；例如2018                               |
+| major       | varchar(20)  | 所属专业                                         |
+| email       | varchar(50)  | 用户邮箱                                         |
+| wechat      | varchar(30)  | 用户微信号                                       |
+| qq          | varchar(20)  | 用户qq号                                         |
+| password    | varchar(20)  | 用户登录密码                                     |
+| is_delete   | int          | 是否删除；1为删除，0为未删除，默认为0            |
+| avatar_path | varchar(500) | 用户头像路径                                     |
 
 - 创建用户信息表
 
@@ -93,6 +94,8 @@ email VARCHAR(50) COMMENT '邮箱',
 wechat VARCHAR(30) COMMENT '微信号',
 qq VARCHAR(20) COMMENT 'qq号',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
+password varchar(20) NOT NULL COMMENT '用户登录密码',
+avatar_path varchar(500) NOT NULL COMMENT '用户头像路径',
 PRIMARY KEY (uid)
 );
 ```
@@ -101,7 +104,7 @@ PRIMARY KEY (uid)
 
 
 
-**errand(跑腿区信息表)**（实体）
+#### 2) **errand(跑腿区信息表)**（实体）
 
 | 字段       | 类型         | 说明                                          |
 | ---------- | ------------ | --------------------------------------------- |
@@ -126,6 +129,7 @@ eid INT AUTO_INCREMENT COMMENT '主键',
 uid INT COMMENT '发布订单用户信息 外: user(uid)',
 euid INT  COMMENT '接单用户信息 外: user(uid)',
 title VARCHAR(30) COMMENT '订单信息',
+details VARCHAR(500) COMMENT '订单详细信息',
 money DOUBLE DEFAULT 0 COMMENT '订单费用, 默认为0',
 is_achieve INT DEFAULT 0 COMMENT '是否已完成, 0: 未完成; 1: 已完成;',
 category VARCHAR(5) COMMENT '类别, 可选值为(快递, 外卖, 打水, 其他)',
@@ -136,13 +140,14 @@ PRIMARY KEY (eid),
 FOREIGN KEY (uid) REFERENCES USER(uid),
 FOREIGN KEY (euid) REFERENCES USER(uid)
 );
+
 ```
 
 
 
 
 
-**study(学习交流表)**（实例）
+#### 3)**study(学习交流表)**（实例）
 
 | 字段       | 类型         | 说明                                      |
 | ---------- | ------------ | ----------------------------------------- |
@@ -177,7 +182,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-**trade（交易区）**（实体）
+#### 4) **trade（交易区）**（实体）
 
 | 字段      | 类型         | 说明                                              |
 | --------- | ------------ | ------------------------------------------------- |
@@ -210,7 +215,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-**lost_found（失物招领）**（实体）
+#### 5) **lost_found（失物招领）**（实体）
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -243,7 +248,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-**help（互助）**（实体）
+#### 6) **help（互助 校友圈）**（实体）
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -272,7 +277,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-**s_discuss(用户学习讨论表)**（关系）
+#### 7) **s_discuss(用户学习讨论表)**（关系）
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -302,7 +307,7 @@ FOREIGN KEY (sid) REFERENCES study(sid)
 
 
 
-**s_reply(学习评论回复表)**（关系）
+#### 8) **s_reply(学习评论回复表)**（关系）
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -335,7 +340,7 @@ FOREIGN KEY (discuss_id) REFERENCES s_discuss(id)
 
 
 
-**t_discuss(交易评论表)**（关系）
+#### 9) **t_discuss(交易评论表)**（关系）
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -365,7 +370,7 @@ FOREIGN KEY (tid) REFERENCES trade(tid)
 
 
 
-**t_reply(交易回复表)**(关系)
+#### 10) **t_reply(交易回复表)**(关系)
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -398,7 +403,7 @@ FOREIGN KEY (discuss_id) REFERENCES t_discuss(id)
 
 
 
-**f_discuss(失物招领评论表)**
+#### 11) **f_discuss(失物招领评论表)**
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -426,7 +431,7 @@ FOREIGN KEY (lid) REFERENCES lost_found(lid)
 
 
 
-**f_reply(失物招领回复表)**(关系)
+#### 12) **f_reply(失物招领回复表)**(关系)
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -457,7 +462,7 @@ FOREIGN KEY (discuss_id) REFERENCES f_discuss(id)
 
 
 
-**h_discuss(互助评论表)**
+#### 13) **h_discuss(互助评论表)**
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -487,7 +492,7 @@ FOREIGN KEY (hid) REFERENCES HELP(hid)
 
 
 
-**h_reply(互助回复表)**(关系)
+#### 14) **h_reply(互助回复表)**(关系)
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -518,7 +523,7 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 
 
 
-**mail_verif邮箱验证码暂存表(已弃用)**
+#### 15) mail_verif邮箱验证码暂存表
 
 | 字段名     | 类型        | 说明             |
 | ---------- | ----------- | ---------------- |
@@ -528,13 +533,16 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 
 ``` sql
 -- 用于存放邮箱验证码
-CREATE TABLE mail_verif(
+CREATE TABLE mail_verify(
 id INT AUTO_INCREMENT COMMENT '主键',
-email VARCHAR(50) UNIQUE COMMENT '用户邮箱',
-verif_code VARCHAR(6) COMMENT '随机生成的验证码',
+email VARCHAR(50) COMMENT '用户邮箱',
+verify_code VARCHAR(6) COMMENT '随机生成的验证码',
+UNIQUE(email)
 PRIMARY KEY (id)
 );
 ```
+
+
 
 
 
@@ -554,13 +562,15 @@ PRIMARY KEY (id)
 | -------- | -------- | ------ | -------- | ---- |
 | email    | 用户邮箱 | String | 是       |      |
 | password | 密码     | String | 是       |      |
+| object   | 用户信息 | User   | 是       |      |
 
 - 请求参数示例
 
 ``` json
 {
     "email":"lyb@163.com",
-    "password":"password"
+    "password":"password",
+    "object": 用户信息对象
 }
 ```
 
@@ -601,7 +611,7 @@ PRIMARY KEY (id)
 
 ### 2、邮箱验证码
 
-#### 1）. 已注册用户
+#### 1）已注册用户
 
 - 名称:	getCode
 - 描述：获取随机验证码
@@ -656,7 +666,7 @@ PRIMARY KEY (id)
 
 
 
-#### 2）. 新用户获取验证码
+#### 2）新用户获取验证码
 
 - 名称:	getRegisterCode
 - 描述：获取随机验证码
@@ -706,9 +716,9 @@ PRIMARY KEY (id)
 
 
 
-#### 3）. 验证码校验
+#### 3）验证码校验
 
-- 名称: 验证码校验
+- 名称: verify
 - 描述: 验证码校验
 - URL: http://localhost:8080/mail/verify
 - 请求方式: POST
@@ -754,6 +764,36 @@ PRIMARY KEY (id)
 ```
 
 
+
+#### 4）通过Id修改用户信息
+
+- 名称:	修改用户信息
+- 描述：updateInfoById
+- URL: http://localhost:8080/user/updateInfoById
+- 请求方式: POST
+- 请求参数
+
+| 字段 | 说明           | 类型 | 是否必须 | 备注 |
+| ---- | -------------- | ---- | -------- | ---- |
+| user | 更新的User信息 | User | s        |      |
+
+- 请求参数示例
+
+``` json
+
+```
+
+- 响应结果
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+|      |      |      |          |      |
+
+- 响应示例
+
+``` json
+
+```
 
 
 
@@ -874,6 +914,49 @@ PRIMARY KEY (id)
     "message": "fail",
     "object": null
 }
+```
+
+
+
+### 5. 跑腿
+
+#### 1）外卖代取（获取概要信息）
+
+- 名称:	外卖代取
+- 描述：查询所有代取外卖
+- URL: http://localhost:8080/
+- 请求方式: POST
+- 请求参数
+
+| 字段   | 说明   | 类型   | 是否必须 | 备注 |
+| ------ | ------ | ------ | -------- | ---- |
+| method | 方法名 | String | 使       |      |
+
+- 请求参数示例
+
+``` json
+{
+    method:""
+}
+```
+
+- 响应结果
+
+| 字段        | 说明                           | 类型   | 是否必须 | 备注                  |
+| ----------- | ------------------------------ | ------ | -------- | --------------------- |
+| params      | 该返回对象为下述对象的对象类型 | obj    |          |                       |
+| title       | 标题                           | String | 是       |                       |
+| name        | 发布人姓名                     | String | 是       |                       |
+| details     | 详细信息                       | String | 否       |                       |
+| head_img    | 发布人头像信息                 | String | 否       |                       |
+| content_img | 内容图片                       | String | 否       |                       |
+| price       | 价格                           | int    | 是       | 若为免费则标记为0即可 |
+| pubdate     | 发布日期                       | date   | 是       |                       |
+
+- 响应示例
+
+``` json
+
 ```
 
 

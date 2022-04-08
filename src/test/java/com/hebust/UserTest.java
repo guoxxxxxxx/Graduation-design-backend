@@ -2,6 +2,7 @@ package com.hebust;
 
 import com.hebust.entity.user.User;
 import com.hebust.service.UserService;
+import com.hebust.utils.UUIDUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,5 +29,11 @@ public class UserTest {
     public void t2(){
         int i = userService.selectByEmail("666@123.com");
         System.out.println(i);
+    }
+
+    @Test
+    public void uuidT(){
+        String uuid = UUIDUtils.getUUID();
+        System.out.println(uuid);
     }
 }
