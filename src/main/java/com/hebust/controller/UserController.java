@@ -1,5 +1,6 @@
 package com.hebust.controller;
 
+import com.hebust.config.ParamsConfig;
 import com.hebust.entity.user.User;
 import com.hebust.entity.user.UserVO;
 import com.hebust.service.UserService;
@@ -33,9 +34,15 @@ public class UserController {
                 if (receivePassword != null && receivePassword.equals(user.getPassword())) {
                     User userInfo = userService.selectAllByEmail(user.getEmail());
                     // 登录成功
-                    if (userInfo.getIsDelete() == 1){
+                    if (userInfo.getIsDelete() != null && userInfo.getIsDelete() == 1){
                         return new UserVO(401, "fail", null);
                     } else{
+                        if (userInfo.getAvatarPath() == null){
+                            userInfo.setAvatarPath(ParamsConfig.AVATAR_BASE_PATH + "/avatar/default.png");
+                        }
+                        else{
+                            userInfo.setAvatarPath(ParamsConfig.AVATAR_BASE_PATH + userInfo.getAvatarPath());
+                        }
                         return new UserVO(200, "success", userInfo);
                     }
                 } else {
@@ -117,6 +124,26 @@ public class UserController {
         }
         else {
             return new UserVO(400, "fail", null);
+        }
+    }
+
+    /**
+     * 通过id修改用户头像路径
+     */
+    @RequestMapping("/updateAvatarById")
+    public UserVO updateAvatarById(@RequestBody User user){
+        if (user.getUid() == null || user.getUid() == 0){
+            return new UserVO(400, "fail", null);
+        }
+        else {
+            user.setAvatarPath("/avatar/" + user.getAvatarPath());
+            int i = userService.updateAvatarById(user);
+            if (i == 1){
+                return new UserVO(200, "success", null);
+            }
+            else {
+                return new UserVO(400, "fail", null);
+            }
         }
     }
 }

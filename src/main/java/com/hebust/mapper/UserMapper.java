@@ -27,4 +27,9 @@ public interface UserMapper {
      * 根据邮箱查询用户所有信息
      */
     User selectAllByEmail(String email);
+
+    /**
+     * 通过id修改用户头像信息
+     */
+    int updateAvatarById(User record);
 }

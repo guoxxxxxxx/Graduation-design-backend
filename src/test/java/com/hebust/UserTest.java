@@ -36,4 +36,10 @@ public class UserTest {
         String uuid = UUIDUtils.getUUID();
         System.out.println(uuid);
     }
+
+    @Test
+    public void t(){
+        User user = userService.selectByPrimaryKey(2);
+        System.out.println(user);
+    }
 }

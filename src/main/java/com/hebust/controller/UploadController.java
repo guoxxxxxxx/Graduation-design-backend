@@ -14,13 +14,13 @@ public class UploadController {
 
     @Autowired
     private UploadService uploadService;
-    private final static String UPLOAD_PATH = "F:/UPLOAD/avatar";
+    private final static String UPLOAD_AVATAR_PATH = "F:/UPLOAD/avatar";
 
     @RequestMapping("/uploadAvatar")
     public UploadInfo uploadAvatar(@RequestParam("file")MultipartFile file){
         UploadInfo uploadInfo = null;
         try {
-            uploadInfo = uploadService.upload(file, UPLOAD_PATH);
+            uploadInfo = uploadService.upload(file, UPLOAD_AVATAR_PATH);
         }catch (Exception e){
             e.printStackTrace();
         }
