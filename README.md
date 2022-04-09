@@ -544,6 +544,27 @@ PRIMARY KEY (id)
 
 
 
+#### 15) errand_img跑腿区图片存储表
+
+| 字段名  | 类型         | 说明         |
+| ------- | ------------ | ------------ |
+| id      | int          | 主键，自增   |
+| eid     | int          | errand的外键 |
+| img_src | varchar(500) | 图片存储位置 |
+
+``` mysql
+-- 用于存放跑腿区图片
+CREATE TABLE errand_img(
+id INT AUTO_INCREMENT COMMENT '主键',
+eid INT COMMENT 'errand的外键',
+img_src VARCHAR(500) COMMENT '图片路径',
+PRIMARY KEY (id),
+FOREIGN KEY (eid) REFERENCES errand(eid)
+);
+```
+
+
+
 
 
 ## 五、接口设计
@@ -920,38 +941,102 @@ PRIMARY KEY (id)
 
 ### 5. 跑腿
 
-#### 1）外卖代取（获取概要信息）
+#### 1）查询所有跑腿订单
 
 - 名称:	外卖代取
 - 描述：查询所有代取外卖
-- URL: http://localhost:8080/
-- 请求方式: POST
-- 请求参数
+- URL: http://localhost:8080/errand/queryAll
+- 请求方式: GET
+- 请求参数 无
 
-| 字段   | 说明   | 类型   | 是否必须 | 备注 |
-| ------ | ------ | ------ | -------- | ---- |
-| method | 方法名 | String | 使       |      |
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+|      |      |      |          |      |
 
 - 请求参数示例
 
 ``` json
 {
-    method:""
 }
 ```
 
 - 响应结果
 
-| 字段        | 说明                           | 类型   | 是否必须 | 备注                  |
-| ----------- | ------------------------------ | ------ | -------- | --------------------- |
-| params      | 该返回对象为下述对象的对象类型 | obj    |          |                       |
-| title       | 标题                           | String | 是       |                       |
-| name        | 发布人姓名                     | String | 是       |                       |
-| details     | 详细信息                       | String | 否       |                       |
-| head_img    | 发布人头像信息                 | String | 否       |                       |
-| content_img | 内容图片                       | String | 否       |                       |
-| price       | 价格                           | int    | 是       | 若为免费则标记为0即可 |
-| pubdate     | 发布日期                       | date   | 是       |                       |
+| 字段    | 说明       | 类型   | 是否必须 | 备注             |
+| ------- | ---------- | ------ | -------- | ---------------- |
+| status  | 响应状态码 | int    | 是       |                  |
+| message | 响应消息   | String | 是       |                  |
+| object  | 详细消息   | obj    | 是       | 详细请看响应示例 |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "eid": 1,
+            "uid": 1,
+            "euid": 2,
+            "title": "顺丰快递代取",
+            "money": 100.0,
+            "isAchieve": 0,
+            "category": "快递",
+            "pubdate": "2022-04-04T16:00:00.000+00:00",
+            "deadline": null,
+            "isDelete": 0,
+            "details": "取货码112233"
+            "imgUrls": [],
+            "pubUser": {
+                "uid": 1,
+                "name": "李亚斌",
+                "sex": "男",
+                "birthday": "1999-09-08T16:00:00.000+00:00",
+                "phone": "13343466992",
+                "faculty": "信息学院",
+                "grade": "2018",
+                "major": "软件工程",
+                "email": "lyb@163.com",
+                "wechat": "lyb_wechat",
+                "qq": "88888888",
+                "isDelete": 0,
+                "password": "lybdashabi1",
+                "avatarPath": null
+            }
+        }]
+}
+```
+
+
+
+#### 2） 根据eid查询跑腿订单详细信息
+
+- 名称:	queryDetailsByEid
+- 描述：根据eid查询订单详细信息
+- URL: http://localhost:8080/errand/queryDetailsByEid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明       | 类型 | 是否必须 | 备注 |
+| ---- | ---------- | ---- | -------- | ---- |
+| eid  | 跑腿订单id | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid": "1"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明       | 类型   | 是否必须 | 备注             |
+| ------- | ---------- | ------ | -------- | ---------------- |
+| status  | 响应状态码 | int    | 是       |                  |
+| message | 响应消息   | String | 是       |                  |
+| object  | 详细消息   | obj    | 是       | 详细请看响应示例 |
 
 - 响应示例
 
