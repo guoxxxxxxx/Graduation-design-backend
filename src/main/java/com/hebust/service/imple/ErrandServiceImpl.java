@@ -23,4 +23,9 @@ public class ErrandServiceImpl implements ErrandService {
     public Errand queryDetailsByEid(int eid) {
         return errandMapper.selectDetailsByEid(eid);
     }
+
+    @Override
+    public List<Errand> queryItemByCategory(String category) {
+        return errandMapper.selectItemByCategory(category);
+    }
 }

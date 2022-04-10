@@ -15,4 +15,9 @@ public interface ErrandService {
      * 根据eid查询跑腿订单详细信息
      */
     Errand queryDetailsByEid(int eid);
+
+    /**
+     * 根据种类查询跑腿订单项目
+     */
+    List<Errand> queryItemByCategory(String category);
 }

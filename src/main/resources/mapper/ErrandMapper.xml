@@ -50,6 +50,9 @@
   <select id="selectDetailsByEid" resultMap="selectAll">
     select * from errand where eid = #{eid,jdbcType=INTEGER}
   </select>
+  <select id="selectItemByCategory" resultMap="selectAll">
+    select * from errand where category = #{category,jdbcType=VARCHAR}
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from errand
     where eid = #{eid,jdbcType=INTEGER}

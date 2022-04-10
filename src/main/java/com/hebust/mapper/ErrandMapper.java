@@ -26,4 +26,9 @@ public interface ErrandMapper {
      * 根据eid查询跑腿订单详细信息
      */
     Errand selectDetailsByEid(int eid);
+
+    /**
+     * 根据种类查询订单项目
+     */
+    List<Errand> selectItemByCategory(String category);
 }

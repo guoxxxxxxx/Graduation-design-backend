@@ -1041,8 +1041,160 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 - 响应示例
 
 ``` json
-
+{
+    "status": 200,
+    "message": "success",
+    "object": {
+        "eid": 1,
+        "uid": 1,
+        "euid": 2,
+        "title": "顺丰快递代取",
+        "money": 100.0,
+        "isAchieve": 0,
+        "category": "快递",
+        "pubdate": "2022-04-04T16:00:00.000+00:00",
+        "deadline": null,
+        "isDelete": 0,
+        "details": "取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456",
+        "imgUrls": [],
+        "pubUser": {
+            "uid": 1,
+            "name": "李亚斌",
+            "sex": "男",
+            "birthday": "1999-09-08T16:00:00.000+00:00",
+            "phone": "13343466992",
+            "faculty": "信息学院",
+            "grade": "2018",
+            "major": "软件工程",
+            "email": "lyb@163.com",
+            "wechat": "lyb_wechat",
+            "qq": "88888888",
+            "isDelete": 0,
+            "password": "lybdashabi1",
+            "avatarPath": null
+        }
+    }
+}
 ```
+
+
+
+#### 4) 根据种类查询跑腿订单信息
+
+- 名称:	/queryItemByCategory
+- 描述：根据种类查询跑腿订单信息
+- URL: http://localhost:8080/errand/queryItemByCategory
+- 请求方式: GET
+- 请求参数
+
+| 字段     | 说明 | 类型   | 是否必须 | 备注 |
+| -------- | ---- | ------ | -------- | ---- |
+| category | 种类 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "category":"快递"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明       | 类型   | 是否必须 | 备注             |
+| ------- | ---------- | ------ | -------- | ---------------- |
+| status  | 响应状态码 | int    | 是       |                  |
+| message | 响应消息   | String | 是       |                  |
+| object  | 详细消息   | obj    | 是       | 详细请看响应示例 |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": {
+        "eid": 1,
+        "uid": 1,
+        "euid": 2,
+        "title": "顺丰快递代取",
+        "money": 100.0,
+        "isAchieve": 0,
+        "category": "快递",
+        "pubdate": "2022-04-04T16:00:00.000+00:00",
+        "deadline": null,
+        "isDelete": 0,
+        "details": "取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456取货码123456",
+        "imgUrls": [],
+        "pubUser": {
+            "uid": 1,
+            "name": "李亚斌",
+            "sex": "男",
+            "birthday": "1999-09-08T16:00:00.000+00:00",
+            "phone": "13343466992",
+            "faculty": "信息学院",
+            "grade": "2018",
+            "major": "软件工程",
+            "email": "lyb@163.com",
+            "wechat": "lyb_wechat",
+            "qq": "88888888",
+            "isDelete": 0,
+            "password": "lybdashabi1",
+            "avatarPath": null
+        }
+    }
+}
+```
+
+
+
+#### 5）添加跑腿订单
+
+- 名称: addErrandItem
+- 描述：添加跑腿订单
+- URL: http://localhost:8080/errand/addErrandItem
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明             | 类型   | 是否必须 | 备注 |
+| -------- | ---------------- | ------ | -------- | ---- |
+| uid      | 发布订单用户信息 | int    | 是       |      |
+| title    | 订单标题         | String | 是       |      |
+| money    | 劳务费           | int    | 是       |      |
+| category | 类别             | String | 是       |      |
+| deadline | 截止日期         | date   | 否       |      |
+| details  | 详细信息         | String | 否       |      |
+
+- 请求参数示例
+
+``` json
+{
+   	"uid":1,
+    "title":"饿了么外卖代取",
+    "money":"5",
+    "category":"外卖代取",
+    "deadline":"2022-04-12",
+    "details":"饿死了 快帮我取外卖 球球了~~~"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 是否必须 | 备注 |
+| ------- | ------ | ------ | -------- | ---- |
+| status  | 状态码 | int    | 是       |      |
+| message | 消息   | String | 是       |      |
+
+- 响应示例
+
+``` json
+{
+    status:200,
+    ""
+}
+```
+
+
 
 
 
