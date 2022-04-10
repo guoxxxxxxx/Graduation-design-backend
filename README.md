@@ -597,9 +597,9 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 ## 五、接口设计
 
-### 1、登录
+### 1、用户
 
-**1. 登录**
+#### **1. 登录**
 
 - 名称： login
 - 描述：用户登录
@@ -658,200 +658,57 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-### 2、邮箱验证码
+#### 2. 根据用户ID更新用户头像路径到数据库
 
-#### 1）已注册用户
-
-- 名称:	getCode
-- 描述：获取随机验证码
-- URL: http://localhost:8080/mail/getCode
-- 请求方式: GET
-- 请求参数
-
-| 字段  | 说明                   | 类型   | 是否必须 | 备注 |
-| ----- | ---------------------- | ------ | -------- | ---- |
-| email | 所要接收邮件的邮箱地址 | String | 是       |      |
-
-- 请求参数示例
-
-``` json
-{
-    "email":"guo_x0315@163.com"
-}
-```
-
-- 响应结果
-
-| 字段    | 说明               | 类型   | 是否必须 | 备注 |
-| ------- | ------------------ | ------ | -------- | ---- |
-| status  | 表示执行成功或失败 | String | 是       |      |
-| message | 响应消息           | String | 是       |      |
-| object  | 其他对象           | Object | 否       |      |
-
-- 响应结果示例
-
-``` json
-// 成功
-{
-    "status": 200,
-    "message": "success",
-    "object": null
-}
-
-// 失败
-{
-	"message":"fail",
-	"status":"400",
-    "object": null
-}
-
-// 该邮箱不存在于数据库中
-{
-    "status": 401,
-    "message": "fail",
-    "object": null
-}
-```
-
-
-
-#### 2）新用户获取验证码
-
-- 名称:	getRegisterCode
-- 描述：获取随机验证码
-- URL: http://localhost:8080/mail/getRegisterCode
-- 请求方式: GET
-- 请求参数
-
-| 字段  | 说明                   | 类型   | 是否必须 | 备注 |
-| ----- | ---------------------- | ------ | -------- | ---- |
-| email | 所要接收邮件的邮箱地址 | String | 是       |      |
-
-- 请求参数示例
-
-``` json
-{
-    "email":"guo_x0315@163.com"
-}
-```
-
-- 响应结果
-
-| 字段    | 说明               | 类型   | 是否必须 | 备注                 |
-| ------- | ------------------ | ------ | -------- | -------------------- |
-| status  | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败 |
-| message | 响应消息           | String | 是       |                      |
-| object  | 其他对象           | Object | 否       |                      |
-
-- 响应结果示例
-
-``` json
-// 成功
-{
-    "status": 200,
-    "message": "success",
-    "object": null
-}
-
-// 失败
-{
-	"message":"fail",
-	"status":"400",
-    "object": null
-}
-```
-
-
-
-
-
-#### 3）验证码校验
-
-- 名称: verify
-- 描述: 验证码校验
-- URL: http://localhost:8080/mail/verify
+- 名称:	uploadAvatar
+- 描述：根据ID更新用户头像信息到数据库
+- URL: http://localhost:8080/user/updateAvatarById
 - 请求方式: POST
 - 请求参数
 
-| 字段       | 说明             | 类型   | 是否必须 | 备注 |
-| ---------- | ---------------- | ------ | -------- | ---- |
-| email      | 邮箱             | String | 是       |      |
-| verifyCode | 用户输入的验证码 | String | 是       |      |
+| 字段       | 说明         | 类型 | 是否必须 | 备注 |
+| ---------- | ------------ | ---- | -------- | ---- |
+| uid        | 用户id       | int  | 是       |      |
+| avatarPath | 用户头像地址 | int  | 是       |      |
 
 - 请求参数示例
 
 ``` json
 {
-    "email":"guo_x0315@163.com",
-    "verifyCode":"as23De"
+    "uid":2,
+    "avatarPath":"/avatar/a.jpg"
 }
 ```
 
 - 响应结果
 
-| 字段    | 说明   | 类型   | 是否必须 | 备注 |
-| ------- | ------ | ------ | -------- | ---- |
-| status  | 状态码 | int    | 是       |      |
-| message | 消息   | String |          |      |
+| 字段    | 说明       | 类型   | 是否必须 | 备注 |
+| ------- | ---------- | ------ | -------- | ---- |
+| status  | 响应状态码 | int    | 是       |      |
+| message | 响应消息   | String | 是       |      |
 
 - 响应示例
 
 ``` json
 // 成功
 {
-    "status": 200,
-    "message": "success",
-    "object": null
+    status:200,
+    message:"success"
 }
 
 // 失败
 {
-	"message":"fail",
-	"status":"400",
-    "object": null
+    status:400,
+    message:"fail"
 }
 ```
 
 
 
-#### 4）通过Id修改用户信息
-
-- 名称:	修改用户信息
-- 描述：updateInfoById
-- URL: http://localhost:8080/user/updateInfoById
-- 请求方式: POST
-- 请求参数
-
-| 字段 | 说明           | 类型 | 是否必须 | 备注 |
-| ---- | -------------- | ---- | -------- | ---- |
-| user | 更新的User信息 | User | 是       |      |
-
-- 请求参数示例
-
-``` json
-
-```
-
-- 响应结果
-
-| 字段 | 说明 | 类型 | 是否必须 | 备注 |
-| ---- | ---- | ---- | -------- | ---- |
-|      |      |      |          |      |
-
-- 响应示例
-
-``` json
-
-```
-
-
-
-
-
-### 3、用户注册
+#### 3. 注册
 
 - 名称:	register
-- 描述：获取随机验证码
+- 描述：新用户注册
 - URL: http://localhost:8080/user/register
 - 请求方式: POST
 - 请求参数
@@ -908,9 +765,7 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-
-
-### 4、找回密码
+#### 4. 找回密码
 
 - 名称:	forget_password
 - 描述：找回密码
@@ -967,9 +822,236 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-### 5. 跑腿
+### 2、邮箱验证码
 
-#### 1）查询所有跑腿订单
+#### 1. 已注册用户获取验证码
+
+- 名称:	getCode
+- 描述：获取随机验证码
+- URL: http://localhost:8080/mail/getCode
+- 请求方式: GET
+- 请求参数
+
+| 字段  | 说明                   | 类型   | 是否必须 | 备注 |
+| ----- | ---------------------- | ------ | -------- | ---- |
+| email | 所要接收邮件的邮箱地址 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "email":"guo_x0315@163.com"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明               | 类型   | 是否必须 | 备注 |
+| ------- | ------------------ | ------ | -------- | ---- |
+| status  | 表示执行成功或失败 | String | 是       |      |
+| message | 响应消息           | String | 是       |      |
+| object  | 其他对象           | Object | 否       |      |
+
+- 响应结果示例
+
+``` json
+// 成功
+{
+    "status": 200,
+    "message": "success",
+    "object": null
+}
+
+// 失败
+{
+	"message":"fail",
+	"status":"400",
+    "object": null
+}
+
+// 该邮箱不存在于数据库中
+{
+    "status": 401,
+    "message": "fail",
+    "object": null
+}
+```
+
+
+
+#### 2. 新用户获取验证码
+
+- 名称:	getRegisterCode
+- 描述：获取随机验证码
+- URL: http://localhost:8080/mail/getRegisterCode
+- 请求方式: GET
+- 请求参数
+
+| 字段  | 说明                   | 类型   | 是否必须 | 备注 |
+| ----- | ---------------------- | ------ | -------- | ---- |
+| email | 所要接收邮件的邮箱地址 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "email":"guo_x0315@163.com"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明               | 类型   | 是否必须 | 备注                 |
+| ------- | ------------------ | ------ | -------- | -------------------- |
+| status  | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败 |
+| message | 响应消息           | String | 是       |                      |
+| object  | 其他对象           | Object | 否       |                      |
+
+- 响应结果示例
+
+``` json
+// 成功
+{
+    "status": 200,
+    "message": "success",
+    "object": null
+}
+
+// 失败
+{
+	"message":"fail",
+	"status":"400",
+    "object": null
+}
+```
+
+
+
+
+
+#### 3. 验证码校验
+
+- 名称: verify
+- 描述: 验证码校验
+- URL: http://localhost:8080/mail/verify
+- 请求方式: POST
+- 请求参数
+
+| 字段       | 说明             | 类型   | 是否必须 | 备注 |
+| ---------- | ---------------- | ------ | -------- | ---- |
+| email      | 邮箱             | String | 是       |      |
+| verifyCode | 用户输入的验证码 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "email":"guo_x0315@163.com",
+    "verifyCode":"as23De"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 是否必须 | 备注 |
+| ------- | ------ | ------ | -------- | ---- |
+| status  | 状态码 | int    | 是       |      |
+| message | 消息   | String |          |      |
+
+- 响应示例
+
+``` json
+// 成功
+{
+    "status": 200,
+    "message": "success",
+    "object": null
+}
+
+// 失败
+{
+	"message":"fail",
+	"status":"400",
+    "object": null
+}
+```
+
+
+
+#### 4. 通过Id修改用户信息
+
+- 名称:	修改用户信息
+- 描述：updateInfoById
+- URL: http://localhost:8080/user/updateUserInfoById
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明   | 类型   | 是否必须 | 备注         |
+| -------- | ------ | ------ | -------- | ------------ |
+| uid      | 用户id | int    | 是       | 用户唯一标识 |
+| name     | 用户名 | String | 否       |              |
+| sex      | 性别   | String | 否       |              |
+| birthday | 生日   | date   | 否       |              |
+| faculty  | 学院   | String | 否       |              |
+| grade    | 年级   | String | 否       |              |
+| major    | 专业   | String | 否       |              |
+| phone    | 手机号 | String | 否       |              |
+| wechat   | 微信号 | String | 否       |              |
+| qq       | QQ号   | String | 否       |              |
+
+- 请求参数示例
+
+``` json
+{
+    "uid": 28,
+    "name": "闪光皮皮",
+    "sex":"保密",
+    "birthday":"2000-03-15",
+    "faculty":"建工学院",
+    "grade":"2018",
+    "major":"土木工程",
+    "phone":"12345678900"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明             | 类型   | 是否必须 | 备注 |
+| ------- | ---------------- | ------ | -------- | ---- |
+| status  | 状态码           | int    | 是       |      |
+| message | 消息             | String | 是       |      |
+| object  | 更改后的用户信息 | Object | 是       |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": {
+        "uid": 28,
+        "name": "闪光皮皮",
+        "sex": "保密",
+        "birthday": "2000-03-15T00:00:00.000+00:00",
+        "phone": "12345678900",
+        "faculty": "建工学院",
+        "grade": "2018",
+        "major": "土木工程",
+        "email": null,
+        "wechat": null,
+        "qq": null,
+        "isDelete": null,
+        "password": null,
+        "avatarPath": null
+    }
+}
+```
+
+
+
+### 3. 跑腿
+
+#### 1. 查询所有跑腿订单
 
 - 名称:	外卖代取
 - 描述：查询所有代取外卖
@@ -1038,7 +1120,7 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-#### 2） 根据eid查询跑腿订单详细信息
+#### 2. 根据eid查询跑腿订单详细信息
 
 - 名称:	queryDetailsByEid
 - 描述：根据eid查询订单详细信息
@@ -1107,7 +1189,7 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-#### 4) 根据种类查询跑腿订单信息
+#### 3. 根据种类查询跑腿订单信息
 
 - 名称:	/queryItemByCategory
 - 描述：根据种类查询跑腿订单信息
@@ -1176,7 +1258,7 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-#### 5）添加跑腿订单
+#### 4. 添加跑腿订单
 
 - 名称: addErrandItem
 - 描述：添加跑腿订单
@@ -1228,52 +1310,71 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 ### 6 、文件上传
 
-#### 1） 上传用户头像
+#### 1. 上传图片到服务器
 
 - 名称:	uploadAvatar
-- 描述：根据ID更新用户头像信息
-- URL: http://localhost:8080/
+- 描述： 上传图片到服务器
+- URL: http://localhost:8080/upload/uploadImg
 - 请求方式: POST
 - 请求参数
 
-| 字段       | 说明         | 类型 | 是否必须 | 备注 |
-| ---------- | ------------ | ---- | -------- | ---- |
-| uid        | 用户id       | int  | 是       |      |
-| avatarPath | 用户头像地址 | int  | 是       |      |
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+| file | 文件 | 文件 | 是       |      |
 
 - 请求参数示例
 
 ``` json
 {
-    "uid":2,
-    "avatarPath":"/avatar/a.jpg"
+    file:fileOBJ
 }
 ```
 
 - 响应结果
 
-| 字段    | 说明       | 类型   | 是否必须 | 备注 |
-| ------- | ---------- | ------ | -------- | ---- |
-| status  | 响应状态码 | int    | 是       |      |
-| message | 响应消息   | String | 是       |      |
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+|      |      |      |          |      |
 
 - 响应示例
 
 ``` json
-// 成功
-{
-    status:200,
-    message:"success"
-}
 
-// 失败
-{
-    status:400,
-    message:"fail"
-}
 ```
 
 
+
+#### 2. 上传图片到服务器
+
+- 名称:	uploadImg
+- 描述： 上传图片到服务器
+- URL: http://localhost:8080/upload/uploadImg
+- 请求方式: POST
+- 请求参数
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+| file | 文件 | 文件 | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    file:fileOBJ
+}
+```
+
+- 响应结果
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+|      |      |      |          |      |
+
+- 响应示例
+
+``` json
+
+```
 
 
 
