@@ -118,6 +118,8 @@ PRIMARY KEY (uid)
 | category   | varchar(5)   | 类别，（外卖，快递，打水，其他）              |
 | pubdate    | date         | 发布日期                                      |
 | deadline   | date         | 截至日期                                      |
+| pubtime    | time         | 发布时间                                      |
+| deadtime   | time         | 截止时间                                      |
 | is_delete  | int          | 是否删除；1为删除，0未删除，默认为0           |
 
 - 创建跑腿区信息表
@@ -135,6 +137,8 @@ is_achieve INT DEFAULT 0 COMMENT '是否已完成, 0: 未完成; 1: 已完成;',
 category VARCHAR(5) COMMENT '类别, 可选值为(快递, 外卖, 打水, 其他)',
 pubdate DATE COMMENT '发布日期',
 deadline DATE COMMENT '截止日期',
+pubtime TIME comment '发布时间',
+deadtime TIME comment '截止时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (eid),
 FOREIGN KEY (uid) REFERENCES USER(uid),
@@ -156,7 +160,8 @@ FOREIGN KEY (euid) REFERENCES USER(uid)
 | category   | varchar(15)  | 类别，可选项为: 数学，物理，英语，其他    |
 | title      | varchar(30)  | 题目                                      |
 | details    | varchar(500) | 详细内容                                  |
-| pubdate    | date         | 发布时间                                  |
+| pubdate    | date         | 发布日期                                  |
+| pubtime    | time         | 发布时间                                  |
 | is_achieve | int          | 是否已解决，1：已解决，0：未解决；默认为0 |
 | is_delete  | int          | 是否已删除， 1：删除 0：未删除 默认为0    |
 
@@ -170,7 +175,8 @@ uid INT COMMENT '发帖用户, 外：user(uid)' ,
 category VARCHAR(15) COMMENT '类别,可选项为: 数学, 物理, 英语, 其他', 
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
-pubdate DATE COMMENT '提交时间',
+pubdate DATE COMMENT '提交日期',
+pubtime TIME comment '发布时间',
 is_achieve INT DEFAULT 0 COMMENT '是否已解决, 1:已解决 0:未解决 默认为0',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (sid),
@@ -192,6 +198,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 | title     | varchar(30)  | 题目                                              |
 | details   | varchar(500) | 详细内容                                          |
 | pubdate   | date         | 发布日期                                          |
+| pubtime   | time         | 发布时间                                          |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0；           |
 
 - 创建交易表
@@ -205,6 +212,7 @@ category VARCHAR(5) COMMENT '类别, 选项为: 出行工具, 书本资料, 生�
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY(tid),
 FOREIGN KEY (uid) REFERENCES USER(uid)  
@@ -226,6 +234,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 | details   | varchar(500) | 详细内容                                |
 | is_find   | int          | 是否找到; 0未找到，1找到                |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -238,6 +247,7 @@ title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
 is_find INT DEFAULT 0 COMMENT '是否已经找到, 0未找到, 1找到',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY(lid),
 FOREIGN KEY (uid) REFERENCES USER(uid)
@@ -257,6 +267,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 | title     | varchar(30)  | 题目                                    |
 | details   | varchar(500) | 详细内容                                |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -267,6 +278,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (hid),
 FOREIGN KEY (uid) REFERENCES USER(uid)
@@ -286,6 +298,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 | sid       | int          | 发布评论的指定帖子 外键 study(sid)      |
 | comment   | varchar(500) | 讨论的内容                              |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -296,6 +309,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 sid INT COMMENT '发布评论的指定帖子 外: study(sid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
 FOREIGN KEY (uid) REFERENCES USER(uid),
@@ -316,6 +330,7 @@ FOREIGN KEY (sid) REFERENCES study(sid)
 | reply_uid  | int          | 回复用户id 外键user(uid)                |
 | discuss_id | int          | 回复的帖子的id 外键s_discuss(id)        |
 | pubdate    | date         | 发布日期                                |
+| pubtime    | time         | 发布时间                                |
 | reply      | varchar(500) | 回复内容                                |
 | is_delete  | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
@@ -327,6 +342,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外s_discuss(id)',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 reply VARCHAR(500) COMMENT '回复内容',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
@@ -349,6 +365,7 @@ FOREIGN KEY (discuss_id) REFERENCES s_discuss(id)
 | tid       | int          | 发布评论所属帖子 外键trade(tid)         |
 | comment   | varchar(500) | 评论内容                                |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -359,6 +376,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 tid INT COMMENT '发布评论所属帖子 外键trade(tid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
 FOREIGN KEY (uid) REFERENCES USER(uid),
@@ -380,6 +398,7 @@ FOREIGN KEY (tid) REFERENCES trade(tid)
 | discuss_id | int          | 回复帖子id 外键t_discuss(id)            |
 | reply      | varchar(500) | 回复内容                                |
 | pubdate    | date         | 发布日期                                |
+| pubtime    | time         | 发布时间                                |
 | is_delete  | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -390,6 +409,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外t_discuss(id)',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 reply VARCHAR(500) COMMENT '回复内容',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
@@ -412,6 +432,7 @@ FOREIGN KEY (discuss_id) REFERENCES t_discuss(id)
 | lid       | int          | 发布评论所属帖子 外键lost_found(lid)    |
 | comment   | varchar(500) | 评论信息                                |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -422,6 +443,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 lid INT COMMENT '发布评论所属帖子 外键lost_found(lid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
 FOREIGN KEY (uid) REFERENCES USER(uid),
@@ -441,6 +463,7 @@ FOREIGN KEY (lid) REFERENCES lost_found(lid)
 | discuss_id | int          | 回复帖子id 外键f_discuss(id)            |
 | reply      | varchar(500) | 回复内容                                |
 | pubdate    | date         | 发布日期                                |
+| pubtime    | time         | 发布时间                                |
 | is_delete  | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -451,6 +474,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外f_discuss(id)',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 reply VARCHAR(500) COMMENT '回复内容',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
@@ -471,6 +495,7 @@ FOREIGN KEY (discuss_id) REFERENCES f_discuss(id)
 | hid       | int          | 发布评论所属帖子 外键help(hid)          |
 | comment   | varchar(500) | 评论信息                                |
 | pubdate   | date         | 发布日期                                |
+| pubtime   | time         | 发布时间                                |
 | is_delete | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -481,6 +506,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 hid INT COMMENT '发布评论所属帖子 外键help(hid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
 FOREIGN KEY (uid) REFERENCES USER(uid),
@@ -502,6 +528,7 @@ FOREIGN KEY (hid) REFERENCES HELP(hid)
 | discuss_id | int          | 回复帖子id 外键h_discuss(id)            |
 | reply      | varchar(500) | 回复内容                                |
 | pubdate    | date         | 发布日期                                |
+| pubtime    | time         | 发布时间                                |
 | is_delete  | int          | 是否删除， 0未删除， 1 已删除 默认为0； |
 
 ``` sql
@@ -512,6 +539,7 @@ uid INT COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外h_discuss(id)',
 pubdate DATE COMMENT '发布日期',
+pubtime TIME comment '发布时间',
 reply VARCHAR(500) COMMENT '回复内容',
 is_delete INT DEFAULT 0 COMMENT '是否删除, 1: 删除; 0: 未删除; 默认为0',
 PRIMARY KEY (id),
