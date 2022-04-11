@@ -574,11 +574,12 @@ PRIMARY KEY (id)
 
 #### 15) errand_img跑腿区图片存储表
 
-| 字段名  | 类型         | 说明         |
-| ------- | ------------ | ------------ |
-| id      | int          | 主键，自增   |
-| eid     | int          | errand的外键 |
-| img_src | varchar(500) | 图片存储位置 |
+| 字段名    | 类型         | 说明                   |
+| --------- | ------------ | ---------------------- |
+| id        | int          | 主键，自增             |
+| eid       | int          | errand的外键           |
+| img_src   | varchar(500) | 图片存储位置           |
+| is_delete | int          | 是否删除 0未删除 1删除 |
 
 ``` mysql
 -- 用于存放跑腿区图片
@@ -586,6 +587,7 @@ CREATE TABLE errand_img(
 id INT AUTO_INCREMENT COMMENT '主键',
 eid INT COMMENT 'errand的外键',
 img_src VARCHAR(500) COMMENT '图片路径',
+is_delete INT DEFAULT 0 COMMENT '是否删除',	
 PRIMARY KEY (id),
 FOREIGN KEY (eid) REFERENCES errand(eid)
 );
@@ -1086,6 +1088,22 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
                 "isDelete": 0,
                 "password": "lybdashabi1",
                 "avatarPath": null
+            },
+            "takeOrderUser": {
+                "uid": 2,
+                "name": "李子",
+                "sex": "男",
+                "birthday": "2022-04-17T16:00:00.000+00:00",
+                "phone": "13333333333",
+                "faculty": "信息学院",
+                "grade": "2018",
+                "major": "软件工程",
+                "email": "lzx@163.com",
+                "wechat": "lzx_wechat",
+                "qq": "88888888",
+                "isDelete": 0,
+                "password": "123456",
+                "avatarPath": "/avatar/d9259de915b843feaee191922e684fee.jpg"
             }
         }]
 }
@@ -1155,7 +1173,8 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
             "isDelete": 0,
             "password": "lybdashabi1",
             "avatarPath": null
-        }
+        },
+        "takeOrderUser":{}
     }
 }
 ```
@@ -1239,14 +1258,16 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 - 请求方式: POST
 - 请求参数
 
-| 字段     | 说明             | 类型   | 是否必须 | 备注 |
-| -------- | ---------------- | ------ | -------- | ---- |
-| uid      | 发布订单用户信息 | int    | 是       |      |
-| title    | 订单标题         | String | 是       |      |
-| money    | 劳务费           | int    | 是       |      |
-| category | 类别             | String | 是       |      |
-| deadline | 截止日期         | date   | 否       |      |
-| details  | 详细信息         | String | 否       |      |
+| 字段     | 说明                       | 类型     | 是否必须 | 备注 |
+| -------- | -------------------------- | -------- | -------- | ---- |
+| uid      | 发布订单用户信息           | int      | 是       |      |
+| title    | 订单标题                   | String   | 是       |      |
+| money    | 劳务费                     | int      | 是       |      |
+| category | 类别                       | String   | 是       |      |
+| deadline | 截止日期                   | date     | 否       |      |
+| deadtime | 截止时间                   | Time     | 否       |      |
+| details  | 详细信息                   | String   | 否       |      |
+| imgUrls  | 跑腿订单与之对应的图片信息 | String[] | 否       |      |
 
 - 请求参数示例
 
@@ -1257,7 +1278,173 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
     "money":"5",
     "category":"外卖代取",
     "deadline":"2022-04-12",
-    "details":"饿死了 快帮我取外卖 球球了~~~"
+    "deadtime":"20:00:00",
+    "details":"饿死了 快帮我取外卖 球球了~~~",
+    "imgUrls":[]
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+}
+```
+
+#### 5. 伪删除跑腿订单
+
+- 名称:	fakeDeleteItemByEid
+- 描述：伪删除跑腿订订单
+- URL: http://localhost:8080/errand/fakeDeleteItemByEid
+- 请求方式: POST
+- 请求参数
+
+| 字段 | 说明     | 类型 | 是否必须 | 备注 |
+| ---- | -------- | ---- | -------- | ---- |
+| eid  | 订单编号 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid":"2"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+}
+```
+
+
+
+#### 6. 更新跑腿订单信息
+
+- 名称:	updateErrandItemByEid
+- 描述：更新跑腿订单信息
+- URL: http://localhost:8080/errand/updateErrandItemByEid
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明                       | 类型     | 是否必须 | 备注 |
+| -------- | -------------------------- | -------- | -------- | ---- |
+| eid      | 订单编号                   | int      | 是       |      |
+| title    | 订单标题                   | String   | 是       |      |
+| money    | 劳务费                     | int      | 是       |      |
+| category | 类别                       | String   | 是       |      |
+| deadline | 截止日期                   | date     | 否       |      |
+| deadTime | 截止时间                   | Time     | 否       |      |
+| details  | 详细信息                   | String   | 否       |      |
+| imgUrls  | 跑腿订单与之对应的图片信息 | String[] | 否       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid":5,
+    "title":"饿了么外卖代取",
+    "money":"5",
+    "category":"外卖代取",
+    "deadline":"2022-04-12",
+    "deadtime":"20:00:00",
+    "details":"饿死了 快帮我取外卖 球球了~~~",
+    "imgUrls":[]
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+}
+```
+
+
+
+#### 7. 伪删除订单图片
+
+- 名称:	fakeDeleteImgByImgSrc
+- 描述：伪删除订单图片
+- URL: http://localhost:8080/
+- 请求方式: GET
+- 请求参数
+
+| 字段    | 说明             | 类型   | 是否必须 | 备注 |
+| ------- | ---------------- | ------ | -------- | ---- |
+| img_src | 要删除图片的名称 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    img_src:"img.jpg"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+}
+```
+
+
+
+#### 8.  更新订单完成状态
+
+- 名称:	updateErrandIsAchieveStateByEid
+- 描述：更新订单完成状态
+- URL: http://localhost:8080/errand/updateErrandIsAchieveStateByEid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明   | 类型 | 是否必须 | 备注 |
+| ---- | ------ | ---- | -------- | ---- |
+| eid  | 订单id | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid":1
 }
 ```
 
@@ -1281,12 +1468,12 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 
 
-### 6 、文件上传
+### 4 、文件上传
 
-#### 1. 上传图片到服务器
+#### 1. 上传头像到服务器
 
 - 名称:	uploadAvatar
-- 描述： 上传图片到服务器
+- 描述： 上传头像到服务器
 - URL: http://localhost:8080/upload/uploadImg
 - 请求方式: POST
 - 请求参数
@@ -1399,9 +1586,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段 | 说明 | 类型 | 备注 |
-| ---- | ---- | ---- | ---- |
-|      |      |      |      |
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
 
 - 响应示例
 

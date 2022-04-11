@@ -24,18 +24,18 @@
     select 
     <include refid="Base_Column_List" />
     from user
-    where `uid` = #{uid,jdbcType=INTEGER}
+    where `uid` = #{uid,jdbcType=INTEGER} and is_delete != 1
   </select>
   <select id="selectByEmail" resultType="java.lang.Integer">
-    select count(email) from user where email = #{email,jdbcType=VARCHAR}
+    select count(email) from user where email = #{email,jdbcType=VARCHAR} and is_delete != 1
   </select>
   <select id="selectPasswordByEmail" resultType="java.lang.String">
-    select password from USER where `email` = #{email,jdbcType=VARCHAR}
+    select password from USER where `email` = #{email,jdbcType=VARCHAR} and is_delete != 1
   </select>
   <select id="selectAllByEmail" resultType="com.hebust.entity.user.User">
     select <include refid="Base_Column_List" />
     from USER
-    where `email` = #{email,jdbcType=VARCHAR}
+    where `email` = #{email,jdbcType=VARCHAR} and is_delete != 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user

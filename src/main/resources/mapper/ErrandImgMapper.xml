@@ -5,22 +5,24 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="eid" jdbcType="INTEGER" property="eid" />
     <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, eid, img_src
+    id, eid, img_src, is_delete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from errand_img
-    where id = #{id,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER} and is_delete != 1
   </select>
-  <select id="selectAllByEid" resultType="com.hebust.entity.errand.ErrandImg">
-    select <include refid="Base_Column_List"/>
+  <select id="selectAllByEid" resultType="java.lang.String">
+    select img_src
     from errand_img
-    where eid = #{eid,jdbcType=INTEGER}
+    where eid = #{eid,jdbcType=INTEGER} and is_delete != 1
   </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from errand_img
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -47,7 +49,6 @@
       </if>
     </trim>
   </insert>
-  <insert id="insertImgPath"></insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.errand.ErrandImg">
     update errand_img
     <set>
@@ -65,5 +66,15 @@
     set eid = #{eid,jdbcType=INTEGER},
       img_src = #{imgSrc,jdbcType=VARCHAR}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteImgByEid">
+    update errand_img
+    set is_delete = 1
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteImgByImgSrc">
+    update errand_img
+    set is_delete = 1
+    where img_src = #{img_src,jdbcType=VARCHAR}
   </update>
 </mapper>

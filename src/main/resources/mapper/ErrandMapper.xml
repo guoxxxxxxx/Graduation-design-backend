@@ -21,6 +21,8 @@
                 select="com.hebust.mapper.relation.ErrandImgMapper.selectAllByEid"/>
     <collection property="pubUser" column="uid" ofType="com.hebust.entity.user.User"
                 select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+    <collection property="takeOrderUser" column="euid" jdbcType="INTEGER"
+                select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
   </resultMap>
 
   <resultMap id="BaseResultMap" type="com.hebust.entity.errand.Errand">
@@ -46,21 +48,22 @@
     select 
     <include refid="Base_Column_List" />
     from errand
-    where eid = #{eid,jdbcType=INTEGER}
+    where eid = #{eid,jdbcType=INTEGER} and is_delete != 1
   </select>
   <select id="selectAll" resultMap="selectAll">
-    select * from errand
+    select * from errand where is_delete != 1
   </select>
   <select id="selectDetailsByEid" resultMap="selectAll">
-    select * from errand where eid = #{eid,jdbcType=INTEGER}
+    select * from errand where eid = #{eid,jdbcType=INTEGER} and is_delete != 1
   </select>
   <select id="selectItemByCategory" resultMap="selectAll">
-    select * from errand where category = #{category,jdbcType=VARCHAR}
+    select * from errand where category = #{category,jdbcType=VARCHAR} and is_delete != 1
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from errand
     where eid = #{eid,jdbcType=INTEGER}
   </delete>
+
   <insert id="insert" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
     insert into errand (`uid`, euid, title, 
       money, is_achieve, category, 
@@ -204,6 +207,26 @@
       is_delete = #{isDelete,jdbcType=INTEGER},
       pubtime = #{pubtime,jdbcType=TIME},
       deadtime = #{deadtime,jdbcType=TIME}
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteItemByEid">
+    update errand
+    set is_delete = 1
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="updateErrandItemByEid">
+    update errand
+    set title = #{title,jdbcType=VARCHAR},
+        money = #{money,jdbcType=DOUBLE},
+        category = #{category,jdbcType=VARCHAR},
+        deadline = #{deadline,jdbcType=DATE},
+        deadtime = #{deadtime,jdbcType=TIME},
+        details = #{details,jdbcType=VARCHAR}
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="updateErrandIsAchieveStateByEid">
+    update errand
+    set is_achieve = 1
     where eid = #{eid,jdbcType=INTEGER}
   </update>
 </mapper>

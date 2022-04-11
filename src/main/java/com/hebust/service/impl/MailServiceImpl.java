@@ -1,4 +1,4 @@
-package com.hebust.service.imple;
+package com.hebust.service.impl;
 
 import com.hebust.entity.mailVerify.MailVerify;
 import com.hebust.mapper.MailVerifyMapper;

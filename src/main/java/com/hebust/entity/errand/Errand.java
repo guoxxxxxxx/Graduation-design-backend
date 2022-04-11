@@ -82,12 +82,17 @@ public class Errand implements Serializable {
     /**
      * 该跑腿订单的图片信息
      */
-    private List<ErrandImg> imgUrls;
+    private List<String> imgUrls;
 
     /**
      * 该跑腿订单发布信息的用户信息
      */
     private User pubUser;
+
+    /**
+     * 该跑腿订单接单人用户信息
+     */
+    private User takeOrderUser;
 
     private static final long serialVersionUID = 1L;
 }

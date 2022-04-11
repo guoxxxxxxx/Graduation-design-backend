@@ -24,5 +24,10 @@ public class ErrandImg implements Serializable {
      */
     private String imgSrc;
 
+    /**
+     * 是否删除
+     */
+    private String isDelete;
+
     private static final long serialVersionUID = 1L;
 }

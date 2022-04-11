@@ -16,12 +16,16 @@ public interface ErrandMapper {
 
     Errand selectByPrimaryKey(Integer eid);
 
+    /**
+     * 更新接单用户ID
+     */
     int updateByPrimaryKeySelective(Errand record);
 
     int updateByPrimaryKey(Errand record);
 
     /**
-     * 查询所有订单信息及订单所对应的图片信息
+     * 查询所有订单信息
+     * 及订单所对应的图片信息,发布用户详细信息,接单用户详细信息
      */
     List<Errand> selectAll();
 
@@ -34,4 +38,20 @@ public interface ErrandMapper {
      * 根据种类查询订单项目
      */
     List<Errand> selectItemByCategory(String category);
+
+
+    /**
+     * 通过eid伪删除跑腿订单
+     */
+    int fakeDeleteItemByEid(int eid);
+
+    /**
+     * 通过eid更新跑腿订单信息
+     */
+    int updateErrandItemByEid(Errand errand);
+
+    /**
+     * 根据eid设置订单完成状态
+     */
+    int updateErrandIsAchieveStateByEid(int eid);
 }

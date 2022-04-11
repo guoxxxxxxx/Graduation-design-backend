@@ -1,8 +1,10 @@
-package com.hebust.service.imple;
+package com.hebust.service.impl;
 
 import com.hebust.entity.errand.Errand;
 import com.hebust.mapper.ErrandMapper;
+import com.hebust.mapper.relation.ErrandImgMapper;
 import com.hebust.service.ErrandService;
+import com.hebust.service.relation.ErrandImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,5 +36,25 @@ public class ErrandServiceImpl implements ErrandService {
     @Transactional
     public int addErrandItem(Errand errand) {
         return errandMapper.insertSelective(errand);
+    }
+
+    @Override
+    public int updateTakeOrdersUid(Errand errand) {
+        return errandMapper.updateByPrimaryKeySelective(errand);
+    }
+
+    @Override
+    public int fakeDeleteItemByEid(int eid) {
+        return errandMapper.fakeDeleteItemByEid(eid);
+    }
+
+    @Override
+    public int updateErrandItemByEid(Errand errand) {
+        return errandMapper.updateErrandItemByEid(errand);
+    }
+
+    @Override
+    public int updateErrandIsAchieveStateByEid(int eid) {
+        return errandMapper.updateErrandIsAchieveStateByEid(eid);
     }
 }

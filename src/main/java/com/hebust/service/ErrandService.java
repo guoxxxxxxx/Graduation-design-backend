@@ -25,4 +25,24 @@ public interface ErrandService {
      * 添加新的跑腿订单
      */
     int addErrandItem(Errand errand);
+
+    /**
+     * 更新接单用户信息
+     */
+    int updateTakeOrdersUid(Errand errand);
+
+    /**
+     * 伪删除跑腿订单通过eid
+     */
+    int fakeDeleteItemByEid(int eid);
+
+    /**
+     * 通过eid更新跑腿项目订单
+     */
+    int updateErrandItemByEid(Errand errand);
+
+    /**
+     * 通过eid更新项目订单完成状态
+     */
+    int updateErrandIsAchieveStateByEid(int eid);
 }
