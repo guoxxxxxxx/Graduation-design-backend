@@ -9,7 +9,7 @@ public class SimplifyDetailsUtils {
      * 精简字符串，将字符串压缩到35个字符串长度 + ...
      */
     public static String simplifyDetails(String s){
-        if (s.length() > 35)
+        if (s != null && s.length() > 35)
             return s.substring(0, 35) + "...";
         else
             return s;

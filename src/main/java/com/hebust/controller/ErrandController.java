@@ -3,13 +3,17 @@ package com.hebust.controller;
 import com.hebust.entity.errand.Errand;
 import com.hebust.entity.errand.ErrandVO;
 import com.hebust.service.ErrandService;
+import com.hebust.utils.DateUtils;
 import com.hebust.utils.SimplifyDetailsUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -51,6 +55,28 @@ public class ErrandController {
             errand.setDetails(SimplifyDetailsUtils.simplifyDetails(errand.getDetails()));
         }
         return new ErrandVO(200, "success", errands);
+    }
+
+    /**
+     * 添加新的跑腿订单
+     */
+    @RequestMapping("addErrandItem")
+    public ErrandVO addErrandItem(@RequestBody Errand errand){
+        if (errand == null){
+            return new ErrandVO(400, "对象不存在", null);
+        }
+        else{
+            // 将当前时间添加到对象中
+            errand.setPubdate(DateUtils.getCurrentDate());
+            errand.setPubtime(DateUtils.getCurrentTime());
+            int i = errandService.addErrandItem(errand);
+            if (i == 1){
+                return new ErrandVO(200, "success", null);
+            }
+            else {
+                return new ErrandVO(400, "fail", null);
+            }
+        }
     }
 
 }

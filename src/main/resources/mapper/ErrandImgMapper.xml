@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hebust.mapper.ErrandImgMapper">
+<mapper namespace="com.hebust.mapper.relation.ErrandImgMapper">
   <resultMap id="BaseResultMap" type="com.hebust.entity.errand.ErrandImg">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="eid" jdbcType="INTEGER" property="eid" />
@@ -47,6 +47,7 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertImgPath"></insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.errand.ErrandImg">
     update errand_img
     <set>

@@ -20,4 +20,9 @@ public interface ErrandService {
      * 根据种类查询跑腿订单项目
      */
     List<Errand> queryItemByCategory(String category);
+
+    /**
+     * 添加新的跑腿订单
+     */
+    int addErrandItem(Errand errand);
 }

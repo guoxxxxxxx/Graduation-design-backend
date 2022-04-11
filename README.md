@@ -82,7 +82,7 @@ USE assistance;
 ``` sql
 -- 创建用户信息表
 CREATE TABLE USER(
-uid INT NOT NULL AUTO_INCREMENT COMMENT	'id',
+uid INT AUTO_INCREMENT COMMENT	'id',
 NAME VARCHAR(10) COMMENT '姓名',
 sex VARCHAR(2) DEFAULT '保密' COMMENT '性别, 仅有(男,女,保密)三个值, 默认为保密',
 birthday DATE DEFAULT '2000-01-01' COMMENT '生日 格式为yyyy-MM-dd',
@@ -128,7 +128,7 @@ PRIMARY KEY (uid)
 -- 创建跑腿区信息表
 CREATE TABLE errand(
 eid INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布订单用户信息 外: user(uid)',
+uid INT NOT NULL COMMENT '发布订单用户信息 外: user(uid)',
 euid INT  COMMENT '接单用户信息 外: user(uid)',
 title VARCHAR(30) COMMENT '订单信息',
 details VARCHAR(500) COMMENT '订单详细信息',
@@ -171,7 +171,7 @@ FOREIGN KEY (euid) REFERENCES USER(uid)
 -- 创建学习交流表
 CREATE TABLE study(
 sid INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发帖用户, 外：user(uid)' ,
+uid INT NOT NULL COMMENT '发帖用户, 外：user(uid)' ,
 category VARCHAR(15) COMMENT '类别,可选项为: 数学, 物理, 英语, 其他', 
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
@@ -207,7 +207,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 -- 创建交易表
 CREATE TABLE trade(
 tid INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 category VARCHAR(5) COMMENT '类别, 选项为: 出行工具, 书本资料, 生活用品和其他' ,
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
@@ -241,7 +241,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 -- 失物招领表
 CREATE TABLE lost_found(
 lid INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 TYPE INT COMMENT '类型，可选：0：找失主，1：找物品',
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
@@ -274,7 +274,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 -- 互助表
 CREATE TABLE HELP(
 hid INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 title VARCHAR(30) COMMENT '题目',
 details VARCHAR(500) COMMENT '详细内容',
 pubdate DATE COMMENT '发布日期',
@@ -305,7 +305,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 -- 用户学习讨论表
 CREATE TABLE s_discuss(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 sid INT COMMENT '发布评论的指定帖子 外: study(sid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
@@ -338,7 +338,7 @@ FOREIGN KEY (sid) REFERENCES study(sid)
 -- 学习评论回复表
 CREATE TABLE s_reply(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外s_discuss(id)',
 pubdate DATE COMMENT '发布日期',
@@ -372,7 +372,7 @@ FOREIGN KEY (discuss_id) REFERENCES s_discuss(id)
 -- 交易评论表
 CREATE TABLE t_discuss(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 tid INT COMMENT '发布评论所属帖子 外键trade(tid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
@@ -405,7 +405,7 @@ FOREIGN KEY (tid) REFERENCES trade(tid)
 -- 交易回复表
 CREATE TABLE t_reply(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外t_discuss(id)',
 pubdate DATE COMMENT '发布日期',
@@ -439,7 +439,7 @@ FOREIGN KEY (discuss_id) REFERENCES t_discuss(id)
 -- 失物招领评论表
 CREATE TABLE f_discuss(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 lid INT COMMENT '发布评论所属帖子 外键lost_found(lid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
@@ -470,7 +470,7 @@ FOREIGN KEY (lid) REFERENCES lost_found(lid)
 -- 失物招领回复表
 CREATE TABLE f_reply(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外f_discuss(id)',
 pubdate DATE COMMENT '发布日期',
@@ -502,7 +502,7 @@ FOREIGN KEY (discuss_id) REFERENCES f_discuss(id)
 -- 互助评论表
 CREATE TABLE h_discuss(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 hid INT COMMENT '发布评论所属帖子 外键help(hid)',
 COMMENT VARCHAR(500) COMMENT '讨论的内容',
 pubdate DATE COMMENT '发布日期',
@@ -535,7 +535,7 @@ FOREIGN KEY (hid) REFERENCES HELP(hid)
 -- 互助回复表
 CREATE TABLE h_reply(
 id INT AUTO_INCREMENT COMMENT '主键',
-uid INT COMMENT '发布信息的用户 外: user(uid)',
+uid INT NOT NULL COMMENT '发布信息的用户 外: user(uid)',
 reply_uid INT COMMENT '回复用户id 外: user(uid)',
 discuss_id INT COMMENT '回复的帖子的id 外h_discuss(id)',
 pubdate DATE COMMENT '发布日期',
@@ -625,11 +625,11 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明               | 类型   | 是否必须 | 备注     |
-| ------- | ------------------ | ------ | -------- | -------- |
-| status  | 表示执行成功或失败 | String | 是       |          |
-| message | 响应消息           | String | 是       |          |
-| object  | 对象               | object | 否       | 存放消息 |
+| 字段    | 说明               | 类型   | 备注     |
+| ------- | ------------------ | ------ | -------- |
+| status  | 表示执行成功或失败 | String |          |
+| message | 响应消息           | String |          |
+| object  | 对象               | object | 存放消息 |
 
 - 响应结果实例
 
@@ -682,10 +682,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明       | 类型   | 是否必须 | 备注 |
-| ------- | ---------- | ------ | -------- | ---- |
-| status  | 响应状态码 | int    | 是       |      |
-| message | 响应消息   | String | 是       |      |
+| 字段    | 说明       | 类型   | 备注 |
+| ------- | ---------- | ------ | ---- |
+| status  | 响应状态码 | int    |      |
+| message | 响应消息   | String |      |
 
 - 响应示例
 
@@ -731,11 +731,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明               | 类型   | 是否必须 | 备注                     |
-| ------- | ------------------ | ------ | -------- | ------------------------ |
-| status  | 表示执行成功或失败 | String | 是       | 200表示成功，40X表示失败 |
-| message | 响应消息           | String | 是       |                          |
-| object  |                    |        |          |                          |
+| 字段    | 说明               | 类型   | 备注                     |
+| ------- | ------------------ | ------ | ------------------------ |
+| status  | 表示执行成功或失败 | String | 200表示成功，40X表示失败 |
+| message | 响应消息           | String |                          |
 
 - 响应示例
 
@@ -744,7 +743,6 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
-    "object": null
 }
 
 
@@ -752,14 +750,12 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
 	"message":"fail",
 	"status":"400",
-    "object": null
 }
 
 // 邮箱已被注册失败
 {
     "status": 401,
     "message": "fail",
-    "object": null
 }
 ```
 
@@ -777,7 +773,6 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 | -------- | -------------------- | ------ | -------- | ---- |
 | email    | 所需要找回密码的邮箱 | String | 是       |      |
 | password | 新密码               | String | 是       |      |
-| object   |                      |        |          |      |
 
 - 请求参数示例
 
@@ -790,10 +785,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明   | 类型   | 是否必须 | 备注             |
-| ------- | ------ | ------ | -------- | ---------------- |
-| status  | 状态码 | int    | 是       | 200成功，400失败 |
-| message | 消息   | String | 否       |                  |
+| 字段    | 说明   | 类型   | 备注             |
+| ------- | ------ | ------ | ---------------- |
+| status  | 状态码 | int    | 200成功，400失败 |
+| message | 消息   | String |                  |
 
 - 响应示例
 
@@ -802,21 +797,18 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
-    "object": null
 }
 
 // 失败
 {
     "status":"400",
     "message":"fail",
-    "object": null
 }
 
 // 用户不存在
 {
     "status": 401,
     "message": "fail",
-    "object": null
 }
 ```
 
@@ -846,11 +838,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明               | 类型   | 是否必须 | 备注 |
-| ------- | ------------------ | ------ | -------- | ---- |
-| status  | 表示执行成功或失败 | String | 是       |      |
-| message | 响应消息           | String | 是       |      |
-| object  | 其他对象           | Object | 否       |      |
+| 字段    | 说明               | 类型   | 备注 |
+| ------- | ------------------ | ------ | ---- |
+| status  | 表示执行成功或失败 | String |      |
+| message | 响应消息           | String |      |
 
 - 响应结果示例
 
@@ -859,21 +850,18 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
-    "object": null
 }
 
 // 失败
 {
 	"message":"fail",
 	"status":"400",
-    "object": null
 }
 
 // 该邮箱不存在于数据库中
 {
     "status": 401,
     "message": "fail",
-    "object": null
 }
 ```
 
@@ -901,11 +889,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明               | 类型   | 是否必须 | 备注                 |
-| ------- | ------------------ | ------ | -------- | -------------------- |
-| status  | 表示执行成功或失败 | String | 是       | 0表示成功，1表示失败 |
-| message | 响应消息           | String | 是       |                      |
-| object  | 其他对象           | Object | 否       |                      |
+| 字段    | 说明               | 类型   | 备注                 |
+| ------- | ------------------ | ------ | -------------------- |
+| status  | 表示执行成功或失败 | String | 0表示成功，1表示失败 |
+| message | 响应消息           | String |                      |
 
 - 响应结果示例
 
@@ -914,14 +901,12 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
-    "object": null
 }
 
 // 失败
 {
 	"message":"fail",
 	"status":"400",
-    "object": null
 }
 ```
 
@@ -953,10 +938,10 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明   | 类型   | 是否必须 | 备注 |
-| ------- | ------ | ------ | -------- | ---- |
-| status  | 状态码 | int    | 是       |      |
-| message | 消息   | String |          |      |
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
 
 - 响应示例
 
@@ -965,14 +950,12 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
-    "object": null
 }
 
 // 失败
 {
 	"message":"fail",
 	"status":"400",
-    "object": null
 }
 ```
 
@@ -1016,11 +999,11 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明             | 类型   | 是否必须 | 备注 |
-| ------- | ---------------- | ------ | -------- | ---- |
-| status  | 状态码           | int    | 是       |      |
-| message | 消息             | String | 是       |      |
-| object  | 更改后的用户信息 | Object | 是       |      |
+| 字段    | 说明             | 类型   | 备注 |
+| ------- | ---------------- | ------ | ---- |
+| status  | 状态码           | int    |      |
+| message | 消息             | String |      |
+| object  | 更改后的用户信息 | Object |      |
 
 - 响应示例
 
@@ -1059,17 +1042,7 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 - 请求方式: GET
 - 请求参数 无
 
-| 字段 | 说明 | 类型 | 是否必须 | 备注 |
-| ---- | ---- | ---- | -------- | ---- |
-|      |      |      |          |      |
-
-- 请求参数示例
-
-``` json
-{
-}
-```
-
+- 请求参数示例 无
 - 响应结果
 
 | 字段    | 说明       | 类型   | 是否必须 | 备注             |
@@ -1142,11 +1115,11 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明       | 类型   | 是否必须 | 备注             |
-| ------- | ---------- | ------ | -------- | ---------------- |
-| status  | 响应状态码 | int    | 是       |                  |
-| message | 响应消息   | String | 是       |                  |
-| object  | 详细消息   | obj    | 是       | 详细请看响应示例 |
+| 字段    | 说明       | 类型   | 备注             |
+| ------- | ---------- | ------ | ---------------- |
+| status  | 响应状态码 | int    |                  |
+| message | 响应消息   | String |                  |
+| object  | 详细消息   | obj    | 详细请看响应示例 |
 
 - 响应示例
 
@@ -1211,11 +1184,11 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明       | 类型   | 是否必须 | 备注             |
-| ------- | ---------- | ------ | -------- | ---------------- |
-| status  | 响应状态码 | int    | 是       |                  |
-| message | 响应消息   | String | 是       |                  |
-| object  | 详细消息   | obj    | 是       | 详细请看响应示例 |
+| 字段    | 说明       | 类型   | 备注             |
+| ------- | ---------- | ------ | ---------------- |
+| status  | 响应状态码 | int    |                  |
+| message | 响应消息   | String |                  |
+| object  | 详细消息   | obj    | 详细请看响应示例 |
 
 - 响应示例
 
@@ -1290,17 +1263,17 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段    | 说明   | 类型   | 是否必须 | 备注 |
-| ------- | ------ | ------ | -------- | ---- |
-| status  | 状态码 | int    | 是       |      |
-| message | 消息   | String | 是       |      |
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
 
 - 响应示例
 
 ``` json
 {
-    status:200,
-    ""
+    "status": 200,
+    "message": "success",
 }
 ```
 
@@ -1332,14 +1305,26 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段 | 说明 | 类型 | 是否必须 | 备注 |
-| ---- | ---- | ---- | -------- | ---- |
-|      |      |      |          |      |
+| 字段          | 说明                   | 类型   | 备注 |
+| ------------- | ---------------------- | ------ | ---- |
+| result        | 响应结果               | String |      |
+| beginFileName | 上传时文件名称         | String |      |
+| lastFileName  | 上传到服务器的文件名称 | String |      |
+| fileType      | 文件类型               | String |      |
+| fileSize      | 文件大小               | String |      |
+| uploadUrl     | 文件上传到的路径       | String |      |
 
 - 响应示例
 
 ``` json
-
+{
+    "result": "success",
+    "beginFileName": "头像.jpg",
+    "lastFileName": "7f0ea446b78a481fb96ba1cddd219f40.jpg",
+    "fileType": "jpg",
+    "fileSize": "59938",
+    "uploadUrl": "F:\\UPLOAD\\avatar\\7f0ea446b78a481fb96ba1cddd219f40.jpg"
+}
 ```
 
 
@@ -1366,14 +1351,26 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段 | 说明 | 类型 | 是否必须 | 备注 |
-| ---- | ---- | ---- | -------- | ---- |
-|      |      |      |          |      |
+| 字段          | 说明                   | 类型   | 备注 |
+| ------------- | ---------------------- | ------ | ---- |
+| result        | 响应结果               | String |      |
+| beginFileName | 上传时文件名称         | String |      |
+| lastFileName  | 上传到服务器的文件名称 | String |      |
+| fileType      | 文件类型               | String |      |
+| fileSize      | 文件大小               | String |      |
+| uploadUrl     | 文件上传到的路径       | String |      |
 
 - 响应示例
 
 ``` json
-
+{
+    "result": "success",
+    "beginFileName": "Alena.Aenami.full.2924984.png",
+    "lastFileName": "95a2f6e40b45418f9d2030d762a2bbec.png",
+    "fileType": "png",
+    "fileSize": "3091007",
+    "uploadUrl": "F:\\UPLOAD\\img\\95a2f6e40b45418f9d2030d762a2bbec.png"
+}
 ```
 
 
@@ -1402,32 +1399,15 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 - 响应结果
 
-| 字段 | 说明 | 类型 | 是否必须 | 备注 |
-| ---- | ---- | ---- | -------- | ---- |
-|      |      |      |          |      |
+| 字段 | 说明 | 类型 | 备注 |
+| ---- | ---- | ---- | ---- |
+|      |      |      |      |
 
 - 响应示例
 
 ``` json
 
 ```
-
-
-
-## 六、白盒测试
-
-### 1、登录界面
-
-**1. 等价类划分**
-
-- 1）成功登录
-- 2）失败
-
-**2. 设计测试用例**
-
-| 邮箱              | 密码   | 预期结果 | 实际结果 |
-| ----------------- | ------ | -------- | -------- |
-| guo_x0315@163.com | 123456 | 成功登录 |          |
 
 
 

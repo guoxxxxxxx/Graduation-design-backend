@@ -9,6 +9,9 @@ public interface ErrandMapper {
 
     int insert(Errand record);
 
+    /**
+     * 添加新的跑腿订单
+     */
     int insertSelective(Errand record);
 
     Errand selectByPrimaryKey(Integer eid);

@@ -1,4 +1,4 @@
-package com.hebust.mapper;
+package com.hebust.mapper.relation;
 
 import com.hebust.entity.errand.Errand;
 import com.hebust.entity.errand.ErrandImg;
@@ -22,4 +22,9 @@ public interface ErrandImgMapper {
      * 通过eid查询所有对应的图片
      */
     List<ErrandImg> selectAllByEid(Integer eid);
+
+    /**
+     * 将上传的图片名称保存到数据库中
+     */
+    int insertImgPath(String filename);
 }

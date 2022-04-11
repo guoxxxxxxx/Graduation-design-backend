@@ -1,6 +1,7 @@
 package com.hebust.entity.errand;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -57,6 +58,16 @@ public class Errand implements Serializable {
      * 截止日期
      */
     private Date deadline;
+
+    /**
+     * 发布时间
+     */
+    private Time pubtime;
+
+    /**
+     * 截止时间
+     */
+    private Time deadtime;
 
     /**
      * 是否删除, 1: 删除; 0: 未删除; 默认为0

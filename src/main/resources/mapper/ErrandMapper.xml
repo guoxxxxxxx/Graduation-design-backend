@@ -14,9 +14,11 @@
     <result column="pubdate" jdbcType="DATE" property="pubdate" />
     <result column="deadline" jdbcType="DATE" property="deadline" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-    <result column="details" property="details"/>
+    <result column="details" jdbcType="VARCHAR" property="details"/>
+    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
+    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
     <collection column="eid" property="imgUrls" ofType="com.hebust.entity.errand.ErrandImg"
-                select="com.hebust.mapper.ErrandImgMapper.selectAllByEid"/>
+                select="com.hebust.mapper.relation.ErrandImgMapper.selectAllByEid"/>
     <collection property="pubUser" column="uid" ofType="com.hebust.entity.user.User"
                 select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
   </resultMap>
@@ -32,11 +34,13 @@
     <result column="pubdate" jdbcType="DATE" property="pubdate" />
     <result column="deadline" jdbcType="DATE" property="deadline" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
-    <result column="details" property="details"/>
+    <result column="details" jdbcType="VARCHAR" property="details"/>
+    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
+    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
   </resultMap>
 
   <sql id="Base_Column_List">
-    eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details
+    eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details, pubtime, deadtime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -60,11 +64,13 @@
   <insert id="insert" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
     insert into errand (`uid`, euid, title, 
       money, is_achieve, category, 
-      pubdate, deadline, is_delete
+      pubdate, deadline, is_delete,
+      pubtime, deadtime
       )
     values (#{uid,jdbcType=INTEGER}, #{euid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{money,jdbcType=DOUBLE}, #{isAchieve,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
-      #{pubdate,jdbcType=DATE}, #{deadline,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER}
+      #{pubdate,jdbcType=DATE}, #{deadline,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER},
+      #{pubtime,jdbcType=TIME}, #{deadtime,jdbcType=TIME}
       )
   </insert>
   <insert id="insertSelective" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
@@ -97,6 +103,15 @@
       <if test="isDelete != null">
         is_delete,
       </if>
+      <if test="pubtime != null">
+        pubtime,
+      </if>
+      <if test="deadtime != null">
+        deadtime,
+      </if>
+      <if test="details != null">
+        details,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="uid != null">
@@ -125,6 +140,15 @@
       </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="pubtime != null">
+        #{pubtime,jdbcType=TIME},
+      </if>
+      <if test="deadtime != null">
+        #{deadtime,jdbcType=TIME},
+      </if>
+      <if test="details != null">
+        #{details,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -158,6 +182,12 @@
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
+      <if test="pubtime != null">
+        pubtime = #{pubtime,jdbcType=TIME},
+      </if>
+      <if test="deadtime != null">
+        deadtime = #{deadtime,jdbcType=TIME},
+      </if>
     </set>
     where eid = #{eid,jdbcType=INTEGER}
   </update>
@@ -171,7 +201,9 @@
       category = #{category,jdbcType=VARCHAR},
       pubdate = #{pubdate,jdbcType=DATE},
       deadline = #{deadline,jdbcType=DATE},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      pubtime = #{pubtime,jdbcType=TIME},
+      deadtime = #{deadtime,jdbcType=TIME}
     where eid = #{eid,jdbcType=INTEGER}
   </update>
 </mapper>

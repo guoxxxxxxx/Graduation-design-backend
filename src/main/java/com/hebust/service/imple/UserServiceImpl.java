@@ -5,6 +5,7 @@ import com.hebust.mapper.UserMapper;
 import com.hebust.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -19,6 +20,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int insert(User record) {
         return userMapper.insert(record);
     }
@@ -29,11 +31,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int updateByPrimaryKeySelective(User record) {
         return userMapper.updateByPrimaryKeySelective(record);
     }
 
     @Override
+    @Transactional
     public int updateByPrimaryKey(User record) {
         return userMapper.updateByPrimaryKey(record);
     }
@@ -54,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public int updateAvatarById(User user) {
         return userMapper.updateAvatarById(user);
     }

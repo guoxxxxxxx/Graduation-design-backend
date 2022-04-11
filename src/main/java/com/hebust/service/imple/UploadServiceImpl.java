@@ -4,6 +4,7 @@ import com.hebust.entity.UploadInfo;
 import com.hebust.service.UploadService;
 import com.hebust.utils.UUIDUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
@@ -16,6 +17,7 @@ public class UploadServiceImpl implements UploadService {
 
 
     @Override
+    @Transactional
     public UploadInfo upload(MultipartFile file, String uploadFilePath) throws Exception {
         // 判断文件是否为空
         if (file.isEmpty()){

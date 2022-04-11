@@ -5,6 +5,7 @@ import com.hebust.mapper.MailVerifyMapper;
 import com.hebust.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class MailServiceImpl implements MailService {
@@ -18,11 +19,13 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
+    @Transactional
     public int insertSelective(MailVerify record) {
         return mailVerifyMapper.insertSelective(record);
     }
 
     @Override
+    @Transactional
     public int updateVerifyCodeByEmail(MailVerify record) {
         return mailVerifyMapper.updateVerifyCodeByEmail(record);
     }

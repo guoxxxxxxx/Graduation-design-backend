@@ -5,6 +5,7 @@ import com.hebust.mapper.ErrandMapper;
 import com.hebust.service.ErrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,5 +28,11 @@ public class ErrandServiceImpl implements ErrandService {
     @Override
     public List<Errand> queryItemByCategory(String category) {
         return errandMapper.selectItemByCategory(category);
+    }
+
+    @Override
+    @Transactional
+    public int addErrandItem(Errand errand) {
+        return errandMapper.insertSelective(errand);
     }
 }
