@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.relation.ErrandImgMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.errand.ErrandImg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, eid, img_src
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from errand_img
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllByEid" resultType="com.hebust.entity.errand.ErrandImg">
+    select <include refid="Base_Column_List"/>
+    from errand_img
+    where eid = #{eid,jdbcType=INTEGER}
+  </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from errand_img
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.errand.ErrandImg" useGeneratedKeys="true">
+    insert into errand_img (eid, img_src)
+    values (#{eid,jdbcType=INTEGER}, #{imgSrc,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.errand.ErrandImg" useGeneratedKeys="true">
+    insert into errand_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        eid,
+      </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="eid != null">
+        #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertImgPath"></insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.errand.ErrandImg">
+    update errand_img
+    <set>
+      <if test="eid != null">
+        eid = #{eid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.errand.ErrandImg">
+    update errand_img
+    set eid = #{eid,jdbcType=INTEGER},
+      img_src = #{imgSrc,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

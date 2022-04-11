@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.ErrandMapper">
+
+  <!--查询所有信息 包括图片-->
+  <resultMap id="selectAll" type="com.hebust.entity.errand.Errand">
+    <id column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="euid" jdbcType="INTEGER" property="euid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="pubdate" jdbcType="DATE" property="pubdate" />
+    <result column="deadline" jdbcType="DATE" property="deadline" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="details" jdbcType="VARCHAR" property="details"/>
+    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
+    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
+    <collection column="eid" property="imgUrls" ofType="com.hebust.entity.errand.ErrandImg"
+                select="com.hebust.mapper.relation.ErrandImgMapper.selectAllByEid"/>
+    <collection property="pubUser" column="uid" ofType="com.hebust.entity.user.User"
+                select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+  </resultMap>
+
+  <resultMap id="BaseResultMap" type="com.hebust.entity.errand.Errand">
+    <id column="eid" jdbcType="INTEGER" property="eid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="euid" jdbcType="INTEGER" property="euid" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="pubdate" jdbcType="DATE" property="pubdate" />
+    <result column="deadline" jdbcType="DATE" property="deadline" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="details" jdbcType="VARCHAR" property="details"/>
+    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
+    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details, pubtime, deadtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from errand
+    where eid = #{eid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="selectAll">
+    select * from errand
+  </select>
+  <select id="selectDetailsByEid" resultMap="selectAll">
+    select * from errand where eid = #{eid,jdbcType=INTEGER}
+  </select>
+  <select id="selectItemByCategory" resultMap="selectAll">
+    select * from errand where category = #{category,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from errand
+    where eid = #{eid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
+    insert into errand (`uid`, euid, title, 
+      money, is_achieve, category, 
+      pubdate, deadline, is_delete,
+      pubtime, deadtime
+      )
+    values (#{uid,jdbcType=INTEGER}, #{euid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{money,jdbcType=DOUBLE}, #{isAchieve,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
+      #{pubdate,jdbcType=DATE}, #{deadline,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER},
+      #{pubtime,jdbcType=TIME}, #{deadtime,jdbcType=TIME}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
+    insert into errand
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="euid != null">
+        euid,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="isAchieve != null">
+        is_achieve,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="pubdate != null">
+        pubdate,
+      </if>
+      <if test="deadline != null">
+        deadline,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="pubtime != null">
+        pubtime,
+      </if>
+      <if test="deadtime != null">
+        deadtime,
+      </if>
+      <if test="details != null">
+        details,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="euid != null">
+        #{euid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="isAchieve != null">
+        #{isAchieve,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        #{pubdate,jdbcType=DATE},
+      </if>
+      <if test="deadline != null">
+        #{deadline,jdbcType=DATE},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="pubtime != null">
+        #{pubtime,jdbcType=TIME},
+      </if>
+      <if test="deadtime != null">
+        #{deadtime,jdbcType=TIME},
+      </if>
+      <if test="details != null">
+        #{details,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.errand.Errand">
+    update errand
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="euid != null">
+        euid = #{euid,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="isAchieve != null">
+        is_achieve = #{isAchieve,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        pubdate = #{pubdate,jdbcType=DATE},
+      </if>
+      <if test="deadline != null">
+        deadline = #{deadline,jdbcType=DATE},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="pubtime != null">
+        pubtime = #{pubtime,jdbcType=TIME},
+      </if>
+      <if test="deadtime != null">
+        deadtime = #{deadtime,jdbcType=TIME},
+      </if>
+    </set>
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.errand.Errand">
+    update errand
+    set `uid` = #{uid,jdbcType=INTEGER},
+      euid = #{euid,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      is_achieve = #{isAchieve,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
+      pubdate = #{pubdate,jdbcType=DATE},
+      deadline = #{deadline,jdbcType=DATE},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      pubtime = #{pubtime,jdbcType=TIME},
+      deadtime = #{deadtime,jdbcType=TIME}
+    where eid = #{eid,jdbcType=INTEGER}
+  </update>
+</mapper>

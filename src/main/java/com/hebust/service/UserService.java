@@ -30,4 +30,9 @@ public interface UserService {
      * 根据邮箱查询用户所有信息
      */
     User selectAllByEmail(String email);
+
+    /**
+     * 通过ID修改用户头像路径
+     */
+    int updateAvatarById(User user);
 }

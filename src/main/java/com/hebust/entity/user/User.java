@@ -75,5 +75,10 @@ public class User implements Serializable {
      */
     private String password;
 
+    /**
+     * 用户头像路径
+     */
+    private String avatarPath;
+
     private static final long serialVersionUID = 1L;
 }

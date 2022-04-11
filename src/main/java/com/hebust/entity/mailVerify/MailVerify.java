@@ -1,14 +1,14 @@
-package com.hebust.entity.mailVerif;
+package com.hebust.entity.mailVerify;
 
 import java.io.Serializable;
 import lombok.Data;
 
 /**
- * mail_verif
+ * mail_verify
  * @author 
  */
 @Data
-public class MailVerif implements Serializable {
+public class MailVerify implements Serializable {
     /**
      * 主键
      */
@@ -22,7 +22,7 @@ public class MailVerif implements Serializable {
     /**
      * 随机生成的验证码
      */
-    private String verifCode;
+    private String verifyCode;
 
     private static final long serialVersionUID = 1L;
 }

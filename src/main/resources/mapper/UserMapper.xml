@@ -15,9 +15,10 @@
     <result column="qq" jdbcType="VARCHAR" property="qq" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="password" jdbcType="VARCHAR" property="password"/>
+    <result column="avatar_path" jdbcType="VARCHAR" property="avatarPath"/>
   </resultMap>
   <sql id="Base_Column_List">
-    `uid`, `name`, sex, birthday, phone, faculty, grade, major, email, wechat, qq, is_delete, password
+    `uid`, `name`, sex, birthday, phone, faculty, grade, major, email, wechat, qq, is_delete, password, avatar_Path
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -101,10 +102,13 @@
       faculty = #{faculty,jdbcType=VARCHAR},
       grade = #{grade,jdbcType=CHAR},
       major = #{major,jdbcType=VARCHAR},
-      email = #{email,jdbcType=VARCHAR},
       wechat = #{wechat,jdbcType=VARCHAR},
-      qq = #{qq,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=INTEGER}
+      qq = #{qq,jdbcType=VARCHAR}
     where `uid` = #{uid,jdbcType=INTEGER}
+  </update>
+  <update id="updateAvatarById" parameterType="com.hebust.entity.user.User">
+    update user
+    set avatar_path = #{avatarPath,jdbcType=VARCHAR}
+    where uid = #{uid,jdbcType=INTEGER}
   </update>
 </mapper>
