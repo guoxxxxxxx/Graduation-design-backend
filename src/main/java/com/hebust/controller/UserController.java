@@ -38,10 +38,10 @@ public class UserController {
                         return new UserVO(401, "fail", null);
                     } else{
                         if (userInfo.getAvatarPath() == null){
-                            userInfo.setAvatarPath(ParamsConfig.AVATAR_BASE_PATH + "/avatar/default.png");
+                            userInfo.setAvatarPath(ParamsConfig.BASE_PATH + "/avatar/default.png");
                         }
                         else{
-                            userInfo.setAvatarPath(ParamsConfig.AVATAR_BASE_PATH + userInfo.getAvatarPath());
+                            userInfo.setAvatarPath(ParamsConfig.BASE_PATH + userInfo.getAvatarPath());
                         }
                         return new UserVO(200, "success", userInfo);
                     }

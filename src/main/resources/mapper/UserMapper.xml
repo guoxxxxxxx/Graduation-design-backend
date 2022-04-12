@@ -17,6 +17,14 @@
     <result column="password" jdbcType="VARCHAR" property="password"/>
     <result column="avatar_path" jdbcType="VARCHAR" property="avatarPath"/>
   </resultMap>
+
+  <!--简化版用户信息-->
+  <resultMap id="simplifyUser" type="com.hebust.entity.user.SimplifyUser">
+    <id property="id" jdbcType="INTEGER" column="uid"/>
+    <result property="nickName" jdbcType="VARCHAR" column="name"/>
+    <result property="avatar" jdbcType="VARCHAR" column="avatar_path"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     `uid`, `name`, sex, birthday, phone, faculty, grade, major, email, wechat, qq, is_delete, password, avatar_Path
   </sql>
@@ -36,6 +44,11 @@
     select <include refid="Base_Column_List" />
     from USER
     where `email` = #{email,jdbcType=VARCHAR} and is_delete != 1
+  </select>
+  <select id="selectSimplifyUserById" resultMap="simplifyUser">
+    select uid, name, avatar_path
+    from user
+    where uid = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user

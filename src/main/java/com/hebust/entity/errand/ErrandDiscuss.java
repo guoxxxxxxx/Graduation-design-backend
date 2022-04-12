@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.hebust.entity.user.SimplifyUser;
 import lombok.Data;
 
 /**
@@ -23,9 +24,19 @@ public class ErrandDiscuss implements Serializable {
     private Integer commentUid;
 
     /**
+     * 发布评论用户的详细信息
+     */
+    private SimplifyUser commentUser;
+
+    /**
      * 被评论用户
      */
     private Integer targetUid;
+
+    /**
+     * 被评论用户详细信息
+     */
+    private SimplifyUser targetUser;
 
     /**
      * 评论内容
@@ -33,14 +44,9 @@ public class ErrandDiscuss implements Serializable {
     private String content;
 
     /**
-     * 发表评论的日期
+     * 发表评论的日期时间
      */
-    private Date pubdate;
-
-    /**
-     * 发表评论的时间
-     */
-    private Date pubtime;
+    private String createDate;
 
     /**
      * 是否删除
@@ -55,7 +61,7 @@ public class ErrandDiscuss implements Serializable {
     /**
      * 该评论的子评论内容
      */
-    private List<ErrandReply> errandReplyList;
+    private List<ErrandReply> childrenList;
 
     private static final long serialVersionUID = 1L;
 }

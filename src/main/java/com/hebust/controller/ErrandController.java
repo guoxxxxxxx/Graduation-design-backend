@@ -1,7 +1,9 @@
 package com.hebust.controller;
 
+import com.hebust.config.ParamsConfig;
 import com.hebust.entity.errand.Errand;
 import com.hebust.entity.errand.ErrandDiscuss;
+import com.hebust.entity.errand.ErrandReply;
 import com.hebust.entity.errand.ErrandVO;
 import com.hebust.service.ErrandService;
 import com.hebust.service.relation.ErrandDiscussService;
@@ -203,6 +205,27 @@ public class ErrandController {
         }
         else {
             List<ErrandDiscuss> errandDiscusses = errandDiscussService.selectAllDiscussByEid(eid);
+            // 补全路径地址
+            if (errandDiscusses != null) {
+                for (ErrandDiscuss discuss : errandDiscusses) {
+                    if (discuss.getCommentUser() != null && !discuss.getCommentUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                        discuss.getCommentUser().setAvatar(ParamsConfig.BASE_PATH + discuss.getCommentUser().getAvatar());
+                    }
+                    if (discuss.getTargetUser() != null && !discuss.getTargetUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                        discuss.getTargetUser().setAvatar(ParamsConfig.BASE_PATH + discuss.getTargetUser().getAvatar());
+                    }
+                    if (discuss.getChildrenList() != null) {
+                        for (ErrandReply reply : discuss.getChildrenList()) {
+                            if (reply.getCommentUser() != null && !reply.getCommentUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                                reply.getCommentUser().setAvatar(ParamsConfig.BASE_PATH + reply.getCommentUser().getAvatar());
+                            }
+                            if (reply.getTargetUser() != null && !reply.getTargetUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                                reply.getTargetUser().setAvatar(ParamsConfig.BASE_PATH + reply.getTargetUser().getAvatar());
+                            }
+                        }
+                    }
+                }
+            }
             return new ErrandVO(200, "success", errandDiscusses);
         }
     }

@@ -58,7 +58,7 @@ USE assistance;
 
 
 
-#### 1) **user（用户信息表）**（实体）
+#### 1. user 用户信息表 
 
 | 字段        | 类型         | 说明                                             |
 | ----------- | ------------ | ------------------------------------------------ |
@@ -104,7 +104,7 @@ PRIMARY KEY (uid)
 
 
 
-#### 2) **errand(跑腿区信息表)**（实体）
+#### 2. errand 跑腿区信息表
 
 | 字段       | 类型         | 说明                                          |
 | ---------- | ------------ | --------------------------------------------- |
@@ -151,7 +151,7 @@ FOREIGN KEY (euid) REFERENCES USER(uid)
 
 
 
-#### 3)**study(学习交流表)**（实例）
+#### 3. **study 学习交流表**
 
 | 字段       | 类型         | 说明                                      |
 | ---------- | ------------ | ----------------------------------------- |
@@ -188,7 +188,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-#### 4) **trade（交易区）**（实体）
+#### 4. trade 交易区  
 
 | 字段      | 类型         | 说明                                              |
 | --------- | ------------ | ------------------------------------------------- |
@@ -223,7 +223,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-#### 5) **lost_found（失物招领）**（实体）
+#### 5.  lost_found 失物招领 
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -258,7 +258,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-#### 6) **help（互助 校友圈）**（实体）
+#### 6.  help 互助 校友圈 
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -289,7 +289,7 @@ FOREIGN KEY (uid) REFERENCES USER(uid)
 
 
 
-#### 7) **s_discuss(用户学习讨论表)**（关系）
+#### 7. **s_discuss 用户学习讨论表 **
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -321,7 +321,7 @@ FOREIGN KEY (sid) REFERENCES study(sid)
 
 
 
-#### 8) **s_reply(学习评论回复表)**（关系）
+#### 8. s_reply 学习评论回复表   
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -356,7 +356,7 @@ FOREIGN KEY (discuss_id) REFERENCES s_discuss(id)
 
 
 
-#### 9) **t_discuss(交易评论表)**（关系）
+#### 9. **t_discuss 交易评论表 **  
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -388,7 +388,7 @@ FOREIGN KEY (tid) REFERENCES trade(tid)
 
 
 
-#### 10) **t_reply(交易回复表)**(关系)
+#### 10. **t_reply 交易回复表 ** 
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -423,7 +423,7 @@ FOREIGN KEY (discuss_id) REFERENCES t_discuss(id)
 
 
 
-#### 11) **f_discuss(失物招领评论表)**
+#### 11. **f_discuss 失物招领评论表 **
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -453,7 +453,7 @@ FOREIGN KEY (lid) REFERENCES lost_found(lid)
 
 
 
-#### 12) **f_reply(失物招领回复表)**(关系)
+#### 12.  f_reply 失物招领回复表  
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -486,7 +486,7 @@ FOREIGN KEY (discuss_id) REFERENCES f_discuss(id)
 
 
 
-#### 13) **h_discuss(互助评论表)**
+#### 13. **h_discuss 互助评论表 **
 
 | 字段      | 类型         | 说明                                    |
 | --------- | ------------ | --------------------------------------- |
@@ -518,7 +518,7 @@ FOREIGN KEY (hid) REFERENCES HELP(hid)
 
 
 
-#### 14) **h_reply(互助回复表)**(关系)
+#### 14. **h_reply 互助回复表 ** 
 
 | 字段       | 类型         | 说明                                    |
 | ---------- | ------------ | --------------------------------------- |
@@ -551,7 +551,7 @@ FOREIGN KEY (discuss_id) REFERENCES h_discuss(id)
 
 
 
-#### 15) mail_verif邮箱验证码暂存表
+#### 15. mail_verif 邮箱验证码暂存表
 
 | 字段名     | 类型        | 说明             |
 | ---------- | ----------- | ---------------- |
@@ -572,7 +572,7 @@ PRIMARY KEY (id)
 
 
 
-#### 15) errand_img跑腿区图片存储表
+#### 15. errand_img 跑腿区图片存储表
 
 | 字段名    | 类型         | 说明                   |
 | --------- | ------------ | ---------------------- |
@@ -594,6 +594,69 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 ```
 
 
+
+#### 16. errand_discuss 跑腿区评论表
+
+| 字段名      | 类型         | 说明                 |
+| ----------- | ------------ | -------------------- |
+| id          | int          | 主键 自增            |
+| eid         | int          | 该评论所属的跑腿订单 |
+| comment_uid | INT          | 发布评论的用户id     |
+| target_uid  | INT          | 被评论用户id         |
+| content     | VARCHAR(500) | 评论内容             |
+| pubdate     | DATE         | 发表评论的日期       |
+| pubtime     | TIME         | 发表评论的时间       |
+| is_delete   | INT          | 是否删除             |
+
+```sql
+-- 创建跑腿用户评论表
+CREATE TABLE errand_discuss(
+id INT AUTO_INCREMENT COMMENT '主键自增',
+eid INT NOT NULL COMMENT '该评论所属的跑腿订单',
+comment_uid INT NOT NULL COMMENT '发布评论的用户id',
+target_uid INT COMMENT '被评论用户',
+content VARCHAR(500) NOT NULL COMMENT '评论内容',
+pubdate	DATE COMMENT '发表评论的日期',
+pubtime TIME COMMENT '发表评论的时间',
+is_delete INT DEFAULT '0' COMMENT '是否删除',
+PRIMARY KEY (id),
+FOREIGN KEY (comment_uid) REFERENCES USER(uid),
+FOREIGN KEY (target_uid) REFERENCES USER(uid)
+);
+```
+
+
+
+#### 17. errand_reply 跑腿区评论回复表
+
+| 字段名            | 类型         | 说明             |
+| ----------------- | ------------ | ---------------- |
+| id                | int          | 主键 自增        |
+| parent_discuss_id | INT          | 所属父评论id     |
+| comment_uid       | INT          | 发布评论的用户id |
+| target_uid        | INT          | 被评论用户id     |
+| content           | VARCHAR(500) | 评论内容         |
+| pubdate           | DATE         | 发表评论的日期   |
+| pubtime           | TIME         | 发表评论的时间   |
+| is_delete         | INT          | 是否删除         |
+
+``` sql
+-- 创建跑腿用户评论回复表
+CREATE TABLE errand_reply(
+id INT AUTO_INCREMENT COMMENT '主键自增',
+parent_discuss_id INT NOT NULL COMMENT '所属父评论id',
+comment_uid INT NOT NULL COMMENT '发布评论的用户id',
+target_uid INT COMMENT '被评论用户',
+content VARCHAR(500) NOT NULL COMMENT '评论内容',
+pubdate	DATE COMMENT '发表评论的日期',
+pubtime TIME COMMENT '发表评论的时间',
+is_delete INT DEFAULT '0' COMMENT '是否删除',
+PRIMARY KEY (id),
+FOREIGN KEY (comment_uid) REFERENCES USER(uid),
+FOREIGN KEY (target_uid) REFERENCES USER(uid),
+FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id) 
+);
+```
 
 
 
@@ -1463,6 +1526,126 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 {
     "status": 200,
     "message": "success",
+}
+```
+
+
+
+#### 9. 通过eid查询订单对应的评论信息
+
+- 名称:	queryAllCommentsAndChildComments
+- 描述：通过eid查询订单对应的评论信息
+- URL: http://localhost:8080/errand/queryAllCommentsAndChildComments
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明         | 类型 | 是否必须 | 备注 |
+| ---- | ------------ | ---- | -------- | ---- |
+| eid  | 跑腿订单主键 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid":33
+}
+```
+
+- 响应结果
+
+| 字段    | 说明         | 类型   | 备注         |
+| ------- | ------------ | ------ | ------------ |
+| status  | 状态码       | int    |              |
+| message | 消息         | String |              |
+| object  | 具体查询对象 | obj    | 详情请见示例 |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "id": 1,
+            "commentUid": 27,
+            "commentUser": {
+                "id": 27,
+                "nickName": "郭迅",
+                "avatar": "http://localhost:8080/avatar/871eb6b698104be9842123bbdf978cbf.jpg"
+            },
+            "targetUid": 28,
+            "targetUser": {
+                "id": 28,
+                "nickName": "闪光皮皮",
+                "avatar": "http://localhost:8080/avatar/default.png"
+            },
+            "content": "郭迅->闪光皮皮",
+            "createDate": "2022-04-12 19:18:54",
+            "isDelete": 0,
+            "eid": 30,
+            "childrenList": [
+                {
+                    "id": 1,
+                    "parentDiscussId": 1,
+                    "commentUid": 3,
+                    "commentUser": {
+                        "id": 3,
+                        "nickName": "张思恺",
+                        "avatar": "http://localhost:8080/avatar/5c113c3a597244d091d462c8b6cdf1cb.png"
+                    },
+                    "targetUid": 2,
+                    "targetUser": {
+                        "id": 2,
+                        "nickName": "李子",
+                        "avatar": "http://localhost:8080/avatar/d9259de915b843feaee191922e684fee.jpg"
+                    },
+                    "content": "思凯->子轩",
+                    "createDate": "2022-04-12 19:20:18",
+                    "isDelete": 0
+                },
+                {
+                    "id": 2,
+                    "parentDiscussId": 1,
+                    "commentUid": 28,
+                    "commentUser": {
+                        "id": 28,
+                        "nickName": "闪光皮皮",
+                        "avatar": "http://localhost:8080/avatar/default.png"
+                    },
+                    "targetUid": 27,
+                    "targetUser": {
+                        "id": 27,
+                        "nickName": "郭迅",
+                        "avatar": "http://localhost:8080/avatar/871eb6b698104be9842123bbdf978cbf.jpg"
+                    },
+                    "content": "闪光皮皮",
+                    "createDate": "2022-04-12 20:03:20",
+                    "isDelete": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "commentUid": 4,
+            "commentUser": {
+                "id": 4,
+                "nickName": "谭帅华",
+                "avatar": "http://localhost:8080/avatar/default.png"
+            },
+            "targetUid": 3,
+            "targetUser": {
+                "id": 3,
+                "nickName": "张思恺",
+                "avatar": "http://localhost:8080/avatar/5c113c3a597244d091d462c8b6cdf1cb.png"
+            },
+            "content": "菜鸡->思凯",
+            "createDate": "2022-04-12 19:19:31",
+            "isDelete": 0,
+            "eid": 30,
+            "childrenList": []
+        }
+    ]
 }
 ```
 

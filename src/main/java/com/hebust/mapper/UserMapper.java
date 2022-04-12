@@ -1,5 +1,6 @@
 package com.hebust.mapper;
 
+import com.hebust.entity.user.SimplifyUser;
 import com.hebust.entity.user.User;
 
 public interface UserMapper {
@@ -32,4 +33,9 @@ public interface UserMapper {
      * 通过id修改用户头像信息
      */
     int updateAvatarById(User record);
+
+    /**
+     * 通过id查询简化版用户信息
+     */
+    SimplifyUser selectSimplifyUserById(int id);
 }
