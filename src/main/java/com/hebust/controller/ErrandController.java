@@ -1,8 +1,10 @@
 package com.hebust.controller;
 
 import com.hebust.entity.errand.Errand;
+import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandVO;
 import com.hebust.service.ErrandService;
+import com.hebust.service.relation.ErrandDiscussService;
 import com.hebust.service.relation.ErrandImgService;
 import com.hebust.utils.DateUtils;
 import com.hebust.utils.SimplifyDetailsUtils;
@@ -26,6 +28,8 @@ public class ErrandController {
     private ErrandService errandService;
     @Autowired
     private ErrandImgService errandImgService;
+    @Autowired
+    private ErrandDiscussService errandDiscussService;
 
     /**
      * 查询所有跑腿订单
@@ -186,6 +190,20 @@ public class ErrandController {
             else {
                 return ErrandVO.FAIL;
             }
+        }
+    }
+
+    /**
+     * 通过eid查询订单所有评论及其子评论
+     */
+    @RequestMapping("queryAllCommentsAndChildComments")
+    public ErrandVO queryAllCommentsAndChildComments(@RequestParam int eid){
+        if (eid == 0){
+            return ErrandVO.FAIL;
+        }
+        else {
+            List<ErrandDiscuss> errandDiscusses = errandDiscussService.selectAllDiscussByEid(eid);
+            return new ErrandVO(200, "success", errandDiscusses);
         }
     }
 
