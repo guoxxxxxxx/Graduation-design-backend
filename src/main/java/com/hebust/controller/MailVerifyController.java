@@ -46,7 +46,7 @@ public class MailVerifyController {
                     // 否则执行插入操作
                     mailService.insertSelective(mailVerify);
                 }
-//                SendRandomCode.sendMessage(randomCode, email);
+                SendRandomCode.sendMessage(randomCode, email);
                 return new MailVerifyVO(200, "success", null);
             } else {
                 // 若邮箱不存在数据库中 发送401状态码
@@ -76,7 +76,7 @@ public class MailVerifyController {
                 mailService.insertSelective(mailVerify);
             }
             // 向用户发送邮件
-//            SendRandomCode.sendMessage(randomCode, email);
+            SendRandomCode.sendMessage(randomCode, email);
             return new MailVerifyVO(200, "success", null);
         }
     }

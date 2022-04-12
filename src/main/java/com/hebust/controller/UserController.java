@@ -69,6 +69,8 @@ public class UserController {
                 // 用户已被注册
                 return new UserVO(402, "fail", null);
             } else {
+                // 设置初始化信息
+                user.setIsDelete(0);
                 // 将用户插入到数据库中
                 int i = userService.insert(user);
                 if (i > 0){

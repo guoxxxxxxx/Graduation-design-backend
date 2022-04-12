@@ -1183,6 +1183,8 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 #### 3. 根据种类查询跑腿订单信息
 
+**（暂时已被弃用，目前使用Vue中的过滤器来过滤属性，以减小服务器的开销）**
+
 - 名称:	/queryItemByCategory
 - 描述：根据种类查询跑腿订单信息
 - URL: http://localhost:8080/errand/queryItemByCategory

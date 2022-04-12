@@ -10,7 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/assistance?characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 123456
-  # 访问的本地资源路径
+  # 访问的本地资源路径 修改文件保存路径时修改此路径即可
   web:
     resources:
       static-locations: file:F:\\UPLOAD
