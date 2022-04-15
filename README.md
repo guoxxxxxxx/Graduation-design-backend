@@ -1838,7 +1838,7 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 ### 5. 学习交流模块
 
-#### 1. 向学习表中添加新项目
+#### 1. 向学习表中添加新项目 以及 上传的图片
 
 - 名称:	addNewItem
 - 描述：向学习表中添加新项目
@@ -1846,12 +1846,13 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 - 请求方式: GET
 - 请求参数
 
-| 字段     | 说明             | 类型   | 是否必须 | 备注 |
-| -------- | ---------------- | ------ | -------- | ---- |
-| uid      | 发布信息用户的id | int    | 是       |      |
-| title    | 标题             | String | 是       |      |
-| category | 所属种类         | String | 是       |      |
-| details  | 详细信息         | String | 是       |      |
+| 字段     | 说明             | 类型     | 是否必须 | 备注 |
+| -------- | ---------------- | -------- | -------- | ---- |
+| uid      | 发布信息用户的id | int      | 是       |      |
+| title    | 标题             | String   | 是       |      |
+| category | 所属种类         | String   | 是       |      |
+| details  | 详细信息         | String   | 是       |      |
+| imgUrls  | 上传的图片名称   | String[] | 是       |      |
 
 - 请求参数示例
 
@@ -1860,16 +1861,18 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
     "uid":1,
     "title":"测试",
     "category":"种类",
-    details:"详细信息"
+    "details":"详细信息",
+    "imgUrls":[]
 }
 ```
 
 - 响应结果
 
-| 字段    | 说明   | 类型   | 备注 |
-| ------- | ------ | ------ | ---- |
-| status  | 状态码 | int    |      |
-| message | 消息   | String |      |
+| 字段    | 说明           | 类型   | 备注 |
+| ------- | -------------- | ------ | ---- |
+| status  | 状态码         | int    |      |
+| message | 消息           | String |      |
+| object  | 发布新消息的id | int    |      |
 
 - 响应示例
 
@@ -1877,6 +1880,7 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 {
     "status":200,
     "message":"success"
+    "object": 1,
 }
 ```
 
@@ -1985,6 +1989,150 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
     "sataus": 200,
     "message": "success", 
     object: 100
+}
+```
+
+
+
+#### 4. 通过sid查询该学习项目的详细信息
+
+- 名称:	selectDetailsBySid
+- 描述：通过sid查询该学习项目的详细信息
+- URL: http://localhost:8080/study/selectDetailsBySid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明               | 类型 | 是否必须 | 备注 |
+| ---- | ------------------ | ---- | -------- | ---- |
+| sid  | 所要查询项目的主键 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+
+```
+
+
+
+#### 5. 通过sid查询当前项目的评论信息及回复信息
+
+- 名称:	selectDiscussBySid
+- 描述：通过sid查询当前项目的评论信息及回复信息
+- URL: http://localhost:8080/study/selectDiscussBySid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明           | 类型 | 是否必须 | 备注 |
+| ---- | -------------- | ---- | -------- | ---- |
+| sid  | 所要查询的项目 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明               | 类型   | 备注             |
+| ------- | ------------------ | ------ | ---------------- |
+| status  | 状态码             | int    |                  |
+| message | 消息               | String |                  |
+| object  | 具体所要查询的对象 | object | 详情请看响应示例 |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "id": 1,
+            "sid": 1,
+            "commentUid": 1,
+            "content": "这个是测试内容！",
+            "createDate": "2022-04-15T18:43:12.000+00:00",
+            "isDelete": 0,
+            "childrenList": [
+                {
+                    "id": 100000,
+                    "parentDiscussId": 1,
+                    "commentUid": 2,
+                    "targetUid": 1,
+                    "content": "这个是第一个评论的回复测试\r\n",
+                    "createDate": "2022-04-15T18:44:16.000+00:00",
+                    "isDelete": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "sid": 1,
+            "commentUid": 4,
+            "content": "这个是第二个测试内容！",
+            "createDate": "2022-04-15T18:43:41.000+00:00",
+            "isDelete": 0,
+            "childrenList": []
+        }
+    ]
+}
+```
+
+
+
+#### 6. 通过sid查询当前项目的评论总条数
+
+- 名称: selectDiscussCountBySid
+- 描述：通过sid查询当前项目的评论总条数
+- URL: http://localhost:8080/study/selectDiscussCountBySid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明            | 类型 | 是否必须 | 备注 |
+| ---- | --------------- | ---- | -------- | ---- |
+| sid  | 所查询界面的sid | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明         | 类型   | 备注 |
+| ------- | ------------ | ------ | ---- |
+| status  | 状态码       | int    |      |
+| message | 消息         | String |      |
+| object  | 评论信息数量 | object |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success",
+    "objec"
 }
 ```
 

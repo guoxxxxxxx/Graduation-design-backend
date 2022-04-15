@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.relation.StudyReplyMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.study.StudyReply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_discuss_id" jdbcType="INTEGER" property="parentDiscussId" />
+    <result column="comment_uid" jdbcType="INTEGER" property="commentUid" />
+    <result column="target_uid" jdbcType="INTEGER" property="targetUid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+
+  <!--包含发布用户详细信息 和 被接收用户详细信息-->
+  <resultMap id="allInfo" type="com.hebust.entity.study.StudyReply">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="parent_discuss_id" jdbcType="INTEGER" property="parentDiscussId" />
+    <result column="comment_uid" jdbcType="INTEGER" property="commentUid" />
+    <result column="target_uid" jdbcType="INTEGER" property="targetUid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <association property="commentUser" column="comment_uid" select="com.hebust.mapper.UserMapper.selectSimplifyUserById"/>
+    <association property="targetUser" column="target_uid" select="com.hebust.mapper.UserMapper.selectSimplifyUserById"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, parent_discuss_id, comment_uid, target_uid, content, create_date, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from study_reply
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+    <select id="selectReplyByFatherId" resultMap="allInfo" >
+      select * from study_reply
+      where parent_discuss_id = #{fid}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from study_reply
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.study.StudyReply" useGeneratedKeys="true">
+    insert into study_reply (parent_discuss_id, comment_uid, target_uid, 
+      content, create_date, is_delete
+      )
+    values (#{parentDiscussId,jdbcType=INTEGER}, #{commentUid,jdbcType=INTEGER}, #{targetUid,jdbcType=INTEGER}, 
+      #{content,jdbcType=VARCHAR}, #{createDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.study.StudyReply" useGeneratedKeys="true">
+    insert into study_reply
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="parentDiscussId != null">
+        parent_discuss_id,
+      </if>
+      <if test="commentUid != null">
+        comment_uid,
+      </if>
+      <if test="targetUid != null">
+        target_uid,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="createDate != null">
+        create_date,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="parentDiscussId != null">
+        #{parentDiscussId,jdbcType=INTEGER},
+      </if>
+      <if test="commentUid != null">
+        #{commentUid,jdbcType=INTEGER},
+      </if>
+      <if test="targetUid != null">
+        #{targetUid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.study.StudyReply">
+    update study_reply
+    <set>
+      <if test="parentDiscussId != null">
+        parent_discuss_id = #{parentDiscussId,jdbcType=INTEGER},
+      </if>
+      <if test="commentUid != null">
+        comment_uid = #{commentUid,jdbcType=INTEGER},
+      </if>
+      <if test="targetUid != null">
+        target_uid = #{targetUid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="createDate != null">
+        create_date = #{createDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.study.StudyReply">
+    update study_reply
+    set parent_discuss_id = #{parentDiscussId,jdbcType=INTEGER},
+      comment_uid = #{commentUid,jdbcType=INTEGER},
+      target_uid = #{targetUid,jdbcType=INTEGER},
+      content = #{content,jdbcType=VARCHAR},
+      create_date = #{createDate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -46,7 +46,7 @@ public class Study implements Serializable {
     /**
      * 提交时间
      */
-    private Date pubdate;
+    private String pubdate;
 
     /**
      * 是否已解决, 1:已解决 0:未解决 默认为0

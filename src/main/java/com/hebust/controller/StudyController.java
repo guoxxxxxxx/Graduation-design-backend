@@ -1,9 +1,9 @@
 package com.hebust.controller;
 
 import com.hebust.config.ParamsConfig;
-import com.hebust.entity.study.Study;
-import com.hebust.entity.study.StudyImg;
-import com.hebust.entity.study.StudyVO;
+import com.hebust.entity.errand.ErrandDiscuss;
+import com.hebust.entity.errand.ErrandReply;
+import com.hebust.entity.study.*;
 import com.hebust.entity.user.User;
 import com.hebust.service.StudyService;
 import com.hebust.utils.DateUtils;
@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -34,7 +35,7 @@ public class StudyController {
             return StudyVO.FAIL;
         }
         else {
-            item.setPubdate(DateUtils.getCurrentDateTime());
+            item.setPubdate(DateUtils.getCurrentDateTimeString());
             int i = studyService.addNewItem(item);
             // count 成功插入的数据数量
             int count = 0;
@@ -46,7 +47,7 @@ public class StudyController {
                 count += studyService.insertImage(img);
             }
             if (i == 1 && count == item.getImgUrls().size()){
-                return StudyVO.SUCCESS;
+                return new StudyVO(200, "success", item.getSid());
             }
             else {
                 return StudyVO.FAIL;
@@ -72,15 +73,53 @@ public class StudyController {
         return new StudyVO(200, "success", i);
     }
 
-
-
+    /**
+     * 通过sid查询该学习订单的所有信息 并补全图片路径信息
+     */
+    @RequestMapping("selectDetailsBySid")
+    public StudyVO selectDetailsBySid(@RequestParam int sid){
+        Study study = studyService.selectDetailsBySid(sid);
+        List<String> newImgList = new ArrayList<>();
+        for (String imgUrl : study.getImgUrls()) {
+            newImgList.add(ParamsConfig.BASE_PATH + imgUrl);
+        }
+        study.setImgUrls(newImgList);
+        return new StudyVO(200, "success", study);
+    }
 
     /**
-     * 测试
+     * 通过sid查询当前项目的评论信息及回复信息 分页查询
      */
-    @RequestMapping("/test")
-    public void test(@RequestBody User user, @RequestParam(defaultValue = "1") int page){
-        System.out.println(user);
-        System.out.println("page = " + page);
+    @RequestMapping("/selectDiscussBySid")
+    public StudyVO selectDiscussBySid(@RequestParam int sid){
+        List<StudyDiscuss> studyDiscusses = studyService.selectDiscussBySid(sid);
+        // 补全所查询信息里面的头像路径
+        if (studyDiscusses != null) {
+            for (StudyDiscuss discuss : studyDiscusses) {
+                if (discuss.getCommentUser() != null && !discuss.getCommentUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                    discuss.getCommentUser().setAvatar(ParamsConfig.BASE_PATH + discuss.getCommentUser().getAvatar());
+                }
+                if (discuss.getChildrenList() != null) {
+                    for (StudyReply reply : discuss.getChildrenList()) {
+                        if (reply.getCommentUser() != null && !reply.getCommentUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                            reply.getCommentUser().setAvatar(ParamsConfig.BASE_PATH + reply.getCommentUser().getAvatar());
+                        }
+                        if (reply.getTargetUser() != null && !reply.getTargetUser().getAvatar().contains(ParamsConfig.BASE_PATH)) {
+                            reply.getTargetUser().setAvatar(ParamsConfig.BASE_PATH + reply.getTargetUser().getAvatar());
+                        }
+                    }
+                }
+            }
+        }
+        return new StudyVO(200, "success", studyDiscusses);
+    }
+
+    /**
+     * 通过sid查询当前界面所拥有的数量评论数量
+     */
+    @RequestMapping("/selectDiscussCountBySid")
+    public StudyVO selectDiscussCountBySid(@RequestParam int sid){
+        int i = studyService.selectDiscussCountBySid(sid);
+        return new StudyVO(200, "success", i);
     }
 }

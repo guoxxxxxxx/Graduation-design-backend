@@ -2,8 +2,10 @@ package com.hebust.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.hebust.entity.study.Study;
+import com.hebust.entity.study.StudyDiscuss;
 import com.hebust.entity.study.StudyImg;
 import com.hebust.mapper.StudyMapper;
+import com.hebust.mapper.relation.StudyDiscussMapper;
 import com.hebust.mapper.relation.StudyImgMapper;
 import com.hebust.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,12 @@ public class StudyServiceImpl implements StudyService {
      */
     @Autowired
     private StudyImgMapper studyImgMapper;
+
+    /**
+     * 评论操作mapper
+     */
+    @Autowired
+    private StudyDiscussMapper studyDiscussMapper;
 
     @Override
     public int addNewItem(Study study) {
@@ -51,5 +59,20 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int insertImage(StudyImg record) {
         return studyImgMapper.insertImage(record);
+    }
+
+    @Override
+    public Study selectDetailsBySid(int sid) {
+        return studyMapper.selectByPrimaryKey(sid);
+    }
+
+    @Override
+    public List<StudyDiscuss> selectDiscussBySid(int sid) {
+        return studyDiscussMapper.selectDiscussBySid(sid);
+    }
+
+    @Override
+    public int selectDiscussCountBySid(int sid) {
+        return studyDiscussMapper.selectDiscussCountBySid(sid);
     }
 }

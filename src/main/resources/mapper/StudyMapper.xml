@@ -29,11 +29,11 @@
   <sql id="Base_Column_List">
     sid, `uid`, category, title, details, pubdate, is_achieve, is_delete
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="allInfo">
     select 
     <include refid="Base_Column_List" />
     from study
-    where sid = #{sid,jdbcType=INTEGER}
+    where sid = #{sid}
   </select>
   <select id="selectAll" resultMap="allInfo" >
     select * from study where is_delete != 1

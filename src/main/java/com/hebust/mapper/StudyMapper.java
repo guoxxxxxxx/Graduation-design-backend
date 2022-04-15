@@ -11,6 +11,9 @@ public interface StudyMapper {
 
     int insertSelective(Study record);
 
+    /**
+     * 通过sid查询项目的详细信息
+     */
     Study selectByPrimaryKey(Integer sid);
 
     int updateByPrimaryKeySelective(Study record);
