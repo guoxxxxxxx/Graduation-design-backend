@@ -1,5 +1,6 @@
 package com.hebust.controller;
 
+import com.hebust.config.ParamsConfig;
 import com.hebust.entity.UploadInfo;
 import com.hebust.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,6 @@ public class UploadController {
 
     @Autowired
     private UploadService uploadService;
-    private final static String UPLOAD_AVATAR_PATH = "F:/UPLOAD/avatar";
-    private final static String UPLOAD_IMG_PATH = "F:/UPLOAD/img";
 
     /**
      * 上传用户头像
@@ -24,7 +23,7 @@ public class UploadController {
     public UploadInfo uploadAvatar(@RequestParam("file")MultipartFile file){
         UploadInfo uploadInfo = null;
         try {
-            uploadInfo = uploadService.upload(file, UPLOAD_AVATAR_PATH);
+            uploadInfo = uploadService.upload(file, ParamsConfig.UPLOAD_AVATAR_PATH);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -38,7 +37,7 @@ public class UploadController {
     public UploadInfo uploadItemImg(@RequestParam("file")MultipartFile file){
         UploadInfo uploadInfo = null;
         try {
-            uploadInfo = uploadService.upload(file, UPLOAD_IMG_PATH);
+            uploadInfo = uploadService.upload(file, ParamsConfig.UPLOAD_IMG_PATH);
         }catch (Exception e){
             e.printStackTrace();
         }

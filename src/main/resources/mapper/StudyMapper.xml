@@ -23,6 +23,8 @@
     <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+    <collection property="imgUrls" column="sid" ofType="java.lang.String"
+                select="com.hebust.mapper.relation.StudyImgMapper.selectAllImgBySid"/>
   </resultMap>
   <sql id="Base_Column_List">
     sid, `uid`, category, title, details, pubdate, is_achieve, is_delete

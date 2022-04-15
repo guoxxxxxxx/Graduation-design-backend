@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.relation.StudyImgMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.study.StudyImg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="sid" jdbcType="INTEGER" property="sid" />
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sid, img_src, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from study_img
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAllImgBySid" resultType="java.lang.String">
+    select img_src from study_img where sid = #{sid} and is_delete != 1
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from study_img
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.study.StudyImg" useGeneratedKeys="true">
+    insert into study_img (sid, img_src, is_delete
+      )
+    values (#{sid,jdbcType=INTEGER}, #{imgSrc,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.study.StudyImg" useGeneratedKeys="true">
+    insert into study_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertImage">
+    insert into study_img(sid, img_src) values (#{sid}, #{imgSrc})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.study.StudyImg">
+    update study_img
+    <set>
+      <if test="sid != null">
+        sid = #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.study.StudyImg">
+    update study_img
+    set sid = #{sid,jdbcType=INTEGER},
+      img_src = #{imgSrc,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

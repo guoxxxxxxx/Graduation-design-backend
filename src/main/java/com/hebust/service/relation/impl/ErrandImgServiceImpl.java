@@ -1,8 +1,10 @@
 package com.hebust.service.relation.impl;
 
+import com.hebust.config.ParamsConfig;
 import com.hebust.entity.errand.ErrandImg;
 import com.hebust.mapper.relation.ErrandImgMapper;
 import com.hebust.service.relation.ErrandImgService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +16,6 @@ public class ErrandImgServiceImpl implements ErrandImgService {
     @Autowired
     private ErrandImgMapper errandImgMapper;
 
-    /**
-     * 图片上传的二级路径
-     */
-    private static final String IMG_UPLOAD_PATH = "/img/";
 
     @Override
     public int insertErrandImg(int eid, List<String> paths) {
@@ -25,7 +23,7 @@ public class ErrandImgServiceImpl implements ErrandImgService {
         for (String path : paths) {
             ErrandImg errandImg = new ErrandImg();
             errandImg.setEid(eid);
-            errandImg.setImgSrc(IMG_UPLOAD_PATH + path);
+            errandImg.setImgSrc(ParamsConfig.IMG_UPLOAD_PATH + path);
             count += errandImgMapper.insert(errandImg);
         }
         return count;

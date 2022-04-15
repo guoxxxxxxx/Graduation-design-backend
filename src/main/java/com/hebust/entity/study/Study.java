@@ -2,6 +2,7 @@ package com.hebust.entity.study;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.hebust.entity.user.User;
 import lombok.Data;
@@ -56,6 +57,11 @@ public class Study implements Serializable {
      * 是否删除, 1: 删除; 0: 未删除; 默认为0
      */
     private Integer isDelete;
+
+    /**
+     * 该学习项目的图片信息
+     */
+    private List<String> imgUrls;
 
     private static final long serialVersionUID = 1L;
 }

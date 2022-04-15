@@ -16,4 +16,20 @@ public class ParamsConfig {
      */
     public static final int PAGE_DISCUSS_SIZE = 20;
 
+    /**
+     * 头像图片保存的本地路径
+     */
+    public final static String UPLOAD_AVATAR_PATH = "F:/UPLOAD/avatar";
+
+    /**
+     * 其他图片所保存的本地路径
+     */
+    public final static String UPLOAD_IMG_PATH = "F:/UPLOAD/img";
+
+    /**
+     * 图片上传的二级路径
+     */
+    public static final String IMG_UPLOAD_PATH = "/img/";
+
+
 }
