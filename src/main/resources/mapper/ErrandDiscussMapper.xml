@@ -30,6 +30,10 @@
   <sql id="Base_Column_List">
     id, comment_uid, target_uid, content, create_date, is_delete, eid
   </sql>
+  <insert id="insertDiscuss">
+    insert into errand_discuss(eid, comment_uid, content, create_date)
+    values (#{eid}, #{commentUid}, #{content}, #{createDate})
+  </insert>
   <select id="selectAllByEid" parameterType="java.lang.Integer" resultMap="selectAllAndChild">
     select *
     from errand_discuss

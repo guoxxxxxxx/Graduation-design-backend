@@ -230,4 +230,43 @@ public class ErrandController {
         }
     }
 
+    /**
+     * 发表评论
+     */
+    @RequestMapping("/sendDiscuss")
+    public ErrandVO sendDiscuss(@RequestBody ErrandDiscuss errandDiscuss){
+        if (errandDiscuss == null || errandDiscuss.getContent().length() == 0){
+            return ErrandVO.FAIL;
+        }
+        else {
+            errandDiscuss.setCreateDate(DateUtils.getCurrentDateTimeString());
+            int i = errandDiscussService.insertDiscuss(errandDiscuss);
+            if (i == 1){
+                return ErrandVO.SUCCESS;
+            }
+            else {
+                return ErrandVO.FAIL;
+            }
+        }
+    }
+
+    /**
+     * 发表回复
+     */
+    @RequestMapping("/sendReply")
+    public ErrandVO sendReply(@RequestBody ErrandReply reply){
+        if (reply == null || reply.getContent() == null || reply.getContent().length() == 0){
+            return ErrandVO.FAIL;
+        }
+        else {
+            reply.setCreateDate(DateUtils.getCurrentDateTimeString());
+            int i = errandDiscussService.insertReply(reply);
+            if (i == 1){
+                return ErrandVO.SUCCESS;
+            }
+            else {
+                return ErrandVO.FAIL;
+            }
+        }
+    }
 }

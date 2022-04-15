@@ -10,10 +10,12 @@ spring:
     url: jdbc:mysql://localhost:3306/assistance?characterEncoding=utf-8&serverTimezone=UTC
     username: root
     password: 123456
+
   # 访问的本地资源路径 修改文件保存路径时修改此路径即可
   web:
     resources:
       static-locations: file:F:\\UPLOAD
+
   # 设置最大上传文件大小限制
   servlet:
     multipart:
@@ -23,9 +25,21 @@ spring:
       max-request-size: 15MB
 
 
+
   # 加载Mybatis配置文件
 mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
+
+
+pagehelper:
+  helperDialect: mysql
+  # 开启优化，如果开启优化，在分页页码结果没有数据的时候,会显示有数据的页码数据
+  reasonable: true
+  # 是否支持接口参数来传递分页参数，默认false
+  supportMethodsArguments: true
+  #pageSize=0 返回所有
+  pageSizeZero: false
+  params: count=countSql
 

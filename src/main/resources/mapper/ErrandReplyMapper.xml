@@ -15,9 +15,13 @@
   <sql id="Base_Column_List">
     id, parent_discuss_id, comment_uid, target_uid, content, create_date, is_delete
   </sql>
+  <insert id="insertReply">
+    insert into errand_reply(parent_discuss_id, comment_uid, target_uid, content, create_date)
+    values (#{parentDiscussId}, #{commentUid}, #{targetUid}, #{content}, #{createDate})
+  </insert>
   <select id="selectAllByPdi" resultMap="BaseResultMap" >
     select *
     from errand_reply
-    where parent_discuss_id = #{pdi,jdbcType=INTEGER}
+    where parent_discuss_id = #{pdi,jdbcType=INTEGER} and is_delete = 0
   </select>
 </mapper>

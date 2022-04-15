@@ -38,9 +38,13 @@
 
 ![image-20220328204707679](https://raw.githubusercontent.com/guoxxxxxxx/Pic-Go/main/img/image-20220328204707679.png)
 
+____
 
 
 
+**2022-04-14 更新  在学习交流区又新增了几个分区**
+
+![大学生互助平台](https://raw.githubusercontent.com/guoxxxxxxx/Pic-Go/main/img/%E5%A4%A7%E5%AD%A6%E7%94%9F%E4%BA%92%E5%8A%A9%E5%B9%B3%E5%8F%B0.png)
 
 ## 四、数据库设计
 
@@ -597,16 +601,16 @@ FOREIGN KEY (eid) REFERENCES errand(eid)
 
 #### 16. errand_discuss 跑腿区评论表
 
-| 字段名      | 类型         | 说明                 |
-| ----------- | ------------ | -------------------- |
-| id          | int          | 主键 自增            |
-| eid         | int          | 该评论所属的跑腿订单 |
-| comment_uid | INT          | 发布评论的用户id     |
-| target_uid  | INT          | 被评论用户id         |
-| content     | VARCHAR(500) | 评论内容             |
-| pubdate     | DATE         | 发表评论的日期       |
-| pubtime     | TIME         | 发表评论的时间       |
-| is_delete   | INT          | 是否删除             |
+| 字段名                 | 类型         | 说明                 |
+| ---------------------- | ------------ | -------------------- |
+| id                     | int          | 主键 自增            |
+| eid                    | int          | 该评论所属的跑腿订单 |
+| comment_uid            | INT          | 发布评论的用户id     |
+| target_uid(该字段弃用) | INT          | 被评论用户id         |
+| content                | VARCHAR(500) | 评论内容             |
+| pubdate                | DATE         | 发表评论的日期       |
+| pubtime                | TIME         | 发表评论的时间       |
+| is_delete              | INT          | 是否删除             |
 
 ```sql
 -- 创建跑腿用户评论表
@@ -616,13 +620,12 @@ eid INT NOT NULL COMMENT '该评论所属的跑腿订单',
 comment_uid INT NOT NULL COMMENT '发布评论的用户id',
 target_uid INT COMMENT '被评论用户',
 content VARCHAR(500) NOT NULL COMMENT '评论内容',
-pubdate	DATE COMMENT '发表评论的日期',
-pubtime TIME COMMENT '发表评论的时间',
+create_date DATETIME COMMENT '发表评论的时间',
 is_delete INT DEFAULT '0' COMMENT '是否删除',
 PRIMARY KEY (id),
 FOREIGN KEY (comment_uid) REFERENCES USER(uid),
 FOREIGN KEY (target_uid) REFERENCES USER(uid)
-);
+)AUTO_INCREMENT=100000;
 ```
 
 
@@ -646,16 +649,16 @@ CREATE TABLE errand_reply(
 id INT AUTO_INCREMENT COMMENT '主键自增',
 parent_discuss_id INT NOT NULL COMMENT '所属父评论id',
 comment_uid INT NOT NULL COMMENT '发布评论的用户id',
-target_uid INT COMMENT '被评论用户',
+target_uid INT NOT NULL COMMENT '被评论用户',
 content VARCHAR(500) NOT NULL COMMENT '评论内容',
-pubdate	DATE COMMENT '发表评论的日期',
-pubtime TIME COMMENT '发表评论的时间',
+create_date DATETIME COMMENT '发表评论的时间',
 is_delete INT DEFAULT '0' COMMENT '是否删除',
 PRIMARY KEY (id),
 FOREIGN KEY (comment_uid) REFERENCES USER(uid),
 FOREIGN KEY (target_uid) REFERENCES USER(uid),
 FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id) 
 );
+
 ```
 
 
@@ -1651,6 +1654,92 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+#### 10. 发送评论
+
+- 名称:	sendDiscuss
+- 描述：发送评论
+- URL: http://localhost:8080/errand/sendDiscuss
+- 请求方式: POST
+- 请求参数
+
+| 字段       | 说明                 | 类型   | 是否必须 | 备注 |
+| ---------- | -------------------- | ------ | -------- | ---- |
+| eid        | 该评论所属的跑腿订单 | int    | 是       |      |
+| commentUid | 发表该评论的用户     | int    | 是       |      |
+| content    | 发表评论的内容       | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "eid":30,
+    "commentUid":20,
+   	"content":"测试内容",
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 11. 发表回复
+
+- 名称:	sendReply
+- 描述：发表回复
+- URL: http://localhost:8080/errand/sendReply
+- 请求方式: POST
+- 请求参数
+
+| 字段            | 说明               | 类型   | 是否必须 | 备注 |
+| --------------- | ------------------ | ------ | -------- | ---- |
+| parentDiscussId | 回复所属的父评论   | int    | 是       |      |
+| commentUid      | 发表回复的的用户id | int    | 是       |      |
+| targetUid       | 被回复人的目标id   | int    | 是       |      |
+| content         | 回复内容           | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "parentDiscussId":1,
+    "commentUid":2,
+    "targetUid":3,
+    "content":"测试"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
 
 
 ### 4 、文件上传
@@ -1746,6 +1835,158 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 ```
 
 
+
+### 5. 学习交流模块
+
+#### 1. 向学习表中添加新项目
+
+- 名称:	addNewItem
+- 描述：向学习表中添加新项目
+- URL: http://localhost:8080/study/addNewItem
+- 请求方式: GET
+- 请求参数
+
+| 字段     | 说明             | 类型   | 是否必须 | 备注 |
+| -------- | ---------------- | ------ | -------- | ---- |
+| uid      | 发布信息用户的id | int    | 是       |      |
+| title    | 标题             | String | 是       |      |
+| category | 所属种类         | String | 是       |      |
+| details  | 详细信息         | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "uid":1,
+    "title":"测试",
+    "category":"种类",
+    details:"详细信息"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success"
+}
+```
+
+
+
+#### 2. 查询所有信息
+
+- 名称:	selectAll
+- 描述：查询学习模块的所有信息(分页查询)
+- URL: http://localhost:8080/
+- 请求方式: GET
+- 请求参数：
+
+| 字段     | 说明                 | 类型 | 是否必须 | 备注     |
+| -------- | -------------------- | ---- | -------- | -------- |
+| page     | 所要显示的页码       | int  | 否       | 默认为1  |
+| pageSize | 每页所显示的信息数量 | int  | 否       | 默认为15 |
+
+- 请求参数示例
+
+```
+{
+	"page": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明           | 类型   | 备注 |
+| ------- | -------------- | ------ | ---- |
+| status  | 状态码         | int    |      |
+| message | 消息           | String |      |
+| object  | 返回查询的对象 | object |      |
+
+- 响应示例
+
+```json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "sid": 1,
+            "uid": 2,
+            "pubUser": {
+                "uid": 2,
+                "name": "李子",
+                "sex": "男",
+                "birthday": "2022-04-17T16:00:00.000+00:00",
+                "phone": "13333333333",
+                "faculty": "信息学院",
+                "grade": "2018",
+                "major": "软件工程",
+                "email": "lzx@163.com",
+                "wechat": "lzx_wechat",
+                "qq": "88888888",
+                "isDelete": 0,
+                "password": "123456",
+                "avatarPath": "/avatar/d9259de915b843feaee191922e684fee.jpg"
+            },
+            "category": "数学",
+            "title": "112233",
+            "details": "112233",
+            "pubdate": null,
+            "isAchieve": 0,
+            "isDelete": 0
+        }
+    ]
+}
+```
+
+
+
+#### 3. 查询记录总条数
+
+
+
+- 名称: selectItemCount
+- 描述：查询记录总条数
+- URL: http://localhost:8080/study/selectItemCount
+- 请求方式: get
+- 请求参数
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+| 无   |      |      |          |      |
+
+- 请求参数示例
+
+``` json
+
+```
+
+- 响应结果
+
+| 字段    | 说明       | 类型   | 备注 |
+| ------- | ---------- | ------ | ---- |
+| status  | 状态码     | int    |      |
+| message | 消息       | String |      |
+| object  | 记录总条数 | int    |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus": 200,
+    "message": "success", 
+    object: 100
+}
+```
 
 
 

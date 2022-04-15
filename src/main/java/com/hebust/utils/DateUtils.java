@@ -59,4 +59,20 @@ public class DateUtils {
             return null;
         }
     }
+
+    /**
+     * 获取当前时间对象
+     */
+    public static Date getCurrentDateTime(){
+        return new Date();
+    }
+
+    /**
+     * 获取当前时间对象的字符串形式
+     */
+    public static String getCurrentDateTimeString(){
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return sdf.format(date);
+    }
 }
