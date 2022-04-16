@@ -41,6 +41,28 @@
   <select id="selectAllItemCount" resultType="java.lang.Integer">
     select count(*) from study where  is_delete != 1
   </select>
+  <select id="queryByCondition" resultMap="allInfo">
+    select * from study
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <select id="queryItemsCountByCondition" resultType="java.lang.Integer">
+    select count(*) from study
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study
     where sid = #{sid,jdbcType=INTEGER}

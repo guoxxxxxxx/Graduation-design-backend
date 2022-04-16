@@ -4,6 +4,7 @@ import com.hebust.entity.QueryCondition;
 import com.hebust.entity.study.Study;
 import com.hebust.entity.study.StudyDiscuss;
 import com.hebust.entity.study.StudyImg;
+import com.hebust.entity.study.StudyReply;
 
 import java.util.List;
 
@@ -73,4 +74,19 @@ public interface StudyService {
      * 通过sid更新项目信息
      */
     int updateBySid(Study study);
+
+    /**
+     * 发送评论信息
+     */
+    int doSendReply(StudyReply reply);
+
+    /**
+     * 根据条件查询信息
+     */
+    List<Study> queryByCondition(QueryCondition condition);
+
+    /**
+     * 条件查询项目总数
+     */
+    int queryItemsCountByCondition(QueryCondition condition);
 }

@@ -26,4 +26,9 @@ public interface StudyReplyMapper {
      * 通过sid伪删除与之关联的回复信息
      */
     int fakeDeleteReplyBySid(int sid);
+
+    /**
+     * 发表回复信息
+     */
+    int sendReply(StudyReply reply);
 }

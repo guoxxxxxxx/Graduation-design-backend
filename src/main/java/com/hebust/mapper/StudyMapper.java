@@ -46,4 +46,14 @@ public interface StudyMapper {
      * 通过sid更新信息
      */
     int updateBySid(Study study);
+
+    /**
+     * 根据查询条件来条件查询信息
+     */
+    List<Study> queryByCondition(QueryCondition condition);
+
+    /**
+     * 条件查询项目总数
+     */
+    int queryItemsCountByCondition(QueryCondition condition);
 }

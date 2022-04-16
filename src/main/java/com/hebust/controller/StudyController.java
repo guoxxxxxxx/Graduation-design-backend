@@ -2,6 +2,7 @@ package com.hebust.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.hebust.config.ParamsConfig;
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
 import com.hebust.entity.study.*;
@@ -178,5 +179,38 @@ public class StudyController {
             }
         }
         return StudyVO.FAIL;
+    }
+
+    /**
+     * 发送回复评论
+     */
+    @RequestMapping("/doSendReply")
+    public StudyVO doSendReply(@RequestBody StudyReply reply){
+        if (reply != null && reply.getParentDiscussId() != null && reply.getContent().length() > 0){
+            reply.setCreateDate(DateUtils.getCurrentDateTimeString());
+            int i = studyService.doSendReply(reply);
+            if (i == 1){
+                return StudyVO.SUCCESS;
+            }
+        }
+        return StudyVO.FAIL;
+    }
+
+    /**
+     * 条件查询项目信息
+     */
+    @RequestMapping("/queryByCondition")
+    public StudyVO queryByCondition(@RequestBody QueryCondition condition){
+        List<Study> studies = studyService.queryByCondition(condition);
+        return new StudyVO(200, "success", studies);
+    }
+
+    /**
+     * 条件查询项目总数
+     */
+    @RequestMapping("queryItemsCountByCondition")
+    public StudyVO queryItemsCountByCondition(@RequestBody QueryCondition condition){
+        int i = studyService.queryItemsCountByCondition(condition);
+        return new StudyVO(200, "success", i);
     }
 }

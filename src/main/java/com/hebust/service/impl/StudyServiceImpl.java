@@ -1,9 +1,12 @@
 package com.hebust.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.hebust.config.ParamsConfig;
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.study.Study;
 import com.hebust.entity.study.StudyDiscuss;
 import com.hebust.entity.study.StudyImg;
+import com.hebust.entity.study.StudyReply;
 import com.hebust.mapper.StudyMapper;
 import com.hebust.mapper.relation.StudyDiscussMapper;
 import com.hebust.mapper.relation.StudyImgMapper;
@@ -110,5 +113,24 @@ public class StudyServiceImpl implements StudyService {
     @Override
     public int updateBySid(Study study) {
         return studyMapper.updateBySid(study);
+    }
+
+    @Override
+    public int doSendReply(StudyReply reply) {
+        return studyReplyMapper.sendReply(reply);
+    }
+
+    @Override
+    public List<Study> queryByCondition(QueryCondition condition) {
+        if (condition.getPage() == 0){
+            condition.setPage(1);
+        }
+        PageHelper.startPage(condition.getPage(), ParamsConfig.PAGE_ITEMS_SIZE);
+        return studyMapper.queryByCondition(condition);
+    }
+
+    @Override
+    public int queryItemsCountByCondition(QueryCondition condition) {
+        return studyMapper.queryItemsCountByCondition(condition);
     }
 }

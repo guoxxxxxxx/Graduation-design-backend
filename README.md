@@ -2338,6 +2338,160 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+#### 12. 发送回复
+
+- 名称: doSendReply
+- 描述：发送回复
+- URL: http://localhost:8080/study/doSendReply
+- 请求方式: POST
+- 请求参数
+
+| 字段            | 说明               | 类型   | 是否必须 | 备注 |
+| --------------- | ------------------ | ------ | -------- | ---- |
+| parentDiscussId | 回复所属的父评论   | int    | 是       |      |
+| commentUid      | 发表回复的的用户id | int    | 是       |      |
+| targetUid       | 被回复人的目标id   | int    | 是       |      |
+| content         | 回复内容           | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "parentDiscussId":1,
+    "commentUid":2,
+    "targetUid":3,
+    "content":"测试"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 13. 通过条件查询项目信息
+
+- 名称: queryByCondition
+- 描述：通过条件查询项目信息
+- URL: http://localhost:8080/study/queryByCondition
+- 请求方式: POST
+- 请求参数
+
+| 字段            | 说明               | 类型   | 是否必须 | 备注    |
+| --------------- | ------------------ | ------ | -------- | ------- |
+| page            | 所要查询的页码     | int    | 是       |         |
+| category        | 所要查询的种类信息 | String | 是       |         |
+| fuzzyParam      | 模糊查询参数       | String |          |         |
+| isHiddenAchieve | 是否隐藏已完成项目 | int    |          | 0否 1是 |
+
+- 请求参数示例
+
+``` json
+{
+    "page":1,
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":0
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "sid": 4,
+            "uid": 2,
+            "pubUser": {
+                "uid": 2,
+                "name": "李子",
+                "sex": "男",
+                "birthday": "2022-04-17T16:00:00.000+00:00",
+                "phone": "13333333333",
+                "faculty": "信息学院",
+                "grade": "2018",
+                "major": "软件工程",
+                "email": "lzx@163.com",
+                "wechat": "lzx_wechat",
+                "qq": "88888888",
+                "isDelete": 0,
+                "password": "123456",
+                "avatarPath": "/avatar/d9259de915b843feaee191922e684fee.jpg"
+            },
+            "category": "英语",
+            "title": "222222222",
+            "details": "123123",
+            "pubdate": "2022-04-14 02:53:35",
+            "isAchieve": 0,
+            "isDelete": 0,
+            "imgUrls": []
+        }
+    ]
+}
+```
+
+
+
+#### 14. 条件查询记录总条数
+
+- 名称: queryItemsCountByCondition
+- 描述：条件查询记录总条数
+- URL: http://localhost:8080/study/queryItemsCountByCondition
+- 请求方式: POST
+- 请求参数
+
+| 字段            | 说明               | 类型   | 是否必须 | 备注    |
+| --------------- | ------------------ | ------ | -------- | ------- |
+| category        | 所要查询的种类信息 | String | 是       |         |
+| fuzzyParam      | 模糊查询参数       | String |          |         |
+| isHiddenAchieve | 是否隐藏已完成项目 | int    |          | 0否 1是 |
+
+- 请求参数示例
+
+``` json
+{
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":0
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+
+```
+
 
 
 ### 模板

@@ -91,6 +91,10 @@
       </if>
     </trim>
   </insert>
+  <insert id="sendReply">
+    insert into study_reply(parent_discuss_id, comment_uid, target_uid, content, create_date)
+    values (#{parentDiscussId}, #{commentUid}, #{targetUid}, #{content}, #{createDate})
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.study.StudyReply">
     update study_reply
     <set>
