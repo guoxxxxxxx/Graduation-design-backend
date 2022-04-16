@@ -7,6 +7,7 @@ import com.hebust.entity.study.StudyImg;
 import com.hebust.mapper.StudyMapper;
 import com.hebust.mapper.relation.StudyDiscussMapper;
 import com.hebust.mapper.relation.StudyImgMapper;
+import com.hebust.mapper.relation.StudyReplyMapper;
 import com.hebust.service.StudyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,12 @@ public class StudyServiceImpl implements StudyService {
      */
     @Autowired
     private StudyDiscussMapper studyDiscussMapper;
+
+    /**
+     * 回复操作Mapper
+     */
+    @Autowired
+    private StudyReplyMapper studyReplyMapper;
 
     @Override
     public int addNewItem(Study study) {
@@ -72,7 +79,36 @@ public class StudyServiceImpl implements StudyService {
     }
 
     @Override
+    public int setAchieveBySid(int sid) {
+        return studyMapper.setAchieveBySid(sid);
+    }
+
+    @Override
     public int selectDiscussCountBySid(int sid) {
         return studyDiscussMapper.selectDiscussCountBySid(sid);
+    }
+
+    @Override
+    public int fakeDeleteBySid(int sid) {
+        // 伪删除回复表中的数据
+        studyReplyMapper.fakeDeleteReplyBySid(sid);
+        // 伪删除评论表中的数据
+        studyDiscussMapper.fakeDeleteDiscussBySid(sid);
+        return studyMapper.fakeDeleteBySid(sid);
+    }
+
+    @Override
+    public int insertDiscuss(StudyDiscuss discuss) {
+        return studyDiscussMapper.insertDiscuss(discuss);
+    }
+
+    @Override
+    public int fakeDeleteImgByFilename(String filename) {
+        return studyImgMapper.fakeDeleteImgByFilename(filename);
+    }
+
+    @Override
+    public int updateBySid(Study study) {
+        return studyMapper.updateBySid(study);
     }
 }

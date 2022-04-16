@@ -18,14 +18,4 @@ public class StudyTest {
     @Autowired
     private StudyService studyService;
 
-    /**
-     * 测试查询所有功能是否正确
-     */
-    @Test
-    public void t1(){
-        List<Study> studies = studyService.selectAll(1, 1);
-        for (Study study : studies) {
-            System.out.println(study);
-        }
-    }
 }

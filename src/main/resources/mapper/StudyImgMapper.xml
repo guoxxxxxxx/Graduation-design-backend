@@ -79,4 +79,9 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="fakeDeleteImgByFilename">
+    update study_img set is_delete = 1
+    where img_src = #{filename}
+  </update>
+
 </mapper>

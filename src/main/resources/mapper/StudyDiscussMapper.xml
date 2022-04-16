@@ -86,6 +86,9 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertDiscuss">
+    insert into study_discuss (sid, comment_uid, content, create_date) values (#{sid}, #{commentUid}, #{content}, #{createDate})
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.study.StudyDiscuss">
     update study_discuss
     <set>
@@ -115,5 +118,8 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteDiscussBySid">
+    update study_discuss set is_delete = 1 where sid = #{sid}
   </update>
 </mapper>

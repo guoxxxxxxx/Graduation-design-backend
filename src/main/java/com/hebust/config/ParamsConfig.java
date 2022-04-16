@@ -14,7 +14,7 @@ public class ParamsConfig {
     /**
      * 每页显示多少评论
      */
-    public static final int PAGE_DISCUSS_SIZE = 12;
+    public static final int PAGE_DISCUSS_SIZE = 6;
 
     /**
      * 头像图片保存的本地路径

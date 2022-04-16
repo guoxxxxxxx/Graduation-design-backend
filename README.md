@@ -2132,9 +2132,211 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 {
     "status":200,
     "message":"success",
-    "objec"
+    "object":100
 }
 ```
+
+
+
+#### 7. 通过sid将状态改为已解决
+
+- 名称: setAchieveBySid
+- 描述：通过sid将状态改为已解决
+- URL: http://localhost:8080/study/setAchieveBySid
+- 请求方式:  GET
+- 请求参数
+
+| 字段 | 说明   | 类型 | 是否必须 | 备注 |
+| ---- | ------ | ---- | -------- | ---- |
+| sid  | 项目id | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success"
+}
+```
+
+
+
+#### 8. 通过sid伪删除信息
+
+- 名称: fakeDeleteBySid
+- 描述：通过sid伪删除信息
+- URL: http://localhost:8080/study/fakeDeleteSid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明   | 类型 | 是否必须 | 备注 |
+| ---- | ------ | ---- | -------- | ---- |
+| sid  | 项目id | int  | 是       |      |
+
+- 请求参数示例
+
+```json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+```json
+{
+    "status":200,
+    "message":"success"
+}
+```
+
+
+
+#### 9. 发送评论
+
+- 名称:	sendDiscuss
+- 描述：发送评论
+- URL: http://localhost:8080/study/sendDiscuss
+- 请求方式: POST
+- 请求参数
+
+| 字段       | 说明             | 类型   | 是否必须 | 备注 |
+| ---------- | ---------------- | ------ | -------- | ---- |
+| sid        | 该评论所属项目   | int    | 是       |      |
+| commentUid | 发表该评论的用户 | int    | 是       |      |
+| content    | 发表评论的内容   | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid":30,
+    "commentUid":20,
+   	"content":"测试内容",
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 10. 通过图片名称伪删除图片
+
+- 名称: fakeDeleteImgByFilename
+- 描述：通过图片名称伪删除图片
+- URL: http://localhost:8080/study/fakeDeleteImgByFilename
+- 请求方式: GET
+- 请求参数
+
+| 字段    | 说明     | 类型   | 是否必须 | 备注 |
+| ------- | -------- | ------ | -------- | ---- |
+| img_src | 图片名称 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "img_src": "filename.png"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 11. 通过sid更新整个项目信息
+
+- 名称: updateBySid
+- 描述：通过sid更新整个项目信息
+- URL: http://localhost:8080/study/updateBySid
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明               | 类型   | 是否必须 | 备注 |
+| -------- | ------------------ | ------ | -------- | ---- |
+| sid      | 所要修改的项目编号 | int    | 是       |      |
+| category | 所属类别           | String | 是       |      |
+| title    | 标题               | String | 是       |      |
+| details  | 详细内容           | String | 否       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid":1,
+    "category":"英语",
+    "title":"测试",
+    "details":"详细信息测试"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
 
 
 

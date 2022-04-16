@@ -34,7 +34,7 @@
   </select>
     <select id="selectReplyByFatherId" resultMap="allInfo" >
       select * from study_reply
-      where parent_discuss_id = #{fid}
+      where parent_discuss_id = #{fid} and is_delete != 1
     </select>
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study_reply
@@ -124,5 +124,13 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteReplyBySid">
+    UPDATE study_reply
+    SET is_delete = 1
+    WHERE id IN (SELECT id FROM
+        (SELECT id FROM study_reply INNER JOIN
+           (SELECT id sd FROM study_discuss INNER JOIN study ON study.`sid` = study_discuss.`sid` AND study.`sid` = #{sid}) a
+               ON a.sd = study_reply.`parent_discuss_id`) id)
   </update>
 </mapper>

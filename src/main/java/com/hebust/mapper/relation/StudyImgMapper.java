@@ -26,4 +26,9 @@ public interface StudyImgMapper {
      * 向数据库中插入图片信息
      */
     int insertImage(StudyImg record);
+
+    /**
+     * 根据图片名称伪删除图片
+     */
+    int fakeDeleteImgByFilename(String filename);
 }

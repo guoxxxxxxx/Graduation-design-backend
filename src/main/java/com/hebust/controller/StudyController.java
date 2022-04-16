@@ -1,5 +1,6 @@
 package com.hebust.controller;
 
+import com.github.pagehelper.PageHelper;
 import com.hebust.config.ParamsConfig;
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
@@ -59,7 +60,8 @@ public class StudyController {
      * 查询所有信息(分页查询)
      */
     @RequestMapping("/selectAll")
-    public StudyVO selectAll(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = ParamsConfig.PAGE_ITEMS_SIZE+"") int pageSize){
+    public StudyVO selectAll(@RequestParam(defaultValue = "1") int page,
+                             @RequestParam(defaultValue = ParamsConfig.PAGE_ITEMS_SIZE+"") int pageSize){
         List<Study> studies = studyService.selectAll(page, pageSize);
         return new StudyVO(200, "success", studies);
     }
@@ -91,7 +93,8 @@ public class StudyController {
      * 通过sid查询当前项目的评论信息及回复信息 分页查询
      */
     @RequestMapping("/selectDiscussBySid")
-    public StudyVO selectDiscussBySid(@RequestParam int sid){
+    public StudyVO selectDiscussBySid(@RequestParam int sid, @RequestParam(defaultValue = "1") int page){
+        PageHelper.startPage(page, ParamsConfig.PAGE_DISCUSS_SIZE);
         List<StudyDiscuss> studyDiscusses = studyService.selectDiscussBySid(sid);
         // 补全所查询信息里面的头像路径
         if (studyDiscusses != null) {
@@ -121,5 +124,59 @@ public class StudyController {
     public StudyVO selectDiscussCountBySid(@RequestParam int sid){
         int i = studyService.selectDiscussCountBySid(sid);
         return new StudyVO(200, "success", i);
+    }
+
+    /**
+     * 通过sid将完成信息改为真
+     */
+    @RequestMapping("/setAchieveBySid")
+    public StudyVO setAchieveBySid(@RequestParam int sid){
+        int i = studyService.setAchieveBySid(sid);
+        return StudyVO.SUCCESS;
+    }
+
+    /**
+     * 伪删除记录信息 study表 discuss 以及 reply
+     */
+    @RequestMapping("/fakeDeleteBySid")
+    public StudyVO fakeDeleteBySid(@RequestParam int sid){
+        studyService.fakeDeleteBySid(sid);
+        return StudyVO.SUCCESS;
+    }
+
+    /**
+     * 插入新的评价信息 （发送评价信息）
+     */
+    @RequestMapping("/sendDiscuss")
+    public StudyVO sendDiscuss(@RequestBody StudyDiscuss discuss){
+        // 将日期添加到评论对象中
+        discuss.setCreateDate(DateUtils.getCurrentDateTimeString());
+        studyService.insertDiscuss(discuss);
+        return StudyVO.SUCCESS;
+    }
+
+    /**
+     * 通过图片名称伪删除图片
+     */
+    @RequestMapping("fakeDeleteImgByFilename")
+    public StudyVO fakeDeleteImgByFilename(@RequestParam String img_src){
+        System.out.println(img_src);
+        studyService.fakeDeleteImgByFilename(img_src);
+        return StudyVO.SUCCESS;
+    }
+
+    /**
+     * 通过sid更新信息
+     */
+    @RequestMapping("/updateBySid")
+    public StudyVO updateBySid(@RequestBody Study study){
+        if (study != null){
+            study.setPubdate(DateUtils.getCurrentDateTimeString());
+            int i = studyService.updateBySid(study);
+            if (i == 1){
+                return StudyVO.SUCCESS;
+            }
+        }
+        return StudyVO.FAIL;
     }
 }

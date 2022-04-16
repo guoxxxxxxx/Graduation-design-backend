@@ -21,4 +21,9 @@ public interface StudyReplyMapper {
      * 通过父评论id查询与之对应的父评论信息
      */
     List<StudyReply> selectReplyByFatherId(int fid);
+
+    /**
+     * 通过sid伪删除与之关联的回复信息
+     */
+    int fakeDeleteReplyBySid(int sid);
 }

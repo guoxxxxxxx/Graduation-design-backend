@@ -140,4 +140,15 @@
       is_delete = #{isDelete,jdbcType=INTEGER}
     where sid = #{sid,jdbcType=INTEGER}
   </update>
+  <update id="setAchieveBySid">
+    update study set is_achieve = 1 where sid = #{sid}
+  </update>
+  <update id="fakeDeleteBySid">
+    update study set is_delete = 1 where sid = #{sid}
+  </update>
+  <update id="updateBySid">
+    update study set
+    category = #{category}, title = #{title}, details = #{details}, pubdate = #{pubdate}
+    where sid = #{sid}
+  </update>
 </mapper>

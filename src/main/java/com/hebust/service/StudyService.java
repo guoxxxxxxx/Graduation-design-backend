@@ -1,5 +1,6 @@
 package com.hebust.service;
 
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.study.Study;
 import com.hebust.entity.study.StudyDiscuss;
 import com.hebust.entity.study.StudyImg;
@@ -48,4 +49,28 @@ public interface StudyService {
      */
     int selectDiscussCountBySid(int sid);
 
+    /**
+     * 通过sid将完成状态改为1
+     */
+    int setAchieveBySid(int sid);
+
+    /**
+     * 伪删除记录
+     */
+    int fakeDeleteBySid(int sid);
+
+    /**
+     * 插入新的评价记录
+     */
+    int insertDiscuss(StudyDiscuss discuss);
+
+    /**
+     * 通过图片名称删除图片信息
+     */
+    int fakeDeleteImgByFilename(String filename);
+
+    /**
+     * 通过sid更新项目信息
+     */
+    int updateBySid(Study study);
 }

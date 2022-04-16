@@ -26,4 +26,14 @@ public interface StudyDiscussMapper {
      * 通过sid查询当前界面评论信息的数量
      */
     int selectDiscussCountBySid(int sid);
+
+    /**
+     * 伪删除discuss表中的数据通过sid
+     */
+    int fakeDeleteDiscussBySid(int sid);
+
+    /**
+     * 发送评论信息
+     */
+    int insertDiscuss(StudyDiscuss discuss);
 }
