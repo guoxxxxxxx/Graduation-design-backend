@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -52,6 +53,11 @@ public class ErrandController {
     @RequestMapping("/queryDetailsByEid")
     public ErrandVO queryDetailsByEid(@RequestParam int eid){
         Errand errand = errandService.queryDetailsByEid(eid);
+        List<String> newImgList = new ArrayList<>();
+        for (String imgUrl : errand.getImgUrls()) {
+            newImgList.add(ParamsConfig.BASE_PATH + imgUrl);
+        }
+        errand.setImgUrls(newImgList);
         return new ErrandVO(200, "success", errand);
     }
 

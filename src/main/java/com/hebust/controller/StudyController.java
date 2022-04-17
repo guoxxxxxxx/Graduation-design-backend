@@ -174,6 +174,18 @@ public class StudyController {
         if (study != null){
             study.setPubdate(DateUtils.getCurrentDateTimeString());
             int i = studyService.updateBySid(study);
+            // 将用户新上传的图片插入到数据库中
+            StudyImg img = new StudyImg();
+            img.setSid(study.getSid());
+            for (String imgUrl : study.getImgUrls()) {
+                if (imgUrl.contains(ParamsConfig.IMG_UPLOAD_PATH)){
+                    img.setImgSrc(imgUrl);
+                }
+                else {
+                    img.setImgSrc(ParamsConfig.IMG_UPLOAD_PATH + imgUrl);
+                }
+                studyService.insertImage(img);
+            }
             if (i == 1){
                 return StudyVO.SUCCESS;
             }
