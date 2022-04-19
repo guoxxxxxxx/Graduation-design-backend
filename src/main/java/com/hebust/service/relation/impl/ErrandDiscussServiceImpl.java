@@ -1,5 +1,7 @@
 package com.hebust.service.relation.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.hebust.config.ParamsConfig;
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
 import com.hebust.mapper.relation.ErrandDiscussMapper;
@@ -20,7 +22,8 @@ public class ErrandDiscussServiceImpl implements ErrandDiscussService {
 
 
     @Override
-    public List<ErrandDiscuss> selectAllDiscussByEid(int eid) {
+    public List<ErrandDiscuss> selectAllDiscussByEid(int eid, int page) {
+        PageHelper.startPage(page, ParamsConfig.PAGE_DISCUSS_SIZE);
         return errandDiscussMapper.selectAllByEid(eid);
     }
 

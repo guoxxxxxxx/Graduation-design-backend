@@ -1825,6 +1825,48 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+#### 14. 查询评论的总数量，通过eid
+
+- 名称: queryDiscussCount
+- 描述：通过sid查询当前项目的评论总条数
+- URL: http://localhost:8080/errand/queryDiscussCount
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明            | 类型 | 是否必须 | 备注 |
+| ---- | --------------- | ---- | -------- | ---- |
+| sid  | 所查询界面的sid | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明         | 类型   | 备注 |
+| ------- | ------------ | ------ | ---- |
+| status  | 状态码       | int    |      |
+| message | 消息         | String |      |
+| object  | 评论信息数量 | object |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success",
+    "object":100
+}
+```
+
+
+
+
+
 ### 4 、文件上传
 
 #### 1. 上传头像到服务器

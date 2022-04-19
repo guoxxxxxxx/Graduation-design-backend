@@ -56,4 +56,9 @@ public interface ErrandService {
      * 条件查询符合条件的项目数量
      */
     int queryCountByCondition(QueryCondition condition);
+
+    /**
+     * 查询跑腿订单的评论数量
+     */
+    int queryDiscussCount(int eid);
 }

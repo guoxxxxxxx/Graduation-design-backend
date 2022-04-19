@@ -222,12 +222,12 @@ public class ErrandController {
      * 2022-04-19 添加分页查询约束
      */
     @RequestMapping("queryAllCommentsAndChildComments")
-    public ErrandVO queryAllCommentsAndChildComments(@RequestParam int eid){
+    public ErrandVO queryAllCommentsAndChildComments(@RequestParam int eid, @RequestParam(defaultValue = "1")int page){
         if (eid == 0){
             return ErrandVO.FAIL;
         }
         else {
-            List<ErrandDiscuss> errandDiscusses = errandDiscussService.selectAllDiscussByEid(eid);
+            List<ErrandDiscuss> errandDiscusses = errandDiscussService.selectAllDiscussByEid(eid, page);
             // 补全路径地址
             if (errandDiscusses != null) {
                 for (ErrandDiscuss discuss : errandDiscusses) {
@@ -299,6 +299,15 @@ public class ErrandController {
     @RequestMapping("/queryCountByCondition")
     public ErrandVO queryCountByCondition(@RequestBody QueryCondition condition){
         int i = errandService.queryCountByCondition(condition);
+        return new ErrandVO(200, "success", i);
+    }
+
+    /**
+     * 查询跑腿评论信息的数量
+     */
+    @RequestMapping("/queryDiscussCount")
+    public ErrandVO queryDiscussCount(@RequestParam int eid){
+        int i = errandService.queryDiscussCount(eid);
         return new ErrandVO(200, "success", i);
     }
 }

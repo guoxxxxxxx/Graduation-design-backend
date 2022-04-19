@@ -5,6 +5,7 @@ import com.hebust.config.ParamsConfig;
 import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
 import com.hebust.mapper.ErrandMapper;
+import com.hebust.mapper.relation.ErrandDiscussMapper;
 import com.hebust.mapper.relation.ErrandImgMapper;
 import com.hebust.service.ErrandService;
 import com.hebust.service.relation.ErrandImgService;
@@ -19,6 +20,8 @@ public class ErrandServiceImpl implements ErrandService {
 
     @Autowired
     private ErrandMapper errandMapper;
+    @Autowired
+    ErrandDiscussMapper discussMapper;
 
     @Override
     public List<Errand> selectAll() {
@@ -78,5 +81,10 @@ public class ErrandServiceImpl implements ErrandService {
     @Override
     public int queryCountByCondition(QueryCondition condition) {
         return errandMapper.queryCountByCondition(condition);
+    }
+
+    @Override
+    public int queryDiscussCount(int eid) {
+        return discussMapper.queryDiscussCount(eid);
     }
 }
