@@ -52,22 +52,13 @@ public class Errand implements Serializable {
     /**
      * 发布日期
      */
-    private Date pubdate;
+    private String pubdate;
 
     /**
      * 截止日期
      */
-    private Date deadline;
+    private String deadline;
 
-    /**
-     * 发布时间
-     */
-    private Time pubtime;
-
-    /**
-     * 截止时间
-     */
-    private Time deadtime;
 
     /**
      * 是否删除, 1: 删除; 0: 未删除; 默认为0

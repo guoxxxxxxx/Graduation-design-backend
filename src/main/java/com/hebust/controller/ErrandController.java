@@ -1,6 +1,7 @@
 package com.hebust.controller;
 
 import com.hebust.config.ParamsConfig;
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
@@ -48,6 +49,21 @@ public class ErrandController {
     }
 
     /**
+     * 条件查询订单信息
+     */
+    @RequestMapping("/queryByCondition")
+    public ErrandVO queryByCondition(@RequestBody QueryCondition condition){
+        if (condition.getPage() <= 0){
+            condition.setPage(1);
+        }
+        if (condition.getFuzzyParam() == null){
+            condition.setFuzzyParam("");
+        }
+        List<Errand> errands = errandService.queryByCondition(condition);
+        return new ErrandVO(200, "success", errands);
+    }
+
+    /**
      * 根据eid查询订单详细信息
      */
     @RequestMapping("/queryDetailsByEid")
@@ -63,6 +79,7 @@ public class ErrandController {
 
     /**
      * 根据分类查询跑腿订单项目
+     * 2022-04-19 添加分页查询约束
      */
     @RequestMapping("/queryItemByCategory")
     public ErrandVO queryItemByCategory(@RequestParam String category){
@@ -85,8 +102,7 @@ public class ErrandController {
         }
         else{
             // 将当前时间添加到对象中
-            errand.setPubdate(DateUtils.getCurrentDate());
-            errand.setPubtime(DateUtils.getCurrentTime());
+            errand.setPubdate(DateUtils.getCurrentDateTimeString());
             // 向数据库中添加跑腿订单
             int i = errandService.addErrandItem(errand);
             // 将图片插入到数据库中
@@ -203,6 +219,7 @@ public class ErrandController {
 
     /**
      * 通过eid查询订单所有评论及其子评论
+     * 2022-04-19 添加分页查询约束
      */
     @RequestMapping("queryAllCommentsAndChildComments")
     public ErrandVO queryAllCommentsAndChildComments(@RequestParam int eid){
@@ -274,5 +291,14 @@ public class ErrandController {
                 return ErrandVO.FAIL;
             }
         }
+    }
+
+    /**
+     * 查询符合条件的项目的数量
+     */
+    @RequestMapping("/queryCountByCondition")
+    public ErrandVO queryCountByCondition(@RequestBody QueryCondition condition){
+        int i = errandService.queryCountByCondition(condition);
+        return new ErrandVO(200, "success", i);
     }
 }

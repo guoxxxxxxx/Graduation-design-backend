@@ -1,5 +1,8 @@
 package com.hebust.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.hebust.config.ParamsConfig;
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
 import com.hebust.mapper.ErrandMapper;
 import com.hebust.mapper.relation.ErrandImgMapper;
@@ -56,5 +59,24 @@ public class ErrandServiceImpl implements ErrandService {
     @Override
     public int updateErrandIsAchieveStateByEid(int eid) {
         return errandMapper.updateErrandIsAchieveStateByEid(eid);
+    }
+
+    @Override
+    public List<Errand> queryByCondition(QueryCondition condition) {
+        // 分页
+        PageHelper.startPage(condition.getPage(), ParamsConfig.PAGE_ITEMS_SIZE);
+        List<Errand> errands = errandMapper.queryByCondition(condition);
+        // 将详细信息进行裁剪
+        for (Errand errand : errands) {
+            if (errand.getDetails().length() > 35){
+                errand.setDetails(errand.getDetails().substring(0, 35) + "...");
+            }
+        }
+        return errands;
+    }
+
+    @Override
+    public int queryCountByCondition(QueryCondition condition) {
+        return errandMapper.queryCountByCondition(condition);
     }
 }

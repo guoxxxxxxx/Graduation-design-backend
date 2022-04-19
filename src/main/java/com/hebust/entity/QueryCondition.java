@@ -28,14 +28,12 @@ public class QueryCondition {
     private String fuzzyParam;
 
     /**
-     * 是否隐藏已完成订单, 1是隐藏; 0是显示
+     * 是否隐藏已完成订单, true是隐藏; false是显示
      */
     private int isHiddenAchieve;
 
     /**
-     * 是否显示已接单订单, 1是隐藏; 0是显示
+     * 是否显示已接单订单, true是隐藏; false是显示
      */
     private int isHiddenTakeOrders;
-
-
 }

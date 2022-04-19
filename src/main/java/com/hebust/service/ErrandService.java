@@ -1,5 +1,6 @@
 package com.hebust.service;
 
+import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
 
 import java.util.List;
@@ -45,4 +46,14 @@ public interface ErrandService {
      * 通过eid更新项目订单完成状态
      */
     int updateErrandIsAchieveStateByEid(int eid);
+
+    /**
+     * 条件查询信息
+     */
+    List<Errand> queryByCondition(QueryCondition condition);
+
+    /**
+     * 条件查询符合条件的项目数量
+     */
+    int queryCountByCondition(QueryCondition condition);
 }

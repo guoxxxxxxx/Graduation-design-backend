@@ -11,12 +11,10 @@
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
     <result column="category" jdbcType="VARCHAR" property="category" />
-    <result column="pubdate" jdbcType="DATE" property="pubdate" />
-    <result column="deadline" jdbcType="DATE" property="deadline" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="details" jdbcType="VARCHAR" property="details"/>
-    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
-    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
     <collection column="eid" property="imgUrls" ofType="com.hebust.entity.errand.ErrandImg"
                 select="com.hebust.mapper.relation.ErrandImgMapper.selectAllByEid"/>
     <collection property="pubUser" column="uid" ofType="com.hebust.entity.user.User"
@@ -33,16 +31,14 @@
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
     <result column="category" jdbcType="VARCHAR" property="category" />
-    <result column="pubdate" jdbcType="DATE" property="pubdate" />
-    <result column="deadline" jdbcType="DATE" property="deadline" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="deadline" jdbcType="TIMESTAMP" property="deadline" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="details" jdbcType="VARCHAR" property="details"/>
-    <result column="pubtime" jdbcType="TIME" property="pubtime"/>
-    <result column="deadtime" jdbcType="TIME" property="deadtime"/>
   </resultMap>
 
   <sql id="Base_Column_List">
-    eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details, pubtime, deadtime
+    eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -59,6 +55,34 @@
   <select id="selectItemByCategory" resultMap="selectAll">
     select * from errand where category = #{category,jdbcType=VARCHAR} and is_delete != 1
   </select>
+  <select id="queryByCondition" resultMap="selectAll">
+    select * from errand
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="isHiddenTakeOrders == 1">
+      and euid is null
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <select id="queryCountByCondition" resultType="java.lang.Integer">
+    select count(*) from errand
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="isHiddenTakeOrders == 1">
+      and euid = null
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from errand
     where eid = #{eid,jdbcType=INTEGER}
@@ -67,13 +91,11 @@
   <insert id="insert" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
     insert into errand (`uid`, euid, title, 
       money, is_achieve, category, 
-      pubdate, deadline, is_delete,
-      pubtime, deadtime
+      pubdate, deadline, is_delete
       )
     values (#{uid,jdbcType=INTEGER}, #{euid,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
       #{money,jdbcType=DOUBLE}, #{isAchieve,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
-      #{pubdate,jdbcType=DATE}, #{deadline,jdbcType=DATE}, #{isDelete,jdbcType=INTEGER},
-      #{pubtime,jdbcType=TIME}, #{deadtime,jdbcType=TIME}
+      #{pubdate,jdbcType=TIMESTAMP}, #{deadline,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER},
       )
   </insert>
   <insert id="insertSelective" keyColumn="eid" keyProperty="eid" parameterType="com.hebust.entity.errand.Errand" useGeneratedKeys="true">
@@ -106,12 +128,6 @@
       <if test="isDelete != null">
         is_delete,
       </if>
-      <if test="pubtime != null">
-        pubtime,
-      </if>
-      <if test="deadtime != null">
-        deadtime,
-      </if>
       <if test="details != null">
         details,
       </if>
@@ -136,19 +152,13 @@
         #{category,jdbcType=VARCHAR},
       </if>
       <if test="pubdate != null">
-        #{pubdate,jdbcType=DATE},
+        #{pubdate,jdbcType=TIMESTAMP},
       </if>
       <if test="deadline != null">
-        #{deadline,jdbcType=DATE},
+        #{deadline,jdbcType=TIMESTAMP},
       </if>
       <if test="isDelete != null">
         #{isDelete,jdbcType=INTEGER},
-      </if>
-      <if test="pubtime != null">
-        #{pubtime,jdbcType=TIME},
-      </if>
-      <if test="deadtime != null">
-        #{deadtime,jdbcType=TIME},
       </if>
       <if test="details != null">
         #{details,jdbcType=VARCHAR},
@@ -177,19 +187,13 @@
         category = #{category,jdbcType=VARCHAR},
       </if>
       <if test="pubdate != null">
-        pubdate = #{pubdate,jdbcType=DATE},
+        pubdate = #{pubdate,jdbcType=TIMESTAMP},
       </if>
       <if test="deadline != null">
-        deadline = #{deadline,jdbcType=DATE},
+        deadline = #{deadline,jdbcType=TIMESTAMP},
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
-      </if>
-      <if test="pubtime != null">
-        pubtime = #{pubtime,jdbcType=TIME},
-      </if>
-      <if test="deadtime != null">
-        deadtime = #{deadtime,jdbcType=TIME},
       </if>
     </set>
     where eid = #{eid,jdbcType=INTEGER}
@@ -202,11 +206,9 @@
       money = #{money,jdbcType=DOUBLE},
       is_achieve = #{isAchieve,jdbcType=INTEGER},
       category = #{category,jdbcType=VARCHAR},
-      pubdate = #{pubdate,jdbcType=DATE},
-      deadline = #{deadline,jdbcType=DATE},
+      pubdate = #{pubdate,jdbcType=TIMESTAMP},
+      deadline = #{deadline,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER},
-      pubtime = #{pubtime,jdbcType=TIME},
-      deadtime = #{deadtime,jdbcType=TIME}
     where eid = #{eid,jdbcType=INTEGER}
   </update>
   <update id="fakeDeleteItemByEid">
@@ -219,8 +221,7 @@
     set title = #{title,jdbcType=VARCHAR},
         money = #{money,jdbcType=DOUBLE},
         category = #{category,jdbcType=VARCHAR},
-        deadline = #{deadline,jdbcType=DATE},
-        deadtime = #{deadtime,jdbcType=TIME},
+        deadline = #{deadline,jdbcType=TIMESTAMP},
         details = #{details,jdbcType=VARCHAR}
     where eid = #{eid,jdbcType=INTEGER}
   </update>

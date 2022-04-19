@@ -41,6 +41,7 @@
   <select id="selectAllItemCount" resultType="java.lang.Integer">
     select count(*) from study where  is_delete != 1
   </select>
+  <!-- 条件查询所需信息 -->
   <select id="queryByCondition" resultMap="allInfo">
     select * from study
     where is_delete = 0

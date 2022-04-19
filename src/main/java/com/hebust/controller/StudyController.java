@@ -6,6 +6,7 @@ import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
 import com.hebust.entity.study.*;
+import com.hebust.entity.user.SimplifyUser;
 import com.hebust.entity.user.User;
 import com.hebust.service.StudyService;
 import com.hebust.utils.DateUtils;
@@ -224,5 +225,13 @@ public class StudyController {
     public StudyVO queryItemsCountByCondition(@RequestBody QueryCondition condition){
         int i = studyService.queryItemsCountByCondition(condition);
         return new StudyVO(200, "success", i);
+    }
+
+    /**
+     * 测试
+     */
+    @RequestMapping("/test")
+    public StudyVO test(@RequestBody SimplifyUser user){
+        return new StudyVO(200, "success", user);
     }
 }

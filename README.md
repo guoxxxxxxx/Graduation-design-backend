@@ -1108,7 +1108,7 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 - 描述：查询所有代取外卖
 - URL: http://localhost:8080/errand/queryAll
 - 请求方式: GET
-- 请求参数 无
+- 请求参数 
 
 - 请求参数示例 无
 - 响应结果
@@ -1739,6 +1739,89 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 ```
 
 
+
+#### 12. 通过条件获取符合条件信息的数目
+
+- 名称: queryByCondition
+- 描述：通过条件查询项目信息
+- URL: http://localhost:8080/errand/queryByCondititon
+- 请求方式: POST
+- 请求参数
+
+| 字段               | 说明               | 类型    | 是否必须 | 备注 |
+| ------------------ | ------------------ | ------- | -------- | ---- |
+| page               | 所要查询的页码     | int     | 是       |      |
+| category           | 所要查询的种类信息 | String  | 是       |      |
+| fuzzyParam         | 模糊查询参数       | String  |          |      |
+| isHiddenAchieve    | 是否隐藏已完成项目 | boolean |          |      |
+| isHiddenTakeOrders | 是否隐藏已接单项目 | boolean |          |      |
+
+- 请求参数示例
+
+``` json
+{
+    "page":1,
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":true,
+    "isHiddenTakeOrders":true
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+
+```
+
+
+
+#### 13. 通过条件查询符合查询条件项目的数量
+
+- 名称: queryCountByCondition
+- 描述：通过条件查询项目信息
+- URL: http://localhost:8080/errand/queryCountByCondition
+- 请求方式: POST
+- 请求参数
+
+| 字段               | 说明               | 类型    | 是否必须 | 备注    |
+| ------------------ | ------------------ | ------- | -------- | ------- |
+| page               | 所要查询的页码     | int     | 是       |         |
+| category           | 所要查询的种类信息 | String  | 是       |         |
+| fuzzyParam         | 模糊查询参数       | String  |          |         |
+| isHiddenAchieve    | 是否隐藏已完成项目 | boolean |          | 0否 1是 |
+| isHiddenTakeOrders | 是否隐藏已接单项目 | boolean |          |         |
+
+- 请求参数示例
+
+```
+{
+    "page":1,
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":0
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+```
+
+```
 
 
 
