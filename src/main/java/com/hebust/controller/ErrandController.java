@@ -109,7 +109,7 @@ public class ErrandController {
             int count = errandImgService.insertErrandImg(errand.getEid(), errand.getImgUrls());
 
             if (i == 1 && count == errand.getImgUrls().size()){
-                return new ErrandVO(200, "success", null);
+                return new ErrandVO(200, "success", errand.getEid());
             }
             else {
                 return new ErrandVO(400, "fail", null);
