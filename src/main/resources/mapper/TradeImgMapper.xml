@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.relation.TradeImgMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.trade.TradeImg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tid, img_src, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade_img
+    where id = #{id,jdbcType=INTEGER} and is_delete = 0
+  </select>
+  <select id="queryImg" resultType="java.lang.String">
+    select img_src from trade_img where tid = #{tid} and is_delete = 0 and is_delete = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trade_img
+    where id = #{id,jdbcType=INTEGER} and is_delete = 0
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.trade.TradeImg" useGeneratedKeys="true">
+    insert into trade_img (tid, img_src, is_delete
+      )
+    values (#{tid,jdbcType=INTEGER}, #{imgSrc,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.trade.TradeImg" useGeneratedKeys="true">
+    insert into trade_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        tid,
+      </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <insert id="uploadImg">
+      insert into trade_img(tid, img_src) values (#{tid}, #{imgSrc})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.trade.TradeImg">
+    update trade_img
+    <set>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.trade.TradeImg">
+    update trade_img
+    set tid = #{tid,jdbcType=INTEGER},
+      img_src = #{imgSrc,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteImg">
+    update trade_img
+    set is_delete = 1
+    where img_src = #{img}
+  </update>
+</mapper>

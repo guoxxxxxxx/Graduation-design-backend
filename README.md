@@ -2619,6 +2619,638 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+### 6. 交易模块
+
+#### 1. 向交易表中添加新项目以及上传图片
+
+- 名称:	addNewItem
+- 描述：向学习表中添加新项目
+- URL: http://localhost:8080/trade/addNewItem
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明             | 类型     | 是否必须 | 备注 |
+| -------- | ---------------- | -------- | -------- | ---- |
+| uid      | 发布信息用户的id | int      | 是       |      |
+| title    | 标题             | String   | 是       |      |
+| category | 所属种类         | String   | 是       |      |
+| money    | 价格             | double   | 是       |      |
+| details  | 详细信息         | String   | 是       |      |
+| imgUrls  | 上传的图片名称   | String[] | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "uid":1,
+    "title":"测试",
+    "category":"种类",
+    "details":"详细信息",
+    "imgUrls":[]
+}
+```
+
+- 响应结果
+
+| 字段    | 说明           | 类型   | 备注 |
+| ------- | -------------- | ------ | ---- |
+| status  | 状态码         | int    |      |
+| message | 消息           | String |      |
+| object  | 发布新消息的id | int    |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success"
+    "object": 1,
+}
+```
+
+
+
+#### 2. 条件查询信息
+
+- 名称:	queryItemsByCondition
+- 描述：查询交易模块的所有信息(分页查询)
+- URL: http://localhost:8080/trade/queryItemsByCondition
+- 请求方式: POST
+- 请求参数：
+
+| 字段               | 说明                   | 类型   | 是否必须 | 备注    |
+| ------------------ | ---------------------- | ------ | -------- | ------- |
+| page               | 所要显示的页码         | int    | 否       | 默认为1 |
+| category           | 所要查询的种类信息     | String | 是       |         |
+| fuzzyParam         | 模糊查询参数           | String |          |         |
+| isHiddenAchieve    | 是否隐藏已完成项目     | int    |          | 0否 1是 |
+| isHiddenTakeOrders | 是否隐藏已经接单的项目 | int    |          |         |
+
+- 请求参数示例
+
+```json
+{
+	"page": 1,
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":0,
+    "isHiddenTakeOrders":0
+}
+```
+
+- 响应结果
+
+| 字段    | 说明           | 类型   | 备注 |
+| ------- | -------------- | ------ | ---- |
+| status  | 状态码         | int    |      |
+| message | 消息           | String |      |
+| object  | 返回查询的对象 | object |      |
+
+- 响应示例
+
+```json
+{
+    "status": 200,
+    "message": "success",
+    "object": []
+}
+```
+
+
+
+#### 3. 查询记录总条数
+
+
+
+- 名称: queryItemsCountByCondition
+- 描述：查询记录总条数
+- URL: http://localhost:8080/trade/queryItemsCountByCondition
+- 请求方式: POST
+- 请求参数
+
+| 字段               | 说明                   | 类型   | 是否必须 | 备注    |
+| ------------------ | ---------------------- | ------ | -------- | ------- |
+| category           | 所要查询的种类信息     | String | 是       |         |
+| fuzzyParam         | 模糊查询参数           | String |          |         |
+| isHiddenAchieve    | 是否隐藏已完成项目     | int    |          | 0否 1是 |
+| isHiddenTakeOrders | 是否隐藏已经接单的项目 | int    |          |         |
+
+- 请求参数示例
+
+``` json
+{
+    "category":"全部",
+    "fuzzyParam":"",
+    "isHiddenAchieve":0,
+    "isHiddenTakeOrders":0
+}
+```
+
+- 响应结果
+
+| 字段    | 说明       | 类型   | 备注 |
+| ------- | ---------- | ------ | ---- |
+| status  | 状态码     | int    |      |
+| message | 消息       | String |      |
+| object  | 记录总条数 | int    |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus": 200,
+    "message": "success", 
+    object: 100
+}
+```
+
+
+
+#### 4. 通过tid查询项目的详细信息
+
+- 名称:	queryDetailsByTid
+- 描述：通过sid查询该学习项目的详细信息
+- URL: http://localhost:8080/trade/queryDetailsByTid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明               | 类型 | 是否必须 | 备注 |
+| ---- | ------------------ | ---- | -------- | ---- |
+| tid  | 所要查询项目的主键 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": {
+        "tid": 1,
+        "uid": 27,
+        "pubUser": {},
+        "tuid": null,
+        "takeOrdersUser": null,
+        "category": "电脑配件",
+        "title": "卖笔记本电脑",
+        "details": "9成新，18款XPS，\n处理器i5 8300H \n显卡1050\n固态硬盘： 3TB\n机不可失，失不再来",
+        "money": 2000.0,
+        "pubdate": "2022-04-20 09:31:25",
+        "isDelete": 0,
+        "isAchieve": 0,
+        "imgUrls": [
+            "/img/dddb26ae88a14e99a6119114ae400ff1.jpeg"
+        ]
+    }
+}
+```
+
+
+
+#### 5. 通过tid查询当前项目的评论信息及回复信息
+
+- 名称:	queryDiscussByTid
+- 描述：通过sid查询当前项目的评论信息及回复信息
+- URL: http://localhost:8080/trade/queryDiscussByTid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明           | 类型 | 是否必须 | 备注 |
+| ---- | -------------- | ---- | -------- | ---- |
+| tid  | 所要查询的项目 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明               | 类型   | 备注             |
+| ------- | ------------------ | ------ | ---------------- |
+| status  | 状态码             | int    |                  |
+| message | 消息               | String |                  |
+| object  | 具体所要查询的对象 | object | 详情请看响应示例 |
+
+- 响应示例
+
+``` json
+{
+    "status": 200,
+    "message": "success",
+    "object": [
+        {
+            "id": 1,
+            "sid": 1,
+            "commentUid": 1,
+            "content": "这个是测试内容！",
+            "createDate": "2022-04-15T18:43:12.000+00:00",
+            "isDelete": 0,
+            "childrenList": [
+                {
+                    "id": 100000,
+                    "parentDiscussId": 1,
+                    "commentUid": 2,
+                    "targetUid": 1,
+                    "content": "这个是第一个评论的回复测试\r\n",
+                    "createDate": "2022-04-15T18:44:16.000+00:00",
+                    "isDelete": 0
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "sid": 1,
+            "commentUid": 4,
+            "content": "这个是第二个测试内容！",
+            "createDate": "2022-04-15T18:43:41.000+00:00",
+            "isDelete": 0,
+            "childrenList": []
+        }
+    ]
+}
+```
+
+
+
+#### 6. 通过sid查询当前项目的评论总条数
+
+- 名称: selectDiscussCountBySid
+- 描述：通过sid查询当前项目的评论总条数
+- URL: http://localhost:8080/study/selectDiscussCountBySid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明            | 类型 | 是否必须 | 备注 |
+| ---- | --------------- | ---- | -------- | ---- |
+| sid  | 所查询界面的sid | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "sid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明         | 类型   | 备注 |
+| ------- | ------------ | ------ | ---- |
+| status  | 状态码       | int    |      |
+| message | 消息         | String |      |
+| object  | 评论信息数量 | object |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success",
+    "object":100
+}
+```
+
+
+
+#### 7. 通过tid将状态改为已解决
+
+- 名称: setAchieveByTid
+- 描述：通过tid将状态改为已解决
+- URL: http://localhost:8080/trade/setAchieveByTid
+- 请求方式:  GET
+- 请求参数
+
+| 字段 | 说明   | 类型 | 是否必须 | 备注 |
+| ---- | ------ | ---- | -------- | ---- |
+| tid  | 项目id | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "status":200,
+    "message":"success"
+}
+```
+
+
+
+#### 8. 通过tid伪删除信息
+
+- 名称: fakeDeleteByTid
+- 描述：通过sid伪删除信息
+- URL: http://localhost:8080/trade/fakeDeleteTid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明   | 类型 | 是否必须 | 备注 |
+| ---- | ------ | ---- | -------- | ---- |
+| tid  | 项目id | int  | 是       |      |
+
+- 请求参数示例
+
+```json
+{
+    "tid": 1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+```json
+{
+    "status":200,
+    "message":"success"
+}
+```
+
+
+
+#### 9. 发送评论
+
+- 名称:	sendDiscuss
+- 描述：发送评论
+- URL: http://localhost:8080/trade/sendDiscuss
+- 请求方式: POST
+- 请求参数
+
+| 字段       | 说明             | 类型   | 是否必须 | 备注 |
+| ---------- | ---------------- | ------ | -------- | ---- |
+| tid        | 该评论所属项目   | int    | 是       |      |
+| commentUid | 发表该评论的用户 | int    | 是       |      |
+| content    | 发表评论的内容   | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid":30,
+    "commentUid":20,
+   	"content":"测试内容",
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 10. 通过图片名称伪删除图片
+
+- 名称: fakeDeleteImgByFilename
+- 描述：通过图片名称伪删除图片
+- URL: http://localhost:8080/study/fakeDeleteImgByFilename
+- 请求方式: GET
+- 请求参数
+
+| 字段    | 说明     | 类型   | 是否必须 | 备注 |
+| ------- | -------- | ------ | -------- | ---- |
+| img_src | 图片名称 | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "img_src": "filename.png"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 11. 通过Tid更新整个项目信息
+
+- 名称: updateByTid
+- 描述：通过sid更新整个项目信息
+- URL: http://localhost:8080/trade/updateByTid
+- 请求方式: POST
+- 请求参数
+
+| 字段     | 说明               | 类型   | 是否必须 | 备注 |
+| -------- | ------------------ | ------ | -------- | ---- |
+| tid      | 所要修改的项目编号 | int    | 是       |      |
+| category | 所属类别           | String | 是       |      |
+| title    | 标题               | String | 是       |      |
+| details  | 详细内容           | String | 否       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid":1,
+    "category":"英语",
+    "title":"测试",
+    "details":"详细信息测试"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+#### 12. 发送回复
+
+- 名称: SendReply
+- 描述：发送回复
+- URL: http://localhost:8080/trade/SendReply
+- 请求方式: POST
+- 请求参数
+
+| 字段            | 说明               | 类型   | 是否必须 | 备注 |
+| --------------- | ------------------ | ------ | -------- | ---- |
+| parentDiscussId | 回复所属的父评论   | int    | 是       |      |
+| commentUid      | 发表回复的的用户id | int    | 是       |      |
+| targetUid       | 被回复人的目标id   | int    | 是       |      |
+| content         | 回复内容           | String | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "parentDiscussId":1,
+    "commentUid":2,
+    "targetUid":3,
+    "content":"测试"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    "sataus":200,
+    "message":"success"
+}
+```
+
+
+
+
+
+#### 13. 预定订单
+
+- 名称: wantToBuy
+- 描述：通过tid预定订单
+- URL: http://localhost:8080/trade/wantToBuy
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明           | 类型 | 是否必须 | 备注 |
+| ---- | -------------- | ---- | -------- | ---- |
+| tid  | 想要购买的项目 | int  | 是       |      |
+| tuid | 谁想购买？     | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    "tid":1,
+    "tuid":1
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    status: 200,
+	message: "success"
+}
+```
+
+
+
+#### 14. 通过tid查询与之对应的图片信息
+
+- 名称: queryImgByTid
+- 描述：通过tid查询与之对应的图片信息
+- URL: http://localhost:8080/trade/queryImgByTid
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+| tid  |      |      |          |      |
+
+- 请求参数示例
+
+``` json
+
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+
+```
+
+
+
+
+
 ### 模板
 
 

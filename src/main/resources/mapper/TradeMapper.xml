@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.TradeMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.trade.Trade">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="tuid" jdbcType="INTEGER" property="tuid" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="details" jdbcType="VARCHAR" property="details" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve"/>
+  </resultMap>
+
+  <!--查询所有信息-->
+  <resultMap id="allInfo" type="com.hebust.entity.trade.Trade">
+    <id column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="tuid" jdbcType="INTEGER" property="tuid" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="details" jdbcType="VARCHAR" property="details" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve"/>
+    <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+    <association property="takeOrdersUser" column="tuid" select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+    <collection property="imgUrls" column="tid" ofType="java.lang.String"
+                select="com.hebust.mapper.relation.TradeImgMapper.queryImg"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    tid, `uid`, tuid, category, title, details, money, pubdate, is_delete, isAchieve
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from trade
+    where tid = #{tid,jdbcType=INTEGER} and is_delete = 0
+  </select>
+  <select id="queryByCondition" resultMap="allInfo">
+    select * from trade
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="isHiddenTakeOrders == 1">
+      and tuid is null
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <select id="queryDetailsByTid" resultMap="allInfo">
+    select * from trade where tid = #{tid}
+  </select>
+  <select id="queryItemsCountByCondition" resultType="java.lang.Integer">
+    select count(*) from trade
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="isHiddenTakeOrders == 1">
+      and tuid is null
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from trade
+    where tid = #{tid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="tid" keyProperty="tid" parameterType="com.hebust.entity.trade.Trade" useGeneratedKeys="true">
+    insert into trade (`uid`, tuid, category, 
+      title, details, money, 
+      pubdate, is_delete)
+    values (#{uid,jdbcType=INTEGER}, #{tuid,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, 
+      #{title,jdbcType=VARCHAR}, #{details,jdbcType=VARCHAR}, #{money,jdbcType=DOUBLE}, 
+      #{pubdate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="tid" keyProperty="tid" parameterType="com.hebust.entity.trade.Trade" useGeneratedKeys="true">
+    insert into trade
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="tuid != null">
+        tuid,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="details != null">
+        details,
+      </if>
+      <if test="money != null">
+        money,
+      </if>
+      <if test="pubdate != null">
+        pubdate,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="tuid != null">
+        #{tuid,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="details != null">
+        #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="pubdate != null">
+        #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <insert id="addNewItem" useGeneratedKeys="true" keyProperty="tid">
+    insert into trade(uid, category, title, details, money, pubdate)
+    values (#{uid}, #{category}, #{title}, #{details}, #{money}, #{pubdate})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.trade.Trade">
+    update trade
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="tuid != null">
+        tuid = #{tuid,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="details != null">
+        details = #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="money != null">
+        money = #{money,jdbcType=DOUBLE},
+      </if>
+      <if test="pubdate != null">
+        pubdate = #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.trade.Trade">
+    update trade
+    set `uid` = #{uid,jdbcType=INTEGER},
+      tuid = #{tuid,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      details = #{details,jdbcType=VARCHAR},
+      money = #{money,jdbcType=DOUBLE},
+      pubdate = #{pubdate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where tid = #{tid,jdbcType=INTEGER}
+  </update>
+  <update id="wantToBuy">
+    update trade
+    set tuid = #{tuid}
+    where tid = #{tid}
+  </update>
+  <update id="updateByTid">
+    update trade
+    set category = #{category},
+        title = #{title},
+        details = #{details},
+        money = #{money},
+        pubdate = #{pubdate}
+    where tid = #{tid}
+  </update>
+  <update id="fakeDeleteItem">
+    update trade
+    set is_delete = 1
+    where tid = #{tid}
+  </update>
+</mapper>

@@ -28,7 +28,7 @@ public class User implements Serializable {
     /**
      * 生日 格式为yyyy-MM-dd
      */
-    private Date birthday;
+    private String birthday;
 
     /**
      * 电话号码, 固定长度为11位
