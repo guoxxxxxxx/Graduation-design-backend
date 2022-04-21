@@ -87,4 +87,9 @@ public class ErrandServiceImpl implements ErrandService {
     public int queryDiscussCount(int eid) {
         return discussMapper.queryDiscussCount(eid);
     }
+
+    @Override
+    public int fakeDeleteItem(int eid) {
+        return errandMapper.fakeDeleteItem(eid);
+    }
 }

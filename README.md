@@ -663,6 +663,44 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+#### 18 通过eid伪删除跑腿订单
+
+- 名称:	fakeDeleteItem
+- 描述：伪删除跑腿订单
+- URL: http://localhost:8080/trade/fakeDeleteItem
+- 请求方式: GET
+- 请求参数
+
+| 字段 | 说明 | 类型 | 是否必须 | 备注 |
+| ---- | ---- | ---- | -------- | ---- |
+| eid  | 主键 | int  | 是       |      |
+
+- 请求参数示例
+
+``` json
+{
+    eid: "1"
+}
+```
+
+- 响应结果
+
+| 字段    | 说明   | 类型   | 备注 |
+| ------- | ------ | ------ | ---- |
+| status  | 状态码 | int    |      |
+| message | 消息   | String |      |
+
+- 响应示例
+
+``` json
+{
+    status: 200,
+    message: "success"
+}
+```
+
+
+
 ## 五、接口设计
 
 ### 1、用户

@@ -61,4 +61,9 @@ public interface ErrandService {
      * 查询跑腿订单的评论数量
      */
     int queryDiscussCount(int eid);
+
+    /**
+     * 通过eid伪删除跑腿信息表
+     */
+    int fakeDeleteItem(int eid);
 }

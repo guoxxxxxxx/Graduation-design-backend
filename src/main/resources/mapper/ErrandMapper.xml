@@ -230,4 +230,9 @@
     set is_achieve = 1
     where eid = #{eid,jdbcType=INTEGER}
   </update>
+  <update id="fakeDeleteItem">
+    update errand
+    set is_delete = 1
+    where eid = #{eid}
+  </update>
 </mapper>

@@ -65,4 +65,9 @@ public interface ErrandMapper {
      * 条件查询符合条件的项目数量
      */
     int queryCountByCondition(QueryCondition condition);
+
+    /**
+     * 通过eid伪删除跑腿信息表
+     */
+    int fakeDeleteItem(int eid);
 }

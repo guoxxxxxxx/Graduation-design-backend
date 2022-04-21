@@ -310,4 +310,13 @@ public class ErrandController {
         int i = errandService.queryDiscussCount(eid);
         return new ErrandVO(200, "success", i);
     }
+
+    /**
+     * 通过id伪删除跑腿信息
+     */
+    @RequestMapping("/fakeDeleteItem")
+    public ErrandVO fakeDeleteItem(@RequestParam int eid){
+        errandService.fakeDeleteItem(eid);
+        return ErrandVO.SUCCESS;
+    }
 }
