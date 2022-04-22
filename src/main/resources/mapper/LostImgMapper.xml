@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.relation.LostImgMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.lostProperty.LostImg">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="lid" jdbcType="INTEGER" property="lid" />
+    <result column="img_src" jdbcType="VARCHAR" property="imgSrc" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, lid, img_src, is_delete
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lost_img
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="queryImgs" resultType="java.lang.String">
+    select img_src from lost_img
+    where lid = #{lid} and is_delete = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lost_img
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.lostProperty.LostImg" useGeneratedKeys="true">
+    insert into lost_img (lid, img_src, is_delete
+      )
+    values (#{lid,jdbcType=INTEGER}, #{imgSrc,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.lostProperty.LostImg" useGeneratedKeys="true">
+    insert into lost_img
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="lid != null">
+        lid,
+      </if>
+      <if test="imgSrc != null">
+        img_src,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="lid != null">
+        #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <insert id="uploadImg">
+      insert into lost_img(lid, img_src)
+      values (#{lid}, #{imgSrc})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.lostProperty.LostImg">
+    update lost_img
+    <set>
+      <if test="lid != null">
+        lid = #{lid,jdbcType=INTEGER},
+      </if>
+      <if test="imgSrc != null">
+        img_src = #{imgSrc,jdbcType=VARCHAR},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.lostProperty.LostImg">
+    update lost_img
+    set lid = #{lid,jdbcType=INTEGER},
+      img_src = #{imgSrc,jdbcType=VARCHAR},
+      is_delete = #{isDelete,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteImg">
+    update lost_img
+    set is_delete = 1
+    where img_src = #{imgSrc}
+  </update>
+</mapper>

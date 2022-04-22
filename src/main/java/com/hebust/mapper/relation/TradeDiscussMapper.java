@@ -26,4 +26,9 @@ public interface TradeDiscussMapper {
      * 添加新的评论信息
      */
     int sendDiscuss(TradeDiscuss discuss);
+
+    /**
+     * 查询评论数量
+     */
+    int queryDiscussCount(int tid);
 }

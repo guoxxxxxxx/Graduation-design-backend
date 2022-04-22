@@ -74,4 +74,9 @@ public interface TradeService {
      * 通过tid伪删除信息
      */
     int fakeDeleteItem(int tid);
+
+    /**
+     * 查询评论数量
+     */
+    int queryDiscussCount(int tid);
 }

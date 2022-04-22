@@ -56,6 +56,7 @@ public class ErrandServiceImpl implements ErrandService {
 
     @Override
     public int updateErrandItemByEid(Errand errand) {
+
         return errandMapper.updateErrandItemByEid(errand);
     }
 

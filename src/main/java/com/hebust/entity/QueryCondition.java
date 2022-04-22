@@ -36,4 +36,20 @@ public class QueryCondition {
      * 是否显示已接单订单, true是隐藏; false是显示
      */
     private int isHiddenTakeOrders;
+
+    /**
+     * 检测属性是否为空，若为空则全部替换为默认值
+     */
+    public static QueryCondition checkCondition(QueryCondition condition){
+        if (condition.getCategory() == null){
+            condition.setCategory("");
+        }
+        if (condition.getFuzzyParam() == null){
+            condition.setFuzzyParam("");
+        }
+        if (condition.getPage() == 0){
+            condition.setPage(1);
+        }
+        return condition;
+    }
 }

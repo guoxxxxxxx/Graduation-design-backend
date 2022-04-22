@@ -3287,6 +3287,16 @@ FOREIGN KEY (parent_discuss_id) REFERENCES errand_discuss(id)
 
 
 
+### 7. 失物招领模块
+
+#### 1. 发布信息
+
+- 名称：publishNewItem
+
+#### 2. 上传图片到数据库中
+
+- 名称：uploadImg
+
 
 
 ### 模板

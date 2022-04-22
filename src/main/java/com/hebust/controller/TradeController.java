@@ -184,4 +184,13 @@ public class TradeController {
             return TradeVO.FAIL;
         }
     }
+
+    /**
+     * 查询评论数量
+     */
+    @RequestMapping("/queryDiscussCount")
+    public TradeVO queryDiscussCount (@RequestParam int tid){
+        int i = tradeService.queryDiscussCount(tid);
+        return TradeVO.SUCCESS(i);
+    }
 }

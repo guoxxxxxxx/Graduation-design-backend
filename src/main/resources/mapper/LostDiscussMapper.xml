@@ -1,57 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.hebust.mapper.relation.TradeDiscussMapper">
-  <resultMap id="BaseResultMap" type="com.hebust.entity.trade.TradeDiscuss">
+<mapper namespace="com.hebust.mapper.relation.LostDiscussMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.lostProperty.LostDiscuss">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="lid" jdbcType="INTEGER" property="lid" />
     <result column="comment_uid" jdbcType="INTEGER" property="commentUid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
 
-  <!--查询评论信息 包括回复信息-->
-  <resultMap id="allDiscuss" type="com.hebust.entity.trade.TradeDiscuss">
+  <!--所要查询的信息-->
+  <resultMap id="allInfo" type="com.hebust.entity.lostProperty.LostDiscuss">
     <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="lid" jdbcType="INTEGER" property="lid" />
     <result column="comment_uid" jdbcType="INTEGER" property="commentUid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <association property="commentUser" column="comment_uid" select="com.hebust.mapper.UserMapper.selectSimplifyUserById"/>
-    <collection property="childrenList" column="id" ofType="com.hebust.entity.trade.TradeReply"
-                select="com.hebust.mapper.relation.TradeReplyMapper.queryReply"/>
+    <collection property="childrenList" column="id" ofType="com.hebust.entity.lostProperty.LostReply"
+                select="com.hebust.mapper.relation.LostReplyMapper.queryReply"/>
   </resultMap>
   <sql id="Base_Column_List">
-    id, tid, comment_uid, content, create_date, is_delete
+    id, lid, comment_uid, content, create_date, is_delete
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from trade_discuss
-    where id = #{id,jdbcType=INTEGER} and is_delete = 0
+    from lost_discuss
+    where id = #{id,jdbcType=INTEGER}
   </select>
-    <select id="queryDiscussByTid" resultMap="allDiscuss">
-    select * from trade_discuss where tid = #{tid} and is_delete = 0
+    <select id="queryDiscussByLid" resultMap="allInfo">
+        select * from lost_discuss
+        where lid = #{lid}
     </select>
-  <select id="queryDiscussCount" resultType="java.lang.Integer">
-    select count(*) from trade_discuss where tid = #{tid}
+  <select id="queryDiscussCountByLid" resultType="java.lang.Integer">
+    select count(*) from lost_discuss where lid = #{lid}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from trade_discuss
-    where id = #{id,jdbcType=INTEGER} and is_delete = 0
+    delete from lost_discuss
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.trade.TradeDiscuss" useGeneratedKeys="true">
-    insert into trade_discuss (tid, comment_uid, content, 
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.lostProperty.LostDiscuss" useGeneratedKeys="true">
+    insert into lost_discuss (lid, comment_uid, content, 
       create_date, is_delete)
-    values (#{tid,jdbcType=INTEGER}, #{commentUid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
+    values (#{lid,jdbcType=INTEGER}, #{commentUid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, 
       #{createDate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.trade.TradeDiscuss" useGeneratedKeys="true">
-    insert into trade_discuss
+  <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.hebust.entity.lostProperty.LostDiscuss" useGeneratedKeys="true">
+    insert into lost_discuss
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="tid != null">
-        tid,
+      <if test="lid != null">
+        lid,
       </if>
       <if test="commentUid != null">
         comment_uid,
@@ -67,8 +68,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="tid != null">
-        #{tid,jdbcType=INTEGER},
+      <if test="lid != null">
+        #{lid,jdbcType=INTEGER},
       </if>
       <if test="commentUid != null">
         #{commentUid,jdbcType=INTEGER},
@@ -85,14 +86,14 @@
     </trim>
   </insert>
   <insert id="sendDiscuss">
-    insert into trade_discuss(tid, comment_uid, content, create_date)
-    values (#{tid}, #{commentUid}, #{content}, #{createDate})
+    insert into lost_discuss(lid, comment_uid, content, create_date)
+    values (#{lid}, #{commentUid}, #{content}, #{createDate})
   </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.trade.TradeDiscuss">
-    update trade_discuss
+  <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.lostProperty.LostDiscuss">
+    update lost_discuss
     <set>
-      <if test="tid != null">
-        tid = #{tid,jdbcType=INTEGER},
+      <if test="lid != null">
+        lid = #{lid,jdbcType=INTEGER},
       </if>
       <if test="commentUid != null">
         comment_uid = #{commentUid,jdbcType=INTEGER},
@@ -109,9 +110,9 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.trade.TradeDiscuss">
-    update trade_discuss
-    set tid = #{tid,jdbcType=INTEGER},
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.lostProperty.LostDiscuss">
+    update lost_discuss
+    set lid = #{lid,jdbcType=INTEGER},
       comment_uid = #{commentUid,jdbcType=INTEGER},
       content = #{content,jdbcType=VARCHAR},
       create_date = #{createDate,jdbcType=TIMESTAMP},

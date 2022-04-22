@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hebust.mapper.LostPropertyMapper">
+  <resultMap id="BaseResultMap" type="com.hebust.entity.lostProperty.LostProperty">
+    <id column="lid" jdbcType="INTEGER" property="lid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="details" jdbcType="VARCHAR" property="details" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+  </resultMap>
+
+  <!--所要查询的所有信息-->
+  <resultMap id="allInfo" type="com.hebust.entity.lostProperty.LostProperty">
+    <id column="lid" jdbcType="INTEGER" property="lid" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="details" jdbcType="VARCHAR" property="details" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="pubdate" />
+    <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.selectByPrimaryKey"/>
+    <collection property="imgUrls" column="lid" ofType="java.lang.String"
+                select="com.hebust.mapper.relation.LostImgMapper.queryImgs"/>
+  </resultMap>
+  <sql id="Base_Column_List">
+    lid, `uid`, category, title, details, pubdate, is_delete, is_achieve
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from lost_property
+    where lid = #{lid,jdbcType=INTEGER}
+  </select>
+  <select id="queryByCondition" resultMap="allInfo">
+    select * from lost_property
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <select id="queryCountByCondition" resultType="java.lang.Integer">
+    select count(*) from lost_property
+    where is_delete = 0
+    <if test="isHiddenAchieve == 1">
+      and is_achieve = 0
+    </if>
+    <if test="category != '全部' and category != null and category != ''">
+      and category = #{category}
+    </if>
+    and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+  <select id="queryDetailsByLit" resultMap="allInfo">
+    select * from lost_property
+    where lid = #{lid}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from lost_property
+    where lid = #{lid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" keyColumn="lid" keyProperty="lid" parameterType="com.hebust.entity.lostProperty.LostProperty" useGeneratedKeys="true">
+    insert into lost_property (`uid`, category, title, 
+      details, pubdate, is_delete, 
+      is_achieve)
+    values (#{uid,jdbcType=INTEGER}, #{category,jdbcType=VARCHAR}, #{title,jdbcType=VARCHAR}, 
+      #{details,jdbcType=VARCHAR}, #{pubdate,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}, 
+      #{isAchieve,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" keyColumn="lid" keyProperty="lid" parameterType="com.hebust.entity.lostProperty.LostProperty" useGeneratedKeys="true">
+    insert into lost_property
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        `uid`,
+      </if>
+      <if test="category != null">
+        category,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="details != null">
+        details,
+      </if>
+      <if test="pubdate != null">
+        pubdate,
+      </if>
+      <if test="isDelete != null">
+        is_delete,
+      </if>
+      <if test="isAchieve != null">
+        is_achieve,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="details != null">
+        #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isAchieve != null">
+        #{isAchieve,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+    <insert id="publishNewItem" useGeneratedKeys="true" keyProperty="lid">
+      insert into lost_property(uid, category, title, details, pubdate)
+      values(#{uid}, #{category}, #{title}, #{details}, #{pubdate})
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.lostProperty.LostProperty">
+    update lost_property
+    <set>
+      <if test="uid != null">
+        `uid` = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="category != null">
+        category = #{category,jdbcType=VARCHAR},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="details != null">
+        details = #{details,jdbcType=VARCHAR},
+      </if>
+      <if test="pubdate != null">
+        pubdate = #{pubdate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="isDelete != null">
+        is_delete = #{isDelete,jdbcType=INTEGER},
+      </if>
+      <if test="isAchieve != null">
+        is_achieve = #{isAchieve,jdbcType=INTEGER},
+      </if>
+    </set>
+    where lid = #{lid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hebust.entity.lostProperty.LostProperty">
+    update lost_property
+    set `uid` = #{uid,jdbcType=INTEGER},
+      category = #{category,jdbcType=VARCHAR},
+      title = #{title,jdbcType=VARCHAR},
+      details = #{details,jdbcType=VARCHAR},
+      pubdate = #{pubdate,jdbcType=TIMESTAMP},
+      is_delete = #{isDelete,jdbcType=INTEGER},
+      is_achieve = #{isAchieve,jdbcType=INTEGER}
+    where lid = #{lid,jdbcType=INTEGER}
+  </update>
+  <update id="updateIsAchieveByLid">
+    update lost_property
+    set is_achieve = 1
+    where lid = #{lid}
+  </update>
+  <update id="fakeDeleteByLid">
+    update lost_property
+    set is_delete = 1
+    where lid = #{lid}
+  </update>
+  <update id="updateByLid">
+    update lost_property
+    set category = #{category},
+        title = #{title},
+        details = #{details}
+    where lid = #{lid}
+  </update>
+</mapper>

@@ -156,4 +156,9 @@ public class TradeServiceImpl implements TradeService {
     public int fakeDeleteItem(int tid) {
         return tradeMapper.fakeDeleteItem(tid);
     }
+
+    @Override
+    public int queryDiscussCount(int tid) {
+        return discussMapper.queryDiscussCount(tid);
+    }
 }
