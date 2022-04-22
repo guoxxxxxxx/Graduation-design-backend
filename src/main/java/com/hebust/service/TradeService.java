@@ -26,7 +26,7 @@ public interface TradeService {
     Trade queryDetailsByTid(int tid);
 
     /**
-     * 通过条件查询所有符合条件的仙姑
+     * 通过条件查询所有符合条件的项目
      */
     List<Trade> queryItemsByCondition(QueryCondition condition);
 
