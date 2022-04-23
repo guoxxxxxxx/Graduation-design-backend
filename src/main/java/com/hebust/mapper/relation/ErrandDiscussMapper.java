@@ -24,4 +24,14 @@ public interface ErrandDiscussMapper {
      * 查询跑腿评论总数量
      */
     int queryDiscussAllCount();
+
+    /**
+     * 通过eid伪删除评论
+     */
+    int fakeDeleteDiscussByEid(int eid);
+
+    /**
+     * 通过id伪删除评论
+     */
+    int fakeDeleteDiscussById(int id);
 }

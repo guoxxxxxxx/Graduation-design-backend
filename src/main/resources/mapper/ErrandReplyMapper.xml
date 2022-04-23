@@ -19,6 +19,20 @@
     insert into errand_reply(parent_discuss_id, comment_uid, target_uid, content, create_date)
     values (#{parentDiscussId}, #{commentUid}, #{targetUid}, #{content}, #{createDate})
   </insert>
+  <update id="fakeDeleteById">
+    update errand_reply set is_delete = 1 where id = #{id}
+  </update>
+  <update id="fakeDeleteByParentId">
+    update errand_reply set is_delete = 1 where parent_discuss_id = {id}
+  </update>
+  <update id="fakeDeleteByEid">
+    UPDATE errand_reply
+    SET is_delete = 1
+    WHERE id IN (SELECT id FROM
+      (SELECT id FROM errand_reply INNER JOIN
+                      (SELECT id sd FROM errand_discuss INNER JOIN errand ON errand.`eid` = errand_discuss.`eid` AND errand.`eid` = #{eid}) a
+                      ON a.sd = errand_reply.`parent_discuss_id`) id)
+  </update>
   <select id="selectAllByPdi" resultMap="BaseResultMap" >
     select *
     from errand_reply

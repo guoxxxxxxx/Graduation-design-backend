@@ -34,6 +34,12 @@
     insert into errand_discuss(eid, comment_uid, content, create_date)
     values (#{eid}, #{commentUid}, #{content}, #{createDate})
   </insert>
+  <update id="fakeDeleteDiscussByEid">
+    update errand_discuss set is_delete = 1 where eid = #{eid}
+  </update>
+  <update id="fakeDeleteDiscussById">
+    update errand_discuss set id_delete = 1 where id #{id}
+  </update>
   <select id="selectAllByEid" parameterType="java.lang.Integer" resultMap="selectAllAndChild">
     select *
     from errand_discuss

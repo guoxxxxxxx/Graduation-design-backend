@@ -21,4 +21,19 @@ public interface ErrandReplyMapper {
      * 查询回复信息的数量
      */
     int queryReplyCount();
+
+    /**
+     * 通过id伪删除回复信息
+     */
+    int fakeDeleteById(int id);
+
+    /**
+     * 通过父id删除回复信息
+     */
+    int fakeDeleteByParentId(int pid);
+
+    /**
+     * 通过eid删除回复信息
+     */
+    int fakeDeleteByEid(int eid);
 }
