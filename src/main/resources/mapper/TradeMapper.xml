@@ -71,6 +71,15 @@
     </if>
     and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
   </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+      select count(*) from trade where is_delete = 0
+    </select>
+  <select id="queryTakeOrdersCount" resultType="java.lang.Integer">
+    select count(*) from trade where is_delete = 0 and is_achieve = 0 and tuid is not null
+  </select>
+  <select id="queryAchieveCount" resultType="java.lang.Integer">
+    select count(*) from trade where is_delete = 0 and is_achieve = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from trade
     where tid = #{tid,jdbcType=INTEGER}

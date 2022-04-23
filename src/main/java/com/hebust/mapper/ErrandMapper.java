@@ -2,6 +2,7 @@ package com.hebust.mapper;
 
 import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
+import com.hebust.entity.item.ErrandTable;
 
 import java.util.List;
 
@@ -70,4 +71,24 @@ public interface ErrandMapper {
      * 通过eid伪删除跑腿信息表
      */
     int fakeDeleteItem(int eid);
+
+    /**
+     * 查询所有未删除的项目数量
+     */
+    int queryCount();
+
+    /**
+     * 查询所有已接单数量
+     */
+    int queryTakeOrdersCount();
+
+    /**
+     * 查询所有已完成订单
+     */
+    int queryAchieveCount();
+
+    /**
+     * 查询所需要的信息
+     */
+    List<ErrandTable> managerQueryAll();
 }

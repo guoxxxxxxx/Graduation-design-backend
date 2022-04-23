@@ -19,4 +19,9 @@ public interface ErrandDiscussMapper {
      * 查询跑腿评论的数量
      */
     int queryDiscussCount(int eid);
+
+    /**
+     * 查询跑腿评论总数量
+     */
+    int queryDiscussAllCount();
 }

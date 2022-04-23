@@ -37,6 +37,16 @@
     <result column="details" jdbcType="VARCHAR" property="details"/>
   </resultMap>
 
+  <resultMap id="managerMap" type="com.hebust.entity.item.ErrandTable">
+    <id column="eid" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="date" />
+    <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+    <association property="takeOrdersUser" column="euid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     eid, `uid`, euid, title, money, is_achieve, category, pubdate, deadline, is_delete, details
   </sql>
@@ -82,6 +92,18 @@
       and category = #{category}
     </if>
     and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
+  </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+      select count(*) from errand where is_delete = 0
+    </select>
+  <select id="queryTakeOrdersCount" resultType="java.lang.Integer">
+    select count(*) from errand where is_delete = 0 and euid is not null and is_achieve = 0
+  </select>
+  <select id="queryAchieveCount" resultType="java.lang.Integer">
+    select count(*) from errand where is_delete = 0 and is_achieve = 1
+  </select>
+  <select id="managerQueryAll" resultMap="managerMap">
+    select * from errand where is_delete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from errand

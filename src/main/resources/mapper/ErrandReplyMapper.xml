@@ -24,4 +24,7 @@
     from errand_reply
     where parent_discuss_id = #{pdi,jdbcType=INTEGER} and is_delete = 0
   </select>
+    <select id="queryReplyCount" resultType="java.lang.Integer">
+      select count(*) from errand_reply where is_delete = 0
+    </select>
 </mapper>

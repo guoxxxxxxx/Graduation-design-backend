@@ -40,6 +40,9 @@
     where eid = #{eid,jdbcType=INTEGER} and is_delete != 1
   </select>
   <select id="queryDiscussCount" resultType="java.lang.Integer">
-    select count(*) from errand_discuss where eid = #{eid}
+    select count(*) from errand_discuss where eid = #{eid} and is_delete = 0
+  </select>
+  <select id="queryDiscussAllCount" resultType="java.lang.Integer">
+    select count(*) from errand_discuss where is_delete = 0
   </select>
 </mapper>

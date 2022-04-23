@@ -4,6 +4,7 @@ import com.hebust.config.ParamsConfig;
 import com.hebust.entity.user.User;
 import com.hebust.entity.user.UserVO;
 import com.hebust.service.UserService;
+import com.hebust.utils.DateUtils;
 import com.hebust.utils.StatusCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -71,6 +72,7 @@ public class UserController {
             } else {
                 // 设置初始化信息
                 user.setIsDelete(0);
+                user.setRegisterTime(DateUtils.getCurrentDateTimeString());
                 // 将用户插入到数据库中
                 int i = userService.insert(user);
                 if (i > 0){

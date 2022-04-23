@@ -64,6 +64,12 @@
     </if>
     and (category like "%"#{fuzzyParam}"%" or title like "%"#{fuzzyParam}"%" or details like "%"#{fuzzyParam}"%")
   </select>
+    <select id="queryCount" resultType="java.lang.Integer">
+      select count(*) from study where is_delete = 0
+    </select>
+  <select id="queryAchieveCount" resultType="java.lang.Integer">
+    select count(*) from study where is_delete = 0 and is_achieve = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study
     where sid = #{sid,jdbcType=INTEGER}

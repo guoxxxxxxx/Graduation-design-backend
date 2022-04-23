@@ -38,4 +38,9 @@ public interface UserMapper {
      * 通过id查询简化版用户信息
      */
     SimplifyUser selectSimplifyUserById(int id);
+
+    /**
+     * 根据id查询用户姓名
+     */
+    String getUserName(int id);
 }

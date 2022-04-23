@@ -56,4 +56,14 @@ public interface StudyMapper {
      * 条件查询项目总数
      */
     int queryItemsCountByCondition(QueryCondition condition);
+
+    /**
+     * 查询学习订单的数量
+     */
+    int queryCount();
+
+    /**
+     * 查询已完成的订单数量
+     */
+    int queryAchieveCount();
 }

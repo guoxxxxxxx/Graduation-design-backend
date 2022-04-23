@@ -52,4 +52,14 @@ public interface LostPropertyMapper {
      * 通过lid更新项目信息
      */
     int updateByLid(LostProperty property);
+
+    /**
+     * 查询失物招领数量
+     */
+    int queryCount();
+
+    /**
+     * 查询已经完成的项目数量
+     */
+    int queryAchieveCount();
 }

@@ -52,4 +52,19 @@ public interface TradeMapper {
      * 通过tid伪删除信息
      */
     int fakeDeleteItem(int tid);
+
+    /**
+     * 查询交易订单数量
+     */
+    int queryCount();
+
+    /**
+     * 查询已预定订单数量
+     */
+    int queryTakeOrdersCount();
+
+    /**
+     * 查询已经完成的订单数量
+     */
+    int queryAchieveCount();
 }

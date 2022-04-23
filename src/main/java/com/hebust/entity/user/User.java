@@ -51,6 +51,16 @@ public class User implements Serializable {
     private String major;
 
     /**
+     * 用户注册时间
+     */
+    private String registerTime;
+
+    /**
+     * 是否为管理员
+     */
+    private int isManager;
+
+    /**
      * 邮箱
      */
     private String email;

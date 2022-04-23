@@ -16,6 +16,8 @@
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="password" jdbcType="VARCHAR" property="password"/>
     <result column="avatar_path" jdbcType="VARCHAR" property="avatarPath"/>
+    <result column="register_time" property="registerTime"/>
+    <result column="is_manager" property="isManager"/>
   </resultMap>
 
   <!--简化版用户信息-->
@@ -26,7 +28,8 @@
   </resultMap>
 
   <sql id="Base_Column_List">
-    `uid`, `name`, sex, birthday, phone, faculty, grade, major, email, wechat, qq, is_delete, password, avatar_Path
+    `uid`, `name`, sex, birthday, phone, faculty, grade, major, email, wechat, qq, is_delete, password, avatar_Path, register_time,
+    is_manager
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -50,6 +53,9 @@
     from user
     where uid = #{id,jdbcType=INTEGER}
   </select>
+  <select id="getUserName" resultType="java.lang.String">
+    select name from user where uid = #{id} and is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where `uid` = #{uid,jdbcType=INTEGER}
@@ -58,11 +64,11 @@
     insert into user (`name`, sex, birthday, 
       phone, faculty, grade, major, 
       email, wechat, qq, 
-      is_delete, password)
+      is_delete, password, register_time)
     values (#{name,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE}, 
       #{phone,jdbcType=CHAR}, #{faculty,jdbcType=VARCHAR}, #{grade,jdbcType=CHAR}, #{major,jdbcType=VARCHAR}, 
       #{email,jdbcType=VARCHAR}, #{wechat,jdbcType=VARCHAR}, #{qq,jdbcType=VARCHAR}, 
-      #{isDelete,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR})
+      #{isDelete,jdbcType=INTEGER}, #{password,jdbcType=VARCHAR}, #{registerTime})
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="com.hebust.entity.user.User">
     update user

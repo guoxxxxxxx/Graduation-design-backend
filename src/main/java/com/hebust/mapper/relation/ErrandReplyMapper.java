@@ -16,4 +16,9 @@ public interface ErrandReplyMapper {
      * 向数据表中添加回复信息
      */
     int insertReply(ErrandReply reply);
+
+    /**
+     * 查询回复信息的数量
+     */
+    int queryReplyCount();
 }
