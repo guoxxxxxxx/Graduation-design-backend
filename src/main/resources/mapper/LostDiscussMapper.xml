@@ -48,6 +48,13 @@
   <select id="queryDiscussCountByLid" resultType="java.lang.Integer">
     select count(*) from lost_discuss where lid = #{lid}
   </select>
+    <select id="queryDiscussCount" resultType="java.lang.Integer">
+      select count(*) from lost_discuss where is_delete = 0
+    </select>
+  <select id="queryDiscussTable" resultMap="managerInfo">
+    select * from lost_discuss
+    where is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from lost_discuss
     where id = #{id,jdbcType=INTEGER}
@@ -128,5 +135,15 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteDiscussByLid">
+    update lost_discuss
+    set is_delete = 1
+    where lid = #{lid}
+  </update>
+  <update id="fakeDeleteDiscussById">
+    update lost_discuss
+    set is_delete = 1
+    where id = #{id}
   </update>
 </mapper>

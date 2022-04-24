@@ -255,7 +255,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/queryItemDisCount")
     public ManagerVO queryLostItemDisCount(){
-        return null;
+        HashMap<String, Integer> map = managerService.queryLostItemDisRepCount();
+        return ManagerVO.SUCCESS(map);
     }
 
     /**
@@ -263,7 +264,9 @@ public class ManagerController {
      */
     @RequestMapping("/lost/queryPercentage")
     public ManagerVO queryLostPercentage(){
-        return null;
+        HashMap<String, Integer> map = managerService.queryLostItemsStatusCount();
+        HashMap<String, String> compute = PreComputeUtils.compute(map.get("all"), 0, 0, map.get("achieve"));
+        return ManagerVO.SUCCESS(compute);
     }
 
     /**
@@ -271,7 +274,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/queryAllItem")
     public ManagerVO queryLostAllItem(){
-        return null;
+        List<ItemTable> itemTables = managerService.queryAllLostItem();
+        return ManagerVO.SUCCESS(itemTables);
     }
 
     /**
@@ -279,7 +283,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/fakeDeleteItem")
     public ManagerVO fakeDeleteLostItem(@RequestParam int id) {
-        return null;
+        int i = managerService.fakeDeleteLostItem(id);
+        return ManagerVO.SUCCESS(i);
     }
 
     /**
@@ -287,7 +292,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/queryDiscuss")
     public ManagerVO queryLostDiscuss(){
-        return null;
+        List<DiscussTable> discussTables = managerService.queryLostDiscuss();
+        return ManagerVO.SUCCESS(discussTables);
     }
 
     /**
@@ -295,7 +301,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/fakeDeleteDiscuss")
     public ManagerVO fakeDeleteLostDiscuss(int id){
-        return null;
+        int i = managerService.fakeDeleteLostDiscussById(id);
+        return ManagerVO.SUCCESS(i);
     }
 
     /**
@@ -303,7 +310,8 @@ public class ManagerController {
      */
     @RequestMapping("/lost/queryReply")
     public ManagerVO queryLostReply(){
-        return null;
+        List<ReplyTable> replyTables = managerService.queryLostReply();
+        return ManagerVO.SUCCESS(replyTables);
     }
 
     /**
@@ -311,8 +319,46 @@ public class ManagerController {
      */
     @RequestMapping("/lost/fakeDeleteReply")
     public ManagerVO fakeDeleteLostReply(@RequestParam int id){
-        return null;
+        int i = managerService.fakeDeleteLostReply(id);
+        return ManagerVO.SUCCESS(i);
     }
 
-    // =================================================================================================================
+    // ==============================================校友圈==============================================================
+
+    /**
+     * 查询订单评论信息
+     */
+    @RequestMapping("/alumni/queryDiscuss")
+    public ManagerVO queryAlumniDiscuss(){
+        List<DiscussTable> discussTables = managerService.queryAlumniDiscuss();
+        return ManagerVO.SUCCESS(discussTables);
+    }
+
+    /**
+     * 删除订单回复信息
+     */
+    @RequestMapping("/alumni/fakeDeleteDiscuss")
+    public ManagerVO fakeDeleteAlumniDiscuss(int id){
+        int i = managerService.fakeDeleteAlumniDiscussById(id);
+        return ManagerVO.SUCCESS(i);
+    }
+
+    /**
+     * 查询回复信息 管理员
+     */
+    @RequestMapping("/alumni/queryReply")
+    public ManagerVO queryAlumniReply(){
+        List<ReplyTable> replyTables = managerService.queryAlumniReply();
+        return ManagerVO.SUCCESS(replyTables);
+    }
+
+    /**
+     * 删除回复信息
+     */
+    @RequestMapping("/alumni/fakeDeleteReply")
+    public ManagerVO fakeDeleteAlumniReply(@RequestParam int id){
+        int i = managerService.fakeDeleteAlumniReply(id);
+        return ManagerVO.SUCCESS(i);
+    }
+
 }

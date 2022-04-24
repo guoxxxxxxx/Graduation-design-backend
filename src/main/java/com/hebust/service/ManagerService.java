@@ -180,4 +180,26 @@ public interface ManagerService {
      */
     int fakeDeleteLostReply(int id);
 
+
+    // ==================================校友圈==========================================================================
+    /**
+     * 查询评论信息
+     */
+    List<DiscussTable> queryAlumniDiscuss();
+
+    /**
+     * 通过id伪删除 评论信息 和其子评论信息
+     */
+    int fakeDeleteAlumniDiscussById(int id);
+
+    /**
+     * 查询回复信息
+     */
+    List<ReplyTable> queryAlumniReply();
+
+    /**
+     * 伪删除回复信息
+     */
+    int fakeDeleteAlumniReply(int id);
+
 }

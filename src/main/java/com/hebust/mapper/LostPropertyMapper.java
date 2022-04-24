@@ -2,6 +2,7 @@ package com.hebust.mapper;
 
 import com.hebust.entity.QueryCondition;
 import com.hebust.entity.lostProperty.LostProperty;
+import com.hebust.entity.table.ItemTable;
 
 import java.util.List;
 
@@ -62,4 +63,10 @@ public interface LostPropertyMapper {
      * 查询已经完成的项目数量
      */
     int queryAchieveCount();
+
+    /**
+     * 查询所有项目
+     */
+    List<ItemTable> queryAllItemTable();
+
 }

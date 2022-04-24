@@ -86,4 +86,9 @@
     set is_delete = 1
     where img_src = #{imgSrc}
   </update>
+    <update id="fakeDeleteImgByLid">
+      update lost_img
+      set is_delete = 1
+      where lid = #{lid}
+    </update>
 </mapper>

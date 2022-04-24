@@ -47,6 +47,9 @@
   <select id="queryReply" resultMap="allInfo">
     select * from alumni_reply where parent_discuss_id = #{did} and is_delete = 0
   </select>
+  <select id="queryReplyTable" resultMap="ManagerTable">
+    select * from alumni_reply where is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from alumni_reply
     where id = #{id,jdbcType=INTEGER}
@@ -127,5 +130,15 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteByFatherId">
+    update alumni_reply
+    set is_delete = 1
+    where parent_discuss_id = #{fid}
+  </update>
+  <update id="fakeDeleteById">
+    update alumni_reply
+    set is_delete = 1
+    where id = #{id}
   </update>
 </mapper>

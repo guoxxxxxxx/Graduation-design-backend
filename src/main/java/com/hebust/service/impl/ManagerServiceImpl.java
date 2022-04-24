@@ -3,10 +3,7 @@ package com.hebust.service.impl;
 import com.hebust.entity.table.DiscussTable;
 import com.hebust.entity.table.ItemTable;
 import com.hebust.entity.table.ReplyTable;
-import com.hebust.mapper.ErrandMapper;
-import com.hebust.mapper.LostPropertyMapper;
-import com.hebust.mapper.StudyMapper;
-import com.hebust.mapper.TradeMapper;
+import com.hebust.mapper.*;
 import com.hebust.mapper.relation.*;
 import com.hebust.service.ManagerService;
 import com.hebust.utils.ShortContentUtils;
@@ -298,7 +295,14 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public HashMap<String, Integer> queryLostItemDisRepCount() {
-        return null;
+        int itemCount = lostPropertyMapper.queryCount();
+        int discussCount = lostDiscussMapper.queryDiscussCount();
+        int replyCount = lostReplyMapper.queryReplyCount();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put("itemCount", itemCount);
+        map.put("discussCount", discussCount);
+        map.put("replyCount", replyCount);
+        return map;
     }
 
     @Override
@@ -313,31 +317,78 @@ public class ManagerServiceImpl implements ManagerService {
 
     @Override
     public List<ItemTable> queryAllLostItem() {
-        return null;
+        List<ItemTable> itemTables = lostPropertyMapper.queryAllItemTable();
+        return itemTables;
     }
 
     @Override
-    public int fakeDeleteLostItem(int sid) {
-        return 0;
+    public int fakeDeleteLostItem(int lid) {
+        // 删除回复消息
+        int j = lostReplyMapper.fakeDeleteReplyByLid(lid);
+        // 删除评论信息
+        int k = lostDiscussMapper.fakeDeleteDiscussByLid(lid);
+        // 删除对应的图片信息
+        int w = lostImgMapper.fakeDeleteImgByLid(lid);
+        int i = lostPropertyMapper.fakeDeleteByLid(lid);
+        return i + j + k + w;
     }
 
     @Override
     public List<DiscussTable> queryLostDiscuss() {
-        return null;
+        List<DiscussTable> discussTables = lostDiscussMapper.queryDiscussTable();
+        List<DiscussTable> tables = ShortContentUtils.discussTableToShort(discussTables);
+        return tables;
     }
 
     @Override
     public int fakeDeleteLostDiscussById(int id) {
-        return 0;
+        int i = lostReplyMapper.fakeDeleteReplyByFatherId(id);
+        int j = lostDiscussMapper.fakeDeleteDiscussById(id);
+        return i + j;
     }
 
     @Override
     public List<ReplyTable> queryLostReply() {
-        return null;
+        List<ReplyTable> replyTables = lostReplyMapper.queryReplyTable();
+        List<ReplyTable> tables = ShortContentUtils.replyTableToShort(replyTables);
+        return tables;
     }
 
     @Override
     public int fakeDeleteLostReply(int id) {
-        return 0;
+        int i = lostReplyMapper.fakeDeleteById(id);
+        return i;
+    }
+
+    @Autowired
+    private AlumniDiscussMapper alumniDiscussMapper;
+    @Autowired
+    private AlumniReplyMapper alumniReplyMapper;
+
+    @Override
+    public List<DiscussTable> queryAlumniDiscuss() {
+        List<DiscussTable> discussTables = alumniDiscussMapper.queryDiscussTable();
+        List<DiscussTable> tables = ShortContentUtils.discussTableToShort(discussTables);
+        return tables;
+    }
+
+    @Override
+    public int fakeDeleteAlumniDiscussById(int id) {
+        int i = alumniReplyMapper.fakeDeleteByFatherId(id);
+        int j = alumniDiscussMapper.fakeDeleteById(id);
+        return i + j;
+    }
+
+    @Override
+    public List<ReplyTable> queryAlumniReply() {
+        List<ReplyTable> replyTables = alumniReplyMapper.queryReplyTable();
+        List<ReplyTable> tables = ShortContentUtils.replyTableToShort(replyTables);
+        return tables;
+    }
+
+    @Override
+    public int fakeDeleteAlumniReply(int id) {
+        int i = alumniReplyMapper.fakeDeleteById(id);
+        return i;
     }
 }

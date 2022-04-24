@@ -31,4 +31,9 @@ public interface LostImgMapper {
      * 伪删除图片
      */
     int fakeDeleteImg(String imgSrc);
+
+    /**
+     * 通过项目id伪删除图片
+     */
+    int fakeDeleteImgByLid(int lid);
 }

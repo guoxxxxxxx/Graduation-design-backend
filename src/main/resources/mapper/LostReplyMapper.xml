@@ -48,7 +48,14 @@
       select * from lost_reply
       where parent_discuss_id = #{fatherId}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="queryReplyCount" resultType="java.lang.Integer">
+      select count(*) from lost_reply where is_delete = 0
+    </select>
+  <select id="queryReplyTable" resultMap="ManagerTable">
+    select * from lost_reply
+    where is_delete = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from lost_reply
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -140,5 +147,23 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteReplyByLid">
+    UPDATE lost_reply
+    SET is_delete = 1
+    WHERE id IN (SELECT id FROM
+      (SELECT id FROM lost_reply INNER JOIN
+                      (SELECT id sd FROM lost_discuss INNER JOIN lost_property ON lost_property.`lid` = lost_discuss.`lid` AND lost_property.`lid` = #{lid}) a
+                      ON a.sd = lost_reply.`parent_discuss_id`) id)
+  </update>
+  <update id="fakeDeleteReplyByFatherId">
+    update lost_reply
+    set is_delete = 1
+    where parent_discuss_id = #{fid}
+  </update>
+  <update id="fakeDeleteById">
+    update lost_reply
+    set is_delete = 1
+    where id = #{id}
   </update>
 </mapper>

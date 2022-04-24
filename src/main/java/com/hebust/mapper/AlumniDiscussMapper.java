@@ -1,6 +1,7 @@
 package com.hebust.mapper;
 
 import com.hebust.entity.alumni.AlumniDiscuss;
+import com.hebust.entity.table.DiscussTable;
 
 import java.util.List;
 
@@ -31,4 +32,14 @@ public interface AlumniDiscussMapper {
      * 查询符合条件的数量
      */
     int queryDiscussCount(String fuzzyParam);
+
+    /**
+     * 查询订单评论信息
+     */
+    List<DiscussTable> queryDiscussTable();
+
+    /**
+     * 通过主键删除评论信息
+     */
+    int fakeDeleteById(int id);
 }

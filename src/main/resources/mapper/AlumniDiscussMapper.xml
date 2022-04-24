@@ -47,6 +47,9 @@
     select count(*) from alumni_discuss
     where is_delete = 0 and content like "%" #{fuzzyParam} "%"
   </select>
+  <select id="queryDiscussTable" resultMap="managerInfo">
+    select * from alumni_discuss where is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from alumni_discuss
     where id = #{id,jdbcType=INTEGER}
@@ -117,5 +120,10 @@
       create_date = #{createDate,jdbcType=TIMESTAMP},
       is_delete = #{isDelete,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="fakeDeleteById">
+    update alumni_discuss
+    set is_delete = 1
+    where id = #{id}
   </update>
 </mapper>
