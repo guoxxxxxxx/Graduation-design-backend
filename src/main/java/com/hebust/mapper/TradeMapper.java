@@ -1,6 +1,7 @@
 package com.hebust.mapper;
 
 import com.hebust.entity.QueryCondition;
+import com.hebust.entity.table.ItemTable;
 import com.hebust.entity.trade.Trade;
 
 import java.util.List;
@@ -67,4 +68,9 @@ public interface TradeMapper {
      * 查询已经完成的订单数量
      */
     int queryAchieveCount();
+
+    /**
+     * 管理员 查询所有项目信息
+     */
+    List<ItemTable> queryTradeItems();
 }

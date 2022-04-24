@@ -12,6 +12,19 @@
     <association property="commentUser" column="comment_uid" select="com.hebust.mapper.UserMapper.selectSimplifyUserById"/>
     <association property="targetUser" column="target_uid" select="com.hebust.mapper.UserMapper.selectSimplifyUserById"/>
   </resultMap>
+
+  <!--管理员-->
+  <resultMap id="ManagerTable" type="com.hebust.entity.table.ReplyTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="comment_uid" jdbcType="INTEGER" property="pubUser" />
+    <result column="target_uid" jdbcType="INTEGER" property="targetId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="date" />
+    <association property="pubUserName" column="comment_uid"
+                 select="com.hebust.mapper.UserMapper.getUserName"/>
+    <association property="targetName" column="target_uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, parent_discuss_id, comment_uid, target_uid, content, create_date, is_delete
   </sql>
@@ -23,7 +36,7 @@
     update errand_reply set is_delete = 1 where id = #{id}
   </update>
   <update id="fakeDeleteByParentId">
-    update errand_reply set is_delete = 1 where parent_discuss_id = {id}
+    update errand_reply set is_delete = 1 where parent_discuss_id = #{id}
   </update>
   <update id="fakeDeleteByEid">
     UPDATE errand_reply
@@ -41,4 +54,7 @@
     <select id="queryReplyCount" resultType="java.lang.Integer">
       select count(*) from errand_reply where is_delete = 0
     </select>
+  <select id="queryReplyManager" resultMap="ManagerTable">
+    select * from errand_reply where is_delete = 0
+  </select>
 </mapper>

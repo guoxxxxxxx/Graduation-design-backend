@@ -2,7 +2,7 @@ package com.hebust.mapper;
 
 import com.hebust.entity.QueryCondition;
 import com.hebust.entity.errand.Errand;
-import com.hebust.entity.item.ErrandTable;
+import com.hebust.entity.table.ItemTable;
 
 import java.util.List;
 
@@ -90,5 +90,5 @@ public interface ErrandMapper {
     /**
      * 查询所需要的信息
      */
-    List<ErrandTable> managerQueryAll();
+    List<ItemTable> managerQueryAll();
 }

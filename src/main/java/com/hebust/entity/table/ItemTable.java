@@ -1,4 +1,4 @@
-package com.hebust.entity.item;
+package com.hebust.entity.table;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ErrandTable {
+public class ItemTable {
     /**
      * 日期
      */
@@ -22,6 +22,7 @@ public class ErrandTable {
      * 标题
      */
     private String title;
+
 
     /**
      * 赏金
@@ -39,7 +40,7 @@ public class ErrandTable {
     private String status;
 
     /**
-     * id
+     * 当前项目主键
      */
     private int id;
 
@@ -47,4 +48,12 @@ public class ErrandTable {
      * 是否已完成
      */
     private int isAchieve;
+
+    /**
+     * 所属种类
+     */
+    private String category;
+
+    private static final long serialVersionUID = 1L;
+
 }

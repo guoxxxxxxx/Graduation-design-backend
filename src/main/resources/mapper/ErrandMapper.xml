@@ -37,12 +37,13 @@
     <result column="details" jdbcType="VARCHAR" property="details"/>
   </resultMap>
 
-  <resultMap id="managerMap" type="com.hebust.entity.item.ErrandTable">
+  <resultMap id="managerMap" type="com.hebust.entity.table.ItemTable">
     <id column="eid" jdbcType="INTEGER" property="id" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="money" jdbcType="DOUBLE" property="money" />
     <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
     <result column="pubdate" jdbcType="TIMESTAMP" property="date" />
+    <result column="category" property="category"/>
     <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.getUserName"/>
     <association property="takeOrdersUser" column="euid" select="com.hebust.mapper.UserMapper.getUserName"/>
   </resultMap>

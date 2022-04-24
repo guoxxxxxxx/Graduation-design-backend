@@ -11,6 +11,18 @@
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
   </resultMap>
 
+  <!--管理员-->
+  <resultMap id="ManagerTable" type="com.hebust.entity.table.ReplyTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="comment_uid" jdbcType="INTEGER" property="pubUser" />
+    <result column="target_uid" jdbcType="INTEGER" property="targetId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="date" />
+    <association property="pubUserName" column="comment_uid"
+                 select="com.hebust.mapper.UserMapper.getUserName"/>
+    <association property="targetName" column="target_uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <!--包含发布用户详细信息 和 被接收用户详细信息-->
   <resultMap id="allInfo" type="com.hebust.entity.study.StudyReply">
     <id column="id" jdbcType="INTEGER" property="id" />
@@ -36,7 +48,13 @@
       select * from study_reply
       where parent_discuss_id = #{fid} and is_delete != 1
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="queryReplyCount" resultType="java.lang.Integer">
+      select count(*) from study_reply where is_delete = 0
+    </select>
+  <select id="queryReply" resultMap="ManagerTable">
+    select * from study_reply where is_delete = 0
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study_reply
     where id = #{id,jdbcType=INTEGER}
   </delete>
@@ -136,5 +154,15 @@
         (SELECT id FROM study_reply INNER JOIN
            (SELECT id sd FROM study_discuss INNER JOIN study ON study.`sid` = study_discuss.`sid` AND study.`sid` = #{sid}) a
                ON a.sd = study_reply.`parent_discuss_id`) id)
+  </update>
+  <update id="fakeDeleteRelpy">
+    update study_reply
+    set is_delete = 1
+    where id = #{id}
+  </update>
+  <update id="fakeDeleteReplyByFatherId">
+    update study_reply
+    set is_delete = 1
+    where parent_discuss_id = #{fid}
   </update>
 </mapper>

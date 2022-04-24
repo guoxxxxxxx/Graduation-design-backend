@@ -31,4 +31,9 @@ public interface StudyImgMapper {
      * 根据图片名称伪删除图片
      */
     int fakeDeleteImgByFilename(String filename);
+
+    /**
+     * 删除与sid对应的图片
+     */
+    int fakeDeleteImgBySid(int sid);
 }

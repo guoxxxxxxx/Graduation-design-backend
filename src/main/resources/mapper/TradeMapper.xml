@@ -31,6 +31,19 @@
     <collection property="imgUrls" column="tid" ofType="java.lang.String"
                 select="com.hebust.mapper.relation.TradeImgMapper.queryImg"/>
   </resultMap>
+
+  <!--管理员项目查询-->
+  <resultMap id="managerMap" type="com.hebust.entity.table.ItemTable">
+    <id column="tid" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="money" jdbcType="DOUBLE" property="money" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="date" />
+    <result column="category" property="category"/>
+    <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+    <association property="takeOrdersUser" column="tuid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     tid, `uid`, tuid, category, title, details, money, pubdate, is_delete, isAchieve
   </sql>
@@ -79,6 +92,9 @@
   </select>
   <select id="queryAchieveCount" resultType="java.lang.Integer">
     select count(*) from trade where is_delete = 0 and is_achieve = 1
+  </select>
+  <select id="queryTradeItems" resultMap="managerMap">
+    select * from trade where is_delete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from trade

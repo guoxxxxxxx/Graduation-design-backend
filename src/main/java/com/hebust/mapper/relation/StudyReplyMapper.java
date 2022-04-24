@@ -1,6 +1,7 @@
 package com.hebust.mapper.relation;
 
 import com.hebust.entity.study.StudyReply;
+import com.hebust.entity.table.ReplyTable;
 
 import java.util.List;
 
@@ -31,4 +32,24 @@ public interface StudyReplyMapper {
      * 发表回复信息
      */
     int sendReply(StudyReply reply);
+
+    /**
+     * 查询未删除的回复数量
+     */
+    int queryReplyCount();
+
+    /**
+     * 通过自己的主键伪删除自己
+     */
+    int fakeDeleteRelpy(int id);
+
+    /**
+     * 通过父评论伪删除回复
+     */
+    int fakeDeleteReplyByFatherId(int fid);
+
+    /**
+     * 查询管理员界面所需回复信息
+     */
+    List<ReplyTable> queryReply();
 }

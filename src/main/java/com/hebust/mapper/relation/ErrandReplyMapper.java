@@ -2,6 +2,7 @@ package com.hebust.mapper.relation;
 
 import com.hebust.entity.errand.ErrandDiscuss;
 import com.hebust.entity.errand.ErrandReply;
+import com.hebust.entity.table.ReplyTable;
 
 import java.util.List;
 
@@ -36,4 +37,9 @@ public interface ErrandReplyMapper {
      * 通过eid删除回复信息
      */
     int fakeDeleteByEid(int eid);
+
+    /**
+     * 查询回复信息 管理员
+     */
+    List<ReplyTable> queryReplyManager();
 }

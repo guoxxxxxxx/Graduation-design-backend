@@ -7,6 +7,7 @@ import com.hebust.entity.errand.Errand;
 import com.hebust.mapper.ErrandMapper;
 import com.hebust.mapper.relation.ErrandDiscussMapper;
 import com.hebust.mapper.relation.ErrandImgMapper;
+import com.hebust.mapper.relation.ErrandReplyMapper;
 import com.hebust.service.ErrandService;
 import com.hebust.service.relation.ErrandImgService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,10 @@ public class ErrandServiceImpl implements ErrandService {
     private ErrandMapper errandMapper;
     @Autowired
     ErrandDiscussMapper discussMapper;
+    @Autowired
+    ErrandReplyMapper replyMapper;
+    @Autowired
+    ErrandImgMapper imgMapper;
 
     @Override
     public List<Errand> selectAll() {
@@ -51,6 +56,11 @@ public class ErrandServiceImpl implements ErrandService {
 
     @Override
     public int fakeDeleteItemByEid(int eid) {
+        // 删除回复信息
+        replyMapper.fakeDeleteByEid(eid);
+        discussMapper.fakeDeleteDiscussByEid(eid);
+        // 伪删除订单对应的图片信息
+        imgMapper.fakeDeleteImgByEid(eid);
         return errandMapper.fakeDeleteItemByEid(eid);
     }
 

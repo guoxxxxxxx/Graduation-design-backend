@@ -146,10 +146,8 @@ public class ErrandController {
             return ErrandVO.FAIL;
         }
         else {
-            // 伪删除订单信息
+            // 伪删除订单信息 及所对应的评论信息 和 图片信息
             int i = errandService.fakeDeleteItemByEid(errand.getEid());
-            // 伪删除订单对应的图片信息
-            errandImgService.fakeDeleteImgByEid(errand.getEid());
             if (i == 1){
                 return ErrandVO.SUCCESS;
             }

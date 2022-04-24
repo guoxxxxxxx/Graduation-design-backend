@@ -2,6 +2,7 @@ package com.hebust.mapper;
 
 import com.hebust.entity.QueryCondition;
 import com.hebust.entity.study.Study;
+import com.hebust.entity.table.ItemTable;
 
 import java.util.List;
 import java.util.concurrent.locks.Condition;
@@ -66,4 +67,9 @@ public interface StudyMapper {
      * 查询已完成的订单数量
      */
     int queryAchieveCount();
+
+    /**
+     * 查询所有项目 管理员
+     */
+    List<ItemTable> queryAllItemManager();
 }

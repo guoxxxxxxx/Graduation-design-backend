@@ -31,4 +31,9 @@ public interface TradeImgMapper {
      * 根据图片名称删除图片
      */
     int fakeDeleteImg(String img);
+
+    /**
+     * 根据父id删除图片
+     */
+    int fakeDeleteImgByFatherId(int fid);
 }

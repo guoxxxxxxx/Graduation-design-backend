@@ -26,6 +26,17 @@
     <collection property="imgUrls" column="sid" ofType="java.lang.String"
                 select="com.hebust.mapper.relation.StudyImgMapper.selectAllImgBySid"/>
   </resultMap>
+
+  <!--管理员项目查询-->
+  <resultMap id="ManagerInfo" type="com.hebust.entity.table.ItemTable">
+    <id column="sid" jdbcType="INTEGER" property="id" />
+    <result column="category" jdbcType="VARCHAR" property="category" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="pubdate" jdbcType="TIMESTAMP" property="date" />
+    <result column="is_achieve" jdbcType="INTEGER" property="isAchieve" />
+    <association property="pubUser" column="uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     sid, `uid`, category, title, details, pubdate, is_achieve, is_delete
   </sql>
@@ -69,6 +80,9 @@
     </select>
   <select id="queryAchieveCount" resultType="java.lang.Integer">
     select count(*) from study where is_delete = 0 and is_achieve = 1
+  </select>
+  <select id="queryAllItemManager" resultMap="ManagerInfo">
+    select * from study where is_delete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study

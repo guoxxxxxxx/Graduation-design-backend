@@ -97,6 +97,8 @@ public class StudyServiceImpl implements StudyService {
         studyReplyMapper.fakeDeleteReplyBySid(sid);
         // 伪删除评论表中的数据
         studyDiscussMapper.fakeDeleteDiscussBySid(sid);
+        // 伪删除图片信息
+        studyImgMapper.fakeDeleteImgBySid(sid);
         return studyMapper.fakeDeleteBySid(sid);
     }
 

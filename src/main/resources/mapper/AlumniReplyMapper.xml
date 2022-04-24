@@ -11,6 +11,18 @@
     <result column="parent_discuss_id" jdbcType="INTEGER" property="parentDiscussId"/>
   </resultMap>
 
+  <!--管理员-->
+  <resultMap id="ManagerTable" type="com.hebust.entity.table.ReplyTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="comment_uid" jdbcType="INTEGER" property="pubUser" />
+    <result column="target_uid" jdbcType="INTEGER" property="targetId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="date" />
+    <association property="pubUserName" column="comment_uid"
+                 select="com.hebust.mapper.UserMapper.getUserName"/>
+    <association property="targetName" column="target_uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <!--所有回复信息-->
   <resultMap id="allInfo" type="com.hebust.entity.alumni.AlumniReply">
     <id column="id" jdbcType="INTEGER" property="id" />

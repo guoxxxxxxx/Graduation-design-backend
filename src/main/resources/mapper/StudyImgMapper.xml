@@ -83,5 +83,9 @@
     update study_img set is_delete = 1
     where img_src = #{filename}
   </update>
+    <update id="fakeDeleteImgBySid">
+      update study_img set is_delete = 1
+        where sid = #{sid}
+    </update>
 
 </mapper>

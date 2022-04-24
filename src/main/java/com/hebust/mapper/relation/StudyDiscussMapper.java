@@ -1,6 +1,7 @@
 package com.hebust.mapper.relation;
 
 import com.hebust.entity.study.StudyDiscuss;
+import com.hebust.entity.table.DiscussTable;
 
 import java.util.List;
 
@@ -36,4 +37,20 @@ public interface StudyDiscussMapper {
      * 发送评论信息
      */
     int insertDiscuss(StudyDiscuss discuss);
+
+    /**
+     * 查询未删除的评论信息数量
+     */
+    int queryDiscussCount();
+
+    /**
+     * 查询管理员界面所需评论信息
+     */
+    List<DiscussTable> queryDiscussTable();
+
+    /**
+     * 通过主键伪删除评论
+     */
+    int fakeDeleteDiscuss(int id);
+
 }

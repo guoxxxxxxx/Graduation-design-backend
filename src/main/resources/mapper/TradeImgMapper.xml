@@ -84,4 +84,9 @@
     set is_delete = 1
     where img_src = #{img}
   </update>
+    <update id="fakeDeleteImgByFatherId">
+      update trade_img
+      set is_delete = 1
+      where tid = #{fid}
+    </update>
 </mapper>

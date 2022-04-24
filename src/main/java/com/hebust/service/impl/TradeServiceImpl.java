@@ -154,6 +154,10 @@ public class TradeServiceImpl implements TradeService {
 
     @Override
     public int fakeDeleteItem(int tid) {
+        // 删除回复信息
+        replyMapper.fakeDeleteByItemId(tid);
+        discussMapper.fakeDeleteDiscussItemId(tid);
+        imgMapper.fakeDeleteImgByFatherId(tid);
         return tradeMapper.fakeDeleteItem(tid);
     }
 

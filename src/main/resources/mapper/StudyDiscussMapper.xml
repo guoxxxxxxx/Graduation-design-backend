@@ -22,6 +22,17 @@
     <collection property="childrenList" column="id" ofType="com.hebust.entity.study.StudyReply"
                 select="com.hebust.mapper.relation.StudyReplyMapper.selectReplyByFatherId"/>
   </resultMap>
+
+  <!--管理员端的评论查询-->
+  <resultMap id="managerInfo" type="com.hebust.entity.table.DiscussTable">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="comment_uid" jdbcType="INTEGER" property="pubUserId" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="date" />
+    <result column="eid" jdbcType="INTEGER" property="parentId" />
+    <association property="pubUserName" column="comment_uid" select="com.hebust.mapper.UserMapper.getUserName"/>
+  </resultMap>
+
   <sql id="Base_Column_List">
     id, sid, comment_uid, content, create_date, is_delete
   </sql>
@@ -38,6 +49,13 @@
   <select id="selectDiscussCountBySid" resultType="java.lang.Integer">
     select count(*) from study_discuss
     where sid = #{sid} and is_delete != 1
+  </select>
+    <select id="queryDiscussCount" resultType="java.lang.Integer">
+      select count(*) from study_discuss
+        where is_delete = 0
+    </select>
+  <select id="queryDiscussTable" resultMap="managerInfo">
+    select * from study_discuss where is_delete = 0
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from study_discuss
@@ -121,5 +139,8 @@
   </update>
   <update id="fakeDeleteDiscussBySid">
     update study_discuss set is_delete = 1 where sid = #{sid}
+  </update>
+  <update id="fakeDeleteDiscuss">
+    update study_discuss set is_delete = 1 where id = #{id}
   </update>
 </mapper>
