@@ -391,4 +391,14 @@ public class ManagerServiceImpl implements ManagerService {
         int i = alumniReplyMapper.fakeDeleteById(id);
         return i;
     }
+
+    @Override
+    public HashMap<String, Integer> queryAlumni() {
+        HashMap<String, Integer> map = new HashMap<>();
+        int discussCount = alumniDiscussMapper.queryDiscussCountIndex();
+        map.put("discussCount", discussCount);
+        int replyCount = alumniReplyMapper.queryReplyCountIndex();
+        map.put("replyCount", replyCount);
+        return map;
+    }
 }

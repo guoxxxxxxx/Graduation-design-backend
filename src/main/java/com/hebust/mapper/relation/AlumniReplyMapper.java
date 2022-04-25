@@ -42,4 +42,9 @@ public interface AlumniReplyMapper {
      * 查询所需要的评论信息
      */
     List<ReplyTable> queryReplyTable();
+
+    /**
+     * 查询回复数量
+     */
+    int queryReplyCountIndex();
 }

@@ -35,4 +35,9 @@ public interface UserService {
      * 通过ID修改用户头像路径
      */
     int updateAvatarById(User user);
+
+    /**
+     * 查询用户数量
+     */
+    int queryUserCount();
 }

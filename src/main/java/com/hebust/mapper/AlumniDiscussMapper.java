@@ -42,4 +42,9 @@ public interface AlumniDiscussMapper {
      * 通过主键删除评论信息
      */
     int fakeDeleteById(int id);
+
+    /**
+     * 查询评论信息数量
+     */
+    int queryDiscussCountIndex();
 }

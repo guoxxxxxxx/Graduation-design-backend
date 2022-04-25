@@ -43,4 +43,9 @@ public interface UserMapper {
      * 根据id查询用户姓名
      */
     String getUserName(int id);
+
+    /**
+     * 查询用户数量
+     */
+    int queryUserCount();
 }

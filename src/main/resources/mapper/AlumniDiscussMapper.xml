@@ -50,6 +50,9 @@
   <select id="queryDiscussTable" resultMap="managerInfo">
     select * from alumni_discuss where is_delete = 0
   </select>
+  <select id="queryDiscussCountIndex" resultType="java.lang.Integer">
+    select count(*) from alumni_discuss where is_delete = 0
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from alumni_discuss
     where id = #{id,jdbcType=INTEGER}

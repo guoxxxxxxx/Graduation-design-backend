@@ -56,7 +56,10 @@
   <select id="getUserName" resultType="java.lang.String">
     select name from user where uid = #{id} and is_delete = 0
   </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="queryUserCount" resultType="java.lang.Integer">
+      select count(*) from user where is_delete = 0
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from user
     where `uid` = #{uid,jdbcType=INTEGER}
   </delete>

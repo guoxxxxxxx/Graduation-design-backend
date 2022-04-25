@@ -150,4 +150,13 @@ public class UserController {
             }
         }
     }
+
+    /**
+     * 查询用户数量
+     */
+    @RequestMapping("/queryUserCount")
+    public UserVO queryUserCount(){
+        int i = userService.queryUserCount();
+        return new UserVO(200, "success", i);
+    }
 }

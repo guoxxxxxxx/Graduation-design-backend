@@ -202,4 +202,9 @@ public interface ManagerService {
      */
     int fakeDeleteAlumniReply(int id);
 
+    /**
+     * 查询校友圈评论回复数量
+     */
+    HashMap<String, Integer> queryAlumni();
+
 }

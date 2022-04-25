@@ -62,4 +62,9 @@ public class UserServiceImpl implements UserService {
     public int updateAvatarById(User user) {
         return userMapper.updateAvatarById(user);
     }
+
+    @Override
+    public int queryUserCount() {
+        return userMapper.queryUserCount();
+    }
 }
