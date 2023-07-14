@@ -12,9 +12,9 @@ import com.sun.mail.util.MailSSLSocketFactory;
  */
 public class SendRandomCode {
     // 发件人邮箱
-    private static final String sendEmail = "1785158284@qq.com";
+    private static final String sendEmail = "";
     // 授权码
-    private static final String authorityCode = "lejnybgpfbkdcgif";
+    private static final String authorityCode = "";
     // 指定发邮件的主机
     private static final String host = "smtp.qq.com";
 
